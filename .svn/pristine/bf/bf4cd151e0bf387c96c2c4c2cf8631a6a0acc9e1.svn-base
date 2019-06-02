@@ -1,0 +1,14 @@
+{
+  "name": "DemoPlanner",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "proxies": [
+    {
+      "path": "/wsAPI.php",
+      "proxyUrl": "https://aacd.com/wsAPI.php"
+    }
+  ],
+  "id": "44c4b6cb"
+}
