@@ -113,21 +113,21 @@ let CetrackingPage = class CetrackingPage {
                     for (var i = 0; i < data['length']; i++) {
                         var EvalType = data[i].ce_credits_type.substring(0, 1);
                         var iconSet = 0;
-                        if (EvalType == "") {
+                        if (EvalType == "") { // Evals that don't require an eval are completed
                             iconScan = iconCEScanComplete;
                             iconSet = 1;
                             //sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
                             //sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);
                         }
-                        if (data[i].ceStatusScan == "0" && iconSet == 0) {
+                        if (data[i].ceStatusScan == "0" && iconSet == 0) { // No scan (shouldn't happen with AACD)
                             iconScan = iconCEScanPendingScan;
                             iconSet = 1;
                         }
-                        if ((data[i].Evaluated == "0" || data[i].Evaluated === null) && iconSet == 0) {
+                        if ((data[i].Evaluated == "0" || data[i].Evaluated === null) && iconSet == 0) { // Eval not completed
                             iconScan = iconCEScanNotCompleted;
                             iconSet = 1;
                         }
-                        if (iconSet == 0) {
+                        if (iconSet == 0) { // Otherwise mark as completed
                             iconScan = iconCEScanComplete;
                             //sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
                             //sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);

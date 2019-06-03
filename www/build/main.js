@@ -31,8 +31,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 let HelpPage = class HelpPage {
     constructor(navCtrl, loadingCtrl, alertCtrl, storage, databaseprovider, cd, 
-        //private callNumber: CallNumber,
-        localstorage) {
+    //private callNumber: CallNumber,
+    localstorage) {
         this.navCtrl = navCtrl;
         this.loadingCtrl = loadingCtrl;
         this.alertCtrl = alertCtrl;
@@ -2280,7 +2280,7 @@ let Database = class Database {
         var pnMessage = flagValues[4];
         var DateTimeReceived = flagValues[5];
         if (this.DevicePlatform == "iOS" || this.DevicePlatform == "Android") {
-            if (listingType == "li") {
+            if (listingType == "li") { // List of conversations
                 // Perform query against server-based MySQL database
                 var url = APIURLReference + "action=msgquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 var emptyJSONArray = {};
@@ -2356,7 +2356,7 @@ let Database = class Database {
                 });
                 */
             }
-            if (listingType == "pn") {
+            if (listingType == "pn") { // List of push notifications received
                 var SQLquery = "";
                 SQLquery = "SELECT pushTitle, pushMessage, datetime(pushDateTimeReceived, 'localtime') AS localDateTime ";
                 SQLquery = SQLquery + "FROM attendee_push_notifications ";
@@ -2386,7 +2386,7 @@ let Database = class Database {
                     console.log('Database: Stats query complete');
                 });
             }
-            if (listingType == "ps") {
+            if (listingType == "ps") { // Save push notification received
                 var SQLquery = "";
                 SQLquery = "INSERT INTO attendee_push_notifications(pushTitle, pushMessage, pushDateTimeReceived) ";
                 SQLquery = SQLquery + "VALUES('" + pnTitle + "','" + pnMessage + "','" + DateTimeReceived + "')";
@@ -2416,7 +2416,7 @@ let Database = class Database {
                     console.log('Database: Stats query complete');
                 });
             }
-            if (listingType == "al" || listingType == "sr") {
+            if (listingType == "al" || listingType == "sr") { // Attendee Listing
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -2445,7 +2445,7 @@ let Database = class Database {
                     SQLquery = SQLquery + "FROM attendees ";
                     SQLquery = SQLquery + "WHERE ActiveYN = 'Y' ";
                     SQLquery = SQLquery + "AND badge = '1' ";
-                    if (listingType == "sr") {
+                    if (listingType == "sr") { // If searching, then add where clause criteria
                         // Split search terms by space to create WHERE clause
                         var whereClause = 'AND (';
                         var searchTerms = pnTitle.split(" ");
@@ -2488,7 +2488,7 @@ let Database = class Database {
                     });
                 }
             }
-            if (listingType == "al2") {
+            if (listingType == "al2") { // Attendee Listing by Letter
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -2584,7 +2584,7 @@ let Database = class Database {
         var BookmarkType = flagValues[2];
         var BookmarkID = flagValues[3];
         if (this.DevicePlatform == "iOS" || this.DevicePlatform == "Android") {
-            if (listingType == "li") {
+            if (listingType == "li") { // List bookmarks
                 var SQLquery = "";
                 switch (listingFilter) {
                     case "Sessions":
@@ -2748,7 +2748,7 @@ let Database = class Database {
                         });
                 }
             }
-            if (listingType == "cb") {
+            if (listingType == "cb") { // Create Bookmark
                 SQLquery = "SELECT * FROM attendee_bookmarks ";
                 SQLquery = SQLquery + "WHERE BookmarkType = '" + BookmarkType + "' ";
                 SQLquery = SQLquery + "AND BookmarkID = '" + BookmarkID + "' ";
@@ -2820,7 +2820,7 @@ let Database = class Database {
                     console.log('Database: Create Bookmark query complete');
                 });
             }
-            if (listingType == "rb") {
+            if (listingType == "rb") { // Remove Bookmark
                 SQLquery = "SELECT * FROM attendee_bookmarks ";
                 SQLquery = SQLquery + "WHERE BookmarkType = '" + BookmarkType + "' ";
                 SQLquery = SQLquery + "AND BookmarkID = '" + BookmarkID + "' ";
@@ -2929,7 +2929,7 @@ let Database = class Database {
             var QueryParam = flagValues[3] || ''; // Search parameters for activity feed
             var afFilename = flagValues[4];
             var afPostedDateTime = flagValues[5];
-            if (listingType == "li" || listingType == "sr") {
+            if (listingType == "li" || listingType == "sr") { // List of activity feed
                 // Perform query against server-based MySQL database
                 var url = APIURLReference + "action=afquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 return new Promise(resolve => {
@@ -3030,7 +3030,7 @@ let Database = class Database {
                     });
                 });
             }
-            if (listingType == "dt") {
+            if (listingType == "dt") { // Activity feed details
                 // Perform query against server-based MySQL database
                 var url = APIURLReference + "action=afquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 return new Promise(resolve => {
@@ -3039,7 +3039,7 @@ let Database = class Database {
                     });
                 });
             }
-            if (listingType == "lu") {
+            if (listingType == "lu") { // Likes incrementer (update)
                 // Perform query against server-based MySQL database
                 var url = APIURLReference + "action=afquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 return new Promise(resolve => {
@@ -3250,19 +3250,19 @@ let Database = class Database {
                 Q33 = flagValues[13];
                 Q41 = flagValues[14];
                 LastUpdated = flagValues[15];
-                if (listingType == "ei") {
+                if (listingType == "ei") { // Retrieve session evaluations
                     SQLquery = "SELECT e.*, c.session_title, c.session_start_time, c.session_end_time, c.room_number AS RoomName ";
                     SQLquery = SQLquery + "FROM courses c ";
                     SQLquery = SQLquery + "LEFT OUTER JOIN evaluations e ON e.session_id = c.session_id AND e.AttendeeID = '" + AttendeeID + "' AND e.evaluationType = '" + EvalType + "' ";
                     SQLquery = SQLquery + "WHERE c.session_id = '" + EventID + "' ";
                 }
-                if (listingType == "ec") {
+                if (listingType == "ec") { // Retrieve session evaluation
                     SQLquery = "SELECT e.* ";
                     SQLquery = SQLquery + "FROM evaluations e ";
                     SQLquery = SQLquery + "WHERE e.AttendeeID = '" + AttendeeID + "' ";
                     SQLquery = SQLquery + "AND e.evaluationType = '" + EvalType + "' ";
                 }
-                if (listingType == "es") {
+                if (listingType == "es") { // Save (new/update) evaluation
                     SQLquery = "SELECT * FROM evaluations WHERE AttendeeID = '" + AttendeeID + "' AND session_id = '" + EventID + "' AND evaluationType = '" + EvalType + "' ";
                 }
                 console.log('Database: SQL Query: ' + SQLquery);
@@ -3603,7 +3603,7 @@ let Database = class Database {
             var sessionID = flagValues[3]; // Specific course ID
             var searchParams = flagValues[4]; // Search parameters
             var searchType = flagValues[5]; // Search type
-            if (listingType == "li") {
+            if (listingType == "li") { // List of sessions
                 SQLquery = "SELECT DISTINCT c.session_id, c.session_title, c.primary_speaker, c.other_speakers, c.session_start_time, c.session_end_time, ";
                 SQLquery = SQLquery + "c.room_number AS RoomName, c.cs_credits, c.subject, c.room_capacity, s.itID AS OnAgenda, ";
                 SQLquery = SQLquery + "(SELECT COUNT(acID) AS Attendees FROM attendee_courses ac WHERE ac.session_id = c.session_id) AS Attendees, ";
@@ -3634,7 +3634,7 @@ let Database = class Database {
                 // Append sort order
                 SQLquery = SQLquery + " ORDER BY c.session_start_time, c.course_id";
             }
-            if (listingType == "li3") {
+            if (listingType == "li3") { // All sessions list
                 SQLquery = "SELECT DISTINCT c.session_id, c.session_title, c.primary_speaker, c.other_speakers, c.session_start_time, c.session_end_time, ";
                 SQLquery = SQLquery + "lr.RoomDisplayName, c.room_capacity, ";
                 SQLquery = SQLquery + "(SELECT COUNT(acID) AS Attendees ";
@@ -3647,7 +3647,7 @@ let Database = class Database {
                 // Append sort order
                 SQLquery = SQLquery + " ORDER BY c.session_start_time, c.session_id";
             }
-            if (listingType == "sr") {
+            if (listingType == "sr") { // Search sessions
                 // Split search terms by space to create WHERE clause
                 var whereClause = 'WHERE (';
                 var searchTerms = searchParams.split(" ");
@@ -3677,7 +3677,7 @@ let Database = class Database {
                 SQLquery = SQLquery + whereClause;
                 SQLquery = SQLquery + " ORDER BY c.session_start_time, c.course_id";
             }
-            if (listingType == "dt") {
+            if (listingType == "dt") { // Details of session
                 // Validate query
                 SQLquery = "SELECT DISTINCT c.session_id, c.session_title, c.session_start_time, c.session_end_time, c.speaker_host_emcee, c.corporate_supporter, c.session_recording, ";
                 SQLquery = SQLquery + "c.primary_speaker, c.other_speakers, c.room_number AS RoomName, lr.FloorNumber, lr.RoomX, lr.RoomY, c.description, c.course_id, c.ce_credits_type, c.HandoutFilename, ";
@@ -3822,11 +3822,11 @@ let Database = class Database {
             var speakerID = flagValues[2]; // Specific speaker ID
             var QueryParam = flagValues[3] || ''; // Course parameters for speaker details
             var courseID = flagValues[4] || ''; // Specific course ID for list of linked speakers
-            if (listingType == "li" || listingType == "sr") {
+            if (listingType == "li" || listingType == "sr") { // List of speakers
                 // Validate query
                 SQLquery = "SELECT DISTINCT s.speakerID, s.LastName, s.FirstName, s.Credentials, s.Bio, s.Courses, s.imageFilename ";
                 SQLquery = SQLquery + "FROM courses_speakers s ";
-                if (listingType == "sr") {
+                if (listingType == "sr") { // If searching, then add where clause criteria
                     // Split search terms by space to create WHERE clause
                     var whereClause = 'WHERE (';
                     var whereClause2 = 'WHERE (';
@@ -3888,19 +3888,19 @@ let Database = class Database {
                 // Order by clause
                 SQLquery = SQLquery + "ORDER BY LastName, FirstName";
             }
-            if (listingType == "dt") {
+            if (listingType == "dt") { // Details of speaker
                 // Validate query
                 SQLquery = "SELECT DISTINCT s.speakerID, s.LastName, s.FirstName, s.Credentials, s.Bio, s.Courses, s.imageFilename ";
                 SQLquery = SQLquery + "FROM courses_speakers s ";
                 SQLquery = SQLquery + "WHERE speakerID = " + speakerID + " ";
             }
-            if (listingType == "cl") {
+            if (listingType == "cl") { // Course listing for specific speaker
                 // Validate query
                 SQLquery = "SELECT DISTINCT c.session_id, c.session_title, c.session_start_time, c.session_end_time, c.room_number AS RoomName ";
                 SQLquery = SQLquery + "FROM courses c ";
                 SQLquery = SQLquery + "WHERE c.course_id IN " + QueryParam + " ";
             }
-            if (listingType == "cd") {
+            if (listingType == "cd") { // List of speakers for specific course
                 // Validate query
                 SQLquery = "SELECT DISTINCT s.speakerID, s.FirstName, s.LastName, s.Credentials, s.Bio, s.Courses, s.imageFilename ";
                 SQLquery = SQLquery + "FROM courses_speakers s ";
@@ -3997,7 +3997,7 @@ let Database = class Database {
             var sortOrder = flagValues[1];
             var exhibitorID = flagValues[2];
             var QueryParam = flagValues[3] || ''; // Search parameters for exhibitors
-            if (listingType == "li" || listingType == "sr") {
+            if (listingType == "li" || listingType == "sr") { // List of exhibitors
                 // Validate query
                 SQLquery = "SELECT DISTINCT e.ExhibitorID, e.CompanyName, e.AddressLine1, e.AddressLine2, e.City, e.State, e.ZipPostalCode, e.Country, ";
                 SQLquery = SQLquery + "e.Website, e.PrimaryOnsiteContactName, e.PrimaryOnsiteContactEmail, e.PrimaryOnsiteContactPhone, ";
@@ -4006,7 +4006,7 @@ let Database = class Database {
                 SQLquery = SQLquery + "e.SocialMediaFacebook, e.SocialMediaTwitter, e.SocialMediaGooglePlus, e.SocialMediaYouTube, e.SocialMediaLinkedIn ";
                 SQLquery = SQLquery + "FROM exhibitors e ";
                 SQLquery = SQLquery + "LEFT OUTER JOIN booth_mapping bm ON bm.BoothNumber = e.BoothNumber ";
-                if (listingType == "sr") {
+                if (listingType == "sr") { // If searching, then add where clause criteria
                     // Split search terms by space to create WHERE clause
                     var whereClause = 'WHERE (';
                     var searchTerms = QueryParam.split(" ");
@@ -4028,7 +4028,7 @@ let Database = class Database {
                     }
                 }
             }
-            if (listingType == "dt") {
+            if (listingType == "dt") { // Exhibitor details
                 // Validate query
                 SQLquery = "SELECT e.ExhibitorID, e.CompanyName, e.AddressLine1, e.AddressLine2, e.City, e.State, e.ZipPostalCode, e.Country,  ";
                 SQLquery = SQLquery + "e.Website, e.PrimaryOnsiteContactName, e.PrimaryOnsiteContactEmail, e.PrimaryOnsiteContactPhone, ";
@@ -4139,7 +4139,7 @@ let Database = class Database {
                 LastUpdated = datetime;
             }
             // Official sessions
-            if (listingType == "li") {
+            if (listingType == "li") { // List of agenda items
                 // Validate query
                 SQLquery = "SELECT DISTINCT itID, EventID, mtgID, Time_Start AS EventStartTime, Time_End AS EventEndTime, Location AS EventLocation, Description AS EventDescription, SUBJECT AS EventName, Date_Start AS EventDate, '0' AS Attendees, '0' AS Waitlist, '100' AS RoomCapacity ";
                 SQLquery = SQLquery + "FROM itinerary WHERE Date_Start = '" + selectedDay + "' AND AttendeeID = '" + AttendeeID + "' ";
@@ -4187,7 +4187,7 @@ let Database = class Database {
                 SQLquery = SQLquery + "ORDER BY EventStartTime, EventID ";
             }
             // Official sessions
-            if (listingType == "li2") {
+            if (listingType == "li2") { // List of agenda items for side menu
                 // Validate query
                 SQLquery = "SELECT DISTINCT itID, EventID, mtgID, Time_Start AS EventStartTime, Time_End AS EventEndTime, Location AS EventLocation, Description AS EventDescription, SUBJECT AS EventName, Date_Start AS EventDate, '0' AS Attendees, '0' AS Waitlist, '100' AS RoomCapacity, LastUpdated ";
                 SQLquery = SQLquery + "FROM itinerary WHERE Date_Start >= date('now') AND AttendeeID = '" + AttendeeID + "' ";
@@ -4218,17 +4218,17 @@ let Database = class Database {
                 SQLquery = SQLquery + "ORDER BY EventDate, EventStartTime, Waitlist, LastUpdated ";
                 SQLquery = SQLquery + "LIMIT 10 ";
             }
-            if (listingType == "ad") {
+            if (listingType == "ad") { // Add an agenda item
                 SQLquery = "SELECT * FROM itinerary WHERE AttendeeID = '" + AttendeeID + "' AND EventID = '" + EventID + "'";
             }
-            if (listingType == "dl") {
+            if (listingType == "dl") { // Remove an agenda item
                 // Validate query
                 SQLquery = "UPDATE itinerary ";
                 SQLquery = SQLquery + "SET UpdateType = 'Delete' ";
                 SQLquery = SQLquery + "WHERE EventID = '" + EventID + "' ";
                 SQLquery = SQLquery + "AND AttendeeID = '" + AttendeeID + "'";
             }
-            if (listingType == "up") {
+            if (listingType == "up") { // Update an agenda item
                 // Validate query
                 SQLquery = "SELECT DISTINCT itID, EventID, Time_Start AS EventStartTime, Time_End AS EventEndTime, Location AS EventLocation, Description AS EventDescription, SUBJECT AS EventName, Date_Start AS EventDate ";
                 SQLquery = SQLquery + "FROM itinerary WHERE Date_Start = '" + selectedDay + "' AND AttendeeID = '" + AttendeeID + "' ";
@@ -4240,7 +4240,7 @@ let Database = class Database {
                 SQLquery = SQLquery + "ORDER BY EventStartTime";
             }
             // Personal sessions
-            if (listingType == "pi") {
+            if (listingType == "pi") { // Retrieve personal schedule item
                 SQLquery = "SELECT DISTINCT itID, mtgID, Time_Start AS EventStartTime, Time_End AS EventEndTime, Location AS EventLocation, Description AS EventDescription, SUBJECT AS EventName, Date_Start AS EventDate ";
                 SQLquery = SQLquery + "FROM itinerary ";
                 SQLquery = SQLquery + "WHERE AttendeeID = '" + AttendeeID + "' ";
@@ -4249,14 +4249,14 @@ let Database = class Database {
                 SQLquery = SQLquery + "AND UpdateType != 'Delete' ";
                 SQLquery = SQLquery + "ORDER BY EventStartTime";
             }
-            if (listingType == "pd") {
+            if (listingType == "pd") { // Delete Personal agenda item
                 //SQLquery = "SELECT * FROM itinerary WHERE AttendeeID = '" + AttendeeID + "' AND mtgID = " + EventID;
                 SQLquery = "UPDATE itinerary ";
                 SQLquery = SQLquery + "SET UpdateType = 'Delete' ";
                 SQLquery = SQLquery + "WHERE mtgID = '" + EventID + "' ";
                 SQLquery = SQLquery + "AND AttendeeID = '" + AttendeeID + "'";
             }
-            if (listingType == "ps") {
+            if (listingType == "ps") { // Save (new/update) Personal agenda item
                 SQLquery = "SELECT * FROM itinerary WHERE AttendeeID = '" + AttendeeID + "' AND mtgID = " + EventID;
             }
             console.log("Database: Agenda Query: " + SQLquery);
@@ -4591,7 +4591,7 @@ let Database = class Database {
         var LastUpdated = flagValues[5];
         var SQLquery = "";
         if (this.DevicePlatform == "iOS" || this.DevicePlatform == "Android") {
-            if (listingType == "li") {
+            if (listingType == "li") { // List of notes
                 // Validate query
                 SQLquery = "SELECT DISTINCT c.session_id, c.session_title, c.other_speakers, c.primary_speaker, c.session_start_time, c.session_end_time, c.room_number AS RoomName, n.Note, n.atnID as id ";
                 SQLquery = SQLquery + "FROM attendee_notes n ";
@@ -4599,21 +4599,21 @@ let Database = class Database {
                 SQLquery = SQLquery + "WHERE c.session_start_time LIKE '" + selectedDay + "%' ";
                 SQLquery = SQLquery + "AND n.AttendeeID = '" + AttendeeID + "'";
             }
-            if (listingType == "dt") {
+            if (listingType == "dt") { // Specific note
                 // Validate query
                 SQLquery = "SELECT DISTINCT c.session_id, c.session_title, c.other_speakers, c.primary_speaker, c.session_start_time, c.session_end_time, c.room_number AS RoomName, n.Note, n.atnID as id ";
                 SQLquery = SQLquery + "FROM courses c ";
                 SQLquery = SQLquery + "LEFT OUTER JOIN attendee_notes n ON c.session_id = n.EventID AND n.AttendeeID = '" + AttendeeID + "' ";
                 SQLquery = SQLquery + "WHERE c.session_id = '" + EventID + "' ";
             }
-            if (listingType == "un") {
+            if (listingType == "un") { // Update specific note
                 if (LastUpdated == 'NA') {
                     LastUpdated = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
                 }
                 // Validate query
                 SQLquery = "UPDATE attendee_notes SET Note = '" + NoteText + "', LastUpdated = '" + LastUpdated + "' WHERE atnID = " + NoteID + " ";
             }
-            if (listingType == "sn") {
+            if (listingType == "sn") { // Save new note
                 if (LastUpdated == 'NA') {
                     LastUpdated = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
                 }
@@ -4720,7 +4720,7 @@ let Database = class Database {
         var AttendeeProfileTitle = flagValues[3];
         var AttendeeProfileOrganization = flagValues[4];
         if (this.DevicePlatform == "iOS" || this.DevicePlatform == "Android") {
-            if (listingType == "pw") {
+            if (listingType == "pw") { // Password change
                 // Perform query against server-based MySQL database
                 var url = APIURLReference + "action=statsquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 return new Promise(resolve => {
@@ -4739,7 +4739,7 @@ let Database = class Database {
                     });
                 });
             }
-            if (listingType == "st") {
+            if (listingType == "st") { // List of record counts
                 var SQLquery = "";
                 SQLquery = SQLquery + "SELECT COUNT(session_id) AS Records, 'Courses' AS DatabaseTable ";
                 SQLquery = SQLquery + "FROM courses ";
@@ -4796,7 +4796,7 @@ let Database = class Database {
                     console.log('Database: Stats query complete');
                 });
             }
-            if (listingType == "lb") {
+            if (listingType == "lb") { // Leaderboard stats
                 // Perform query against server-based MySQL database
                 var url = APIURLReference + "action=statsquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 console.log(url);
@@ -4873,7 +4873,7 @@ let Database = class Database {
                 });
                 */
             }
-            if (listingType == "pr") {
+            if (listingType == "pr") { // Attendee Profile
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -4948,7 +4948,7 @@ let Database = class Database {
                     });
                 }
             }
-            if (listingType == "pg") {
+            if (listingType == "pg") { // Get Attendee Social Media URL
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -5015,7 +5015,7 @@ let Database = class Database {
                     });
                 }
             }
-            if (listingType == "pu") {
+            if (listingType == "pu") { // Update Attendee Social Media URL
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -5093,7 +5093,7 @@ let Database = class Database {
                     });
                 }
             }
-            if (listingType == "pd") {
+            if (listingType == "pd") { // Remove Attendee Social Media URL
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -5171,7 +5171,7 @@ let Database = class Database {
                     });
                 }
             }
-            if (listingType == "ps") {
+            if (listingType == "ps") { // Save Profile updates
                 console.log('Attendee Listing: ' + AttendeeListing);
                 if (AttendeeListing == 'Online') {
                     // Perform query against server-based MySQL database
@@ -5229,7 +5229,7 @@ let Database = class Database {
                     });
                 }
             }
-            if (listingType == "cn") {
+            if (listingType == "cn") { // Check Network
                 console.log('DB: Connection Check');
                 var url = APIURLReference + "action=statsquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
                 var emptyJSONArray = {};
@@ -5254,7 +5254,7 @@ let Database = class Database {
                     });
                 });
             }
-            if (listingType == "rw") {
+            if (listingType == "rw") { // Session Star Reviews
                 SQLquery = "SELECT * FROM attendee_session_ratings ";
                 SQLquery = SQLquery + "WHERE session_id = '" + listingParameter + "' ";
                 SQLquery = SQLquery + "AND AttendeeID = '" + AttendeeID + "'";
@@ -6203,11 +6203,11 @@ let LoginPage = class LoginPage {
             this.LoggedInUser = '';
         }
         var WarningStatus = this.localstorage.getLocalValue("LoginWarning");
-        if (WarningStatus == "1") {
+        if (WarningStatus == "1") { // Screen requires account access
             this.msgRequireLogin = true;
             this.msgRequireLogin2 = false;
         }
-        if (WarningStatus == "2") {
+        if (WarningStatus == "2") { // Agenda requires account access
             this.msgRequireLogin = false;
             this.msgRequireLogin2 = true;
         }
@@ -7130,6 +7130,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var MainPage_1;
 
 
 //import { enableProdMode } from '@angular/core';
@@ -7153,7 +7154,6 @@ MainPage = MainPage_1 = __decorate([
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["u" /* NavController */]])
 ], MainPage);
 
-var MainPage_1;
 //# sourceMappingURL=main.js.map
 
 /***/ }),
@@ -10222,18 +10222,18 @@ let HomePage = class HomePage {
                     for (var i = 0; i < data['length']; i++) {
                         var EvalType = data[i].ce_credits_type.substring(0, 1);
                         var iconSet = 0;
-                        if (EvalType == "") {
+                        if (EvalType == "") { // Evals that don't require an eval are completed
                             iconSet = 1;
                             sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
                             sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);
                         }
-                        if (data[i].ceStatusScan == "0" && iconSet == 0) {
+                        if (data[i].ceStatusScan == "0" && iconSet == 0) { // No scan (shouldn't happen with AACD)
                             iconSet = 1;
                         }
-                        if ((data[i].Evaluated == "0" || data[i].Evaluated === null) && iconSet == 0) {
+                        if ((data[i].Evaluated == "0" || data[i].Evaluated === null) && iconSet == 0) { // Eval not completed
                             iconSet = 1;
                         }
-                        if (iconSet == 0) {
+                        if (iconSet == 0) { // Otherwise mark as completed
                             sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
                             sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);
                         }
@@ -11710,8 +11710,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 let MyApp = class MyApp {
     constructor(pltfrm, loadingCtrl, storage, keyboard, alertCtrl, splashScreen, oneSignal, 
-        //private IonicPro: Pro,
-        events, menuCtrl, cd, statusBar, databaseprovider, localstorage) {
+    //private IonicPro: Pro,
+    events, menuCtrl, cd, statusBar, databaseprovider, localstorage) {
         this.pltfrm = pltfrm;
         this.loadingCtrl = loadingCtrl;
         this.storage = storage;
@@ -11835,18 +11835,18 @@ let MyApp = class MyApp {
                     for (var i = 0; i < data2['length']; i++) {
                         var EvalType = data2[i].ce_credits_type.substring(0, 1);
                         var iconSet = 0;
-                        if (EvalType == "") {
+                        if (EvalType == "") { // Evals that don't require an eval are completed
                             iconSet = 1;
                             //sumCreditsL = sumCreditsL + parseFloat(data2[i].CEcreditsL);
                             //sumCreditsP = sumCreditsP + parseFloat(data2[i].CEcreditsP);
                         }
-                        if (data2[i].ceStatusScan == "0" && iconSet == 0) {
+                        if (data2[i].ceStatusScan == "0" && iconSet == 0) { // No scan (shouldn't happen with AACD)
                             iconSet = 1;
                         }
-                        if ((data2[i].Evaluated == "0" || data2[i].Evaluated === null) && iconSet == 0) {
+                        if ((data2[i].Evaluated == "0" || data2[i].Evaluated === null) && iconSet == 0) { // Eval not completed
                             iconSet = 1;
                         }
-                        if (iconSet == 0) {
+                        if (iconSet == 0) { // Otherwise mark as completed
                             //sumCreditsL = sumCreditsL + parseFloat(data2[i].CEcreditsL);
                             //sumCreditsP = sumCreditsP + parseFloat(data2[i].CEcreditsP);
                         }
