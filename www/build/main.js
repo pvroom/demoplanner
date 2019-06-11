@@ -4,193 +4,14 @@ webpackJsonp([23],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__home_home__ = __webpack_require__(67);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-// Components, functions, plugins
-
-
-
-
-
-//import { CallNumber } from '@ionic-native/call-number';
-// Pages
-
-let HelpPage = class HelpPage {
-    constructor(navCtrl, loadingCtrl, alertCtrl, storage, databaseprovider, cd, 
-    //private callNumber: CallNumber,
-    localstorage) {
-        this.navCtrl = navCtrl;
-        this.loadingCtrl = loadingCtrl;
-        this.alertCtrl = alertCtrl;
-        this.storage = storage;
-        this.databaseprovider = databaseprovider;
-        this.cd = cd;
-        this.localstorage = localstorage;
-    }
-    ngOnInit() {
-        // Load diagnostic values
-        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
-        var DevPlatform = this.localstorage.getLocalValue('DevicePlatform');
-        this.cd.markForCheck();
-    }
-    sendEmail() {
-        // Saving progress
-        let saving = this.loadingCtrl.create({
-            spinner: 'crescent',
-            content: 'Sending...'
-        });
-        // Alert for successful save
-        let savealert = this.alertCtrl.create({
-            title: 'Help Screen',
-            subTitle: 'Your help note has been sent successfully',
-            buttons: ['Ok']
-        });
-        // Alert for failed save
-        let failalert = this.alertCtrl.create({
-            title: 'Help Screen',
-            subTitle: 'Unable to send your note at this time - please try again in a little bit.',
-            buttons: ['Ok']
-        });
-        // Alert for required fields
-        let requiredalert = this.alertCtrl.create({
-            title: 'Help Screen',
-            subTitle: 'All fields except Phone are required to be completed before sending.',
-            buttons: ['Ok']
-        });
-        // Show saving progress
-        saving.present();
-        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
-        var LoginName = this.localstorage.getLocalValue('LoginFullName');
-        var DevPlatform = this.localstorage.getLocalValue('DevicePlatform');
-        var flags = "";
-        // Validation checks
-        var ValidationPass = true;
-        // Diagnostics
-        console.log('hcfSenderName :' + this.hcfSenderName);
-        console.log('hcfSenderEmail :' + this.hcfSenderEmail);
-        console.log('hcfSenderPhone :' + this.hcfSenderPhone);
-        console.log('hcfSenderComments :' + this.hcfSenderComments);
-        if (this.hcfSenderName == null || this.hcfSenderName == "" || this.hcfSenderName == undefined) {
-            ValidationPass = false;
-        }
-        if (this.hcfSenderEmail == null || this.hcfSenderEmail == "" || this.hcfSenderEmail == undefined) {
-            ValidationPass = false;
-        }
-        //if (this.hcfSenderPhone == null || this.hcfSenderPhone == "" || this.hcfSenderPhone == undefined) {
-        //    ValidationPass = false;
-        //}
-        if (this.hcfSenderComments == null || this.hcfSenderComments == "" || this.hcfSenderComments == undefined) {
-            ValidationPass = false;
-        }
-        if (ValidationPass == false) {
-            saving.dismiss();
-            requiredalert.present();
-        }
-        else {
-            if (this.hcfSenderPhone == undefined) {
-                this.hcfSenderPhone = "";
-            }
-            flags = "cf|" + this.hcfSenderName;
-            flags = flags + "|" + this.hcfSenderEmail;
-            flags = flags + "|" + this.hcfSenderPhone;
-            flags = flags + "|" + this.hcfSenderComments;
-            this.databaseprovider.sendHelpData(flags, AttendeeID).then(data => {
-                if (data['length'] > 0) {
-                    if (data[0].hcfStatus == "Success") {
-                        // Saved
-                        saving.dismiss();
-                        savealert.present();
-                        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_5__home_home__["a" /* HomePage */]);
-                    }
-                    else {
-                        // Not saved
-                        saving.dismiss();
-                        failalert.present();
-                    }
-                }
-                else {
-                    // Not saved
-                    saving.dismiss();
-                    failalert.present();
-                }
-            }).catch(function () {
-                console.log("Help: Promise Rejected");
-            });
-        }
-    }
-    navToEmail(EmailAddress) {
-        if (EmailAddress === undefined) {
-            // Do nothing
-        }
-        else {
-            // Initiate mail program
-            window.open('mailto:' + EmailAddress + '?subject=Demo Planner Support', '_system', 'location=yes');
-        }
-    }
-    ;
-    callPhone3(phoneNumber) {
-        console.log("Dialer version 3");
-        var DevicePlatform = this.localstorage.getLocalValue('DevicePlatform');
-        if (DevicePlatform != 'Browser') {
-            if ((phoneNumber === undefined) || (phoneNumber == '')) {
-                console.log('No phone number defined');
-                // Do nothing
-            }
-            else {
-                // Remove characters from phone number string and format accordingly
-                phoneNumber = phoneNumber.replace('(', '');
-                phoneNumber = phoneNumber.replace(')', '');
-                phoneNumber = phoneNumber.replace(' ', '-');
-                console.log('Help, Dialer: corrected tel:' + phoneNumber);
-                window.open(`tel:${phoneNumber}`, '_system');
-            }
-        }
-    }
-};
-HelpPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-help',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/help/help.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Help</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n<!--\n      <ion-item>\n        <ion-label floating>Name</ion-label>\n        <ion-input type="text"></ion-input>\n      </ion-item>\n    \n      <ion-item>\n        <ion-label floating>Email</ion-label>\n        <ion-input type="password"></ion-input>\n      </ion-item>\n    \n      <ion-item>\n      <ion-label floating>Phone</ion-label>\n      <ion-input type="text"></ion-input>\n      </ion-item>\n \n      <ion-item>\n    <ion-label floating>Comments</ion-label>\n    <ion-input type="text"></ion-input>\n      </ion-item>\n\n      <div text-center style="margin-top:15px">\n        <button ion-button style="background:#2196f3" (click)="sendEmail()">\n          Request Assistance\n        </button>\n      </div>\n\n\n-->\n\n      \n        <ion-card>\n          <ion-card-header style="background:#283593;color:#fff">\n            Contact Convergence\n          </ion-card-header>\n          <ion-card-content style="margin:0;padding:0">\n      \n            <ion-grid style="margin:0;padding:0">\n              <ion-row style="margin:0;padding:0">\n           \n                    <img style="margin:0;padding:0; height:50%" src="assets/img/header1.png">\n              \n              </ion-row>\n      \n              <ion-row>	\n                <ion-col>\n                  <button ion-button full icon-start  color="secondary" class="btnHelp" (click)="navToEmail(\'pvroom@convergence-us.com\')">\n                    <ion-icon  name="mail"></ion-icon>\n                    <label>Email</label>\n                  </button>\n                </ion-col>\n      \n                <ion-col>\n                  <button ion-button full icon-start  color="secondary" class="btnHelp" onclick="window.open(\'https://convergence-us.com/\', \'_system\', \'location=yes\'); return false;">\n                    <ion-icon name="globe"></ion-icon>\n                    <label>Website</label>\n                  </button>\n            \n                </ion-col>\n              \n                <ion-col>\n                  <button ion-button full icon-start  color="secondary" class="btnHelp" (click)="callPhone3(\'703-635-7801\')">\n                    <ion-icon name="call"></ion-icon>\n                    <label>Call</label>\n                  </button>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n                    \n          </ion-card-content>\n        </ion-card>										\n      \n      \n        <ion-card>\n          <ion-card-header style="background:#283593;color:#fff">\n            Help Request\n          </ion-card-header>\n      \n          <ion-card-content>			\n            <ion-item>\n              <ion-label floating>Name</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderName = $event.target.value\' \n                    name="hcfSenderName" \n                    [value]="hcfSenderName" \n                    id="hcfSenderName"></ion-input>\n            </ion-item>\n      \n            <ion-item>\n              <ion-label floating>Email</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderEmail = $event.target.value\' \n                    name="hcfSenderEmail" \n                    [value]="hcfSenderEmail" \n                    id="hcfSenderEmail"></ion-input>\n            </ion-item>\n      \n            <ion-item>\n              <ion-label floating>Phone</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderPhone = $event.target.value\' \n                    name="hcfSenderPhone" \n                    [value]="hcfSenderPhone" \n                    id="hcfSenderPhone"></ion-input>\n            </ion-item>\n      \n            <ion-item>\n              <ion-label floating>Comments</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderComments = $event.target.value\' \n                    name="hcfSenderComments" \n                    [value]="hcfSenderComments" \n                    id="hcfSenderComments"></ion-input>\n            </ion-item>\n      \n            <div text-center style="margin-top:15px">\n              <button ion-button style="background:#2196f3" (click)="sendEmail()">\n                Request Assistance\n              </button>\n            </div>\n          </ion-card-content>	\n        </ion-card>\n      \n      \n\n\n\n\n\n\n\n      \n <!--\n\n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="calendar" item-left></ion-icon>\n    <h4>Add Session/Event</h4>\n    <p>Include item on your MyAgenda page</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="mic" item-left></ion-icon>\n    <h4>Speaker/Session Evaluation</h4>\n    <p>Provide your rating of the session</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="mail" item-left></ion-icon>\n    <h4>Send Email</h4>\n    <p>Use to follow up with the session speaker(s)</p>\n      </ion-item>\n    \n      <ion-item [navPush]="notesPage">\n    <ion-icon color="secondary" name="create" item-left></ion-icon>\n    <h4>Session Notes</h4>\n    <p>Let\'s you take notes associated with that session</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="more" item-left></ion-icon>\n    <h4>More Menu Options</h4>\n    <p>Look here for additional app functions</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="calendar" item-left></ion-icon>\n    <h4>Browse to Website</h4>\n    <p>Link to exhibitors website</p>\n      </ion-item>\n    \n      <ion-item [navPush]="personalPage">\n    <ion-icon color="secondary" name="person-add" item-left></ion-icon>\n    <h4>Add Personal Schedule Item</h4>\n    <p>Allows the inclusion of personal schedule items</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="eye" item-left></ion-icon>\n    <h4>View All</h4>\n    <p>See your entire schedule at a glance</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="list-box" item-left></ion-icon>\n    <h4>Session</h4>\n    <p>Get additional session information details</p>\n      </ion-item>\n    \n      <ion-item [navPush]="exhibitorPage">\n    <ion-icon color="secondary" name="pin" item-left></ion-icon>\n    <h4>Exhibit Hall Booth Locator</h4>\n    <p>Map pin showing exhibitor booth location</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="document" item-left></ion-icon>\n    <h4>Handout/View PDF</h4>\n    <p>View or print a PDF handout</p>\n      </ion-item>\n    \n  \n      -->\n\n      </ion-content>\n    \n    \n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/help/help.html"*/,
-        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_3__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], HelpPage);
-
-//# sourceMappingURL=help.js.map
-
-/***/ }),
-
-/***/ 101:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EvaluationConference; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__home_home__ = __webpack_require__(67);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -529,14 +350,14 @@ EvaluationConference = __decorate([
         selector: 'page-evaluationconference',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/evaluationconference/evaluationconference.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Event Survey</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n\n		<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ1" name="Qu1">\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>1. I am a:</h2></ion-item>\n\n		<ion-item>\n			<ion-label>Dentist</ion-label>\n			<ion-radio value="Dentist"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Laboratory Technician</ion-label>\n			<ion-radio value="Laboratory Technician"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Hygienist</ion-label>\n			<ion-radio value="Hygienist"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Dental Assistant</ion-label>\n			<ion-radio value="Dental Assistant"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Patient Coordinator</ion-label>\n			<ion-radio value="Patient Coordinator"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Office Personnel</ion-label>\n			<ion-radio value="Office Personnel"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Student</ion-label>\n			<ion-radio value="Student"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Other</ion-label>\n			<ion-radio value="Other"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please specify"[(ngModel)]="eventSurveyQ1C" rows="3" name="Q1C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n\n\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ2" name="Qu2">\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>2. I am a:</h2></ion-item>\n\n	<ion-item>\n			<ion-label>Accredited Fellow Member</ion-label>\n			<ion-radio value="Accredited Fellow Member"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Accredited Member</ion-label>\n			<ion-radio value="Accredited Member"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>MIP (Member in the Accreditation Process)</ion-label>\n			<ion-radio value="MIP (Member in the Accreditation Process)"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>General Member</ion-label>\n			<ion-radio value="General Member"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Other</ion-label>\n			<ion-radio value="Other"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please specify"[(ngModel)]="eventSurveyQ2C" rows="3" name="Qu2C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n\n\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ3" name="Qu3">\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>3. Would you recommend this conference to your peers to attend next year?</h2></ion-item>\n		<ion-item>\n			<ion-label>Yes</ion-label>\n			<ion-radio value="Yes"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>No</ion-label>\n			<ion-radio value="No"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ3C" rows="3" name="Qu3C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n	\n\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ4" name="Qu4">\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>4. How did you hear about the Annual AACD Scientific Session?</h2></ion-item>\n		<ion-item>\n			<ion-label>Email from the AACD</ion-label>\n			<ion-radio value="Email from the AACD"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Recommendations from a colleague</ion-label>\n			<ion-radio value="Recommendations from a colleague"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Website search </ion-label>\n			<ion-radio value="Website search "></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>Other</ion-label>\n			<ion-radio value="Other"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please specify"[(ngModel)]="eventSurveyQ4C" rows="3" name="Qu4C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n	\n	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2>5. How would you improve the registration process:</h2></ion-item>\n	<label class="item item-input " id="survey-textarea2"></label>\n	<ion-item class="lmargin10" id="survey-textarea2">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ5" rows="3" name="Qu5"></ion-textarea>\n	</ion-item>\n\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>6. The educational program provided a diverse-selection of courses and topics from which to choose.</h2></ion-item>\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ6" name="Qu6">\n		<ion-item>\n			<ion-label>1 - Strongly Disagree</ion-label>\n			<ion-radio value="1"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>2</ion-label>\n			<ion-radio value="2"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>3</ion-label>\n			<ion-radio value="3"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>4</ion-label>\n			<ion-radio value="4"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>5 - Strongly Agree</ion-label>\n			<ion-radio value="5"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ6C" rows="3" name="Qu6C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>7. The educational courses I attended will contribute to my professional and/or personal objectives.</h2></ion-item>\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ7" name="Qu7">\n		<ion-item>\n			<ion-label>1 - Strongly Disagree</ion-label>\n			<ion-radio value="1"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>2</ion-label>\n			<ion-radio value="2"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>3</ion-label>\n			<ion-radio value="3"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>4</ion-label>\n			<ion-radio value="4"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>5 - Strongly Agree</ion-label>\n			<ion-radio value="5"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ7C" rows="3" name="Qu7C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>8. Did you attend the General session speakers?</h2></ion-item>\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ8" name="Qu8">\n		<ion-item>\n			<ion-label>Yes</ion-label>\n			<ion-radio value="Yes"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>No</ion-label>\n			<ion-radio value="No"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ8C" rows="3" name="Qu8C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n	\n	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2>9. What did you enjoy most in the exhibit hall?</h2></ion-item>\n	<label class="item item-input " id="survey-textarea2"></label>\n	<ion-item class="lmargin10" id="survey-textarea2">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ9" rows="3" name="Qu9"></ion-textarea>\n	</ion-item>\n\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>10. If you attended the Contour Cove, Fashion Show or Splash Zone presentations, did they meet your learning objectives?</h2></ion-item>\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ10" name="Qu10">\n		<ion-item>\n			<ion-label>Yes</ion-label>\n			<ion-radio value="Yes"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>No</ion-label>\n			<ion-radio value="No"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="If no, why not?"[(ngModel)]="eventSurveyQ10C" rows="3" name="Qu10C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n	\n	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2>11. Do you plan to attend the conference next year?</h2></ion-item>\n	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ11" name="Qu11">\n		<ion-item>\n			<ion-label>Yes</ion-label>\n			<ion-radio value="Yes"></ion-radio>\n		</ion-item>\n		<ion-item>\n			<ion-label>No</ion-label>\n			<ion-radio value="No"></ion-radio>\n		</ion-item>\n		<ion-item class="lmargin10" id="survey-textarea12C">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="If no, why not?"[(ngModel)]="eventSurveyQ11C" rows="3" name="Qu11C"></ion-textarea>\n		</ion-item>\n	</ion-list>\n	\n	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2>12. What could we have done to make your conference experience better?</h2></ion-item>\n	<label class="item item-input " id="survey-textarea2"></label>\n	<ion-item class="lmargin10" id="survey-textarea2">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ12" rows="3" name="Qu12"></ion-textarea>\n	</ion-item>\n\n	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2>13. What topics would be of interest to you for next year?</h2></ion-item>\n	<label class="item item-input " id="survey-textarea2"></label>\n	<ion-item class="lmargin10" id="survey-textarea2">\n			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ13" rows="3" name="Qu13"></ion-textarea>\n	</ion-item>\n\n\n	<div text-center>\n		<button ion-button style="background:#2196f3" (click)="SubmitEvaluation()">\n			SUBMIT\n		</button>\n	</div>\n\n	<div class="spacer" style="width:320px; height: 16px;"></div>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/evaluationconference/evaluationconference.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["NgZone"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], EvaluationConference);
@@ -545,279 +366,18 @@ EvaluationConference = __decorate([
 
 /***/ }),
 
-/***/ 102:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpeakersPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-// Components, functions, plugins
-
-
-
-
-
-
-let SpeakersPage = class SpeakersPage {
-    constructor(navCtrl, navParams, storage, databaseprovider, cd, loadingCtrl, localstorage) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.storage = storage;
-        this.databaseprovider = databaseprovider;
-        this.cd = cd;
-        this.loadingCtrl = loadingCtrl;
-        this.localstorage = localstorage;
-        this.SpeakerListing = [];
-    }
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad SpeakersPage');
-    }
-    handleKeyboardEvent(event) {
-        if (event.key == 'Enter') {
-            console.log('Enter key detected');
-            this.GetSearchResults();
-        }
-    }
-    ngOnInit() {
-        // Load initial data set here
-        //let loading = this.loadingCtrl.create({
-        //	spinner: 'crescent',
-        //	content: 'Please wait...'
-        //});
-        //loading.present();
-        // Blank and show loading info
-        this.SpeakerListing = [];
-        this.cd.markForCheck();
-        // Temporary use variables
-        var flags = "li|Alpha|0";
-        var DisplayName = "";
-        var visDisplayCredentials = "";
-        var SpeakerDividerCharacter = "";
-        // Get the data
-        this.databaseprovider.getSpeakerData(flags, "0").then(data => {
-            //console.log("getSpeakerData: " + JSON.stringify(data));
-            if (data['length'] > 0) {
-                for (var i = 0; i < data['length']; i++) {
-                    DisplayName = "";
-                    // Concatenate fields to build displayable name
-                    DisplayName = DisplayName + data[i].LastName + ", " + data[i].FirstName;
-                    // AACD does not have middle name/initial for speakers
-                    //if (data[i].MiddleInitial != "") {
-                    //    DisplayName = DisplayName + " " + data[i].MiddleInitial;
-                    //}
-                    // Add credentials
-                    visDisplayCredentials = "";
-                    if (data[i].Credentials != "") {
-                        visDisplayCredentials = data[i].Credentials;
-                    }
-                    //var imageAvatar = data[i].imageFilename;
-                    //imageAvatar = imageAvatar.substr(0, imageAvatar.length - 3) + 'png';
-                    //console.log("imageAvatar: " + imageAvatar);
-                    //imageAvatar = "assets/img/speakers/" + imageAvatar;
-                    var imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Speakers/" + data[i].imageFilename;
-                    if (data[i].LastName.charAt(0) != SpeakerDividerCharacter) {
-                        // Display the divider
-                        this.SpeakerListing.push({
-                            SpeakerID: 0,
-                            DisplayNameLastFirst: data[i].LastName.charAt(0),
-                            DisplayCredentials: "",
-                            Affiliation: "",
-                            speakerIcon: "nothing",
-                            speakerAvatar: "assets/img/SpeakerDivider.png",
-                            exhibitorAvatar: "",
-                            speakerClass: "",
-                            navigationArrow: "nothing",
-                        });
-                        // Set the new marker point
-                        SpeakerDividerCharacter = data[i].LastName.charAt(0);
-                        // Show the current record
-                        this.SpeakerListing.push({
-                            SpeakerID: data[i].speakerID,
-                            DisplayNameLastFirst: DisplayName,
-                            DisplayCredentials: visDisplayCredentials,
-                            Affiliation: "",
-                            speakerIcon: "person",
-                            speakerAvatar: imageAvatar,
-                            speakerClass: "",
-                            navigationArrow: "arrow-dropright",
-                        });
-                    }
-                    else {
-                        // Add current record to the list
-                        this.SpeakerListing.push({
-                            SpeakerID: data[i].speakerID,
-                            DisplayNameLastFirst: DisplayName,
-                            DisplayCredentials: visDisplayCredentials,
-                            Affiliation: "",
-                            speakerIcon: "person",
-                            speakerAvatar: imageAvatar,
-                            speakerClass: "",
-                            navigationArrow: "arrow-dropright",
-                        });
-                    }
-                }
-            }
-            else {
-                // No records to show
-                this.SpeakerListing.push({
-                    SpeakerID: 0,
-                    DisplayNameLastFirst: "No records available",
-                    Affiliation: "",
-                    speakerIcon: "",
-                    speakerAvatar: "assets/img/personIcon.png",
-                    speakerClass: "myLabelBold",
-                    navigationArrow: "",
-                });
-            }
-            this.cd.markForCheck();
-            //loading.dismiss();
-        }).catch(function () {
-            console.log("Promise Rejected");
-        });
-    }
-    SpeakerDetails(SpeakerID) {
-        if (SpeakerID != 0) {
-            // Navigate to Speaker Details page
-            this.navCtrl.push('SpeakerDetailsPage', { SpeakerID: SpeakerID }, { animate: true, direction: 'forward' });
-        }
-    }
-    ;
-    GetSearchResults() {
-        var SearchTerms = this.EntryTerms;
-        if ((SearchTerms == undefined) || (SearchTerms == "")) {
-            // Do nothing or show message
-        }
-        else {
-            this.localstorage.setLocalValue("SearchTerms", SearchTerms);
-            this.navCtrl.push('SearchResultsPage', { SearchTerms: SearchTerms }, { animate: true, direction: 'forward' });
-        }
-    }
-    ;
-};
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('document:keypress', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [KeyboardEvent]),
-    __metadata("design:returntype", void 0)
-], SpeakersPage.prototype, "handleKeyboardEvent", null);
-SpeakersPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-speakers',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/speakers/speakers.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Speakers</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n	<ion-list id="speakers-list3">\n\n		<!-- Search input -->\n		<ion-grid>\n			<ion-row>\n				<ion-col col-9>	\n\n					<ion-item class="item-input; shadow">\n						<ion-icon name="search" item-left></ion-icon>\n						<ion-input name="srchBarEntry" id="srchBarEntry" \n						type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n					</ion-item>\n				</ion-col>\n				<ion-col col-3>\n					<button ion-button full class="buttonPadding" (tap)="GetSearchResults()">Submit</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n\n		<!-- Speaker listing -->\n		<ion-list>\n			<ion-item (tap)="SpeakerDetails(speaker.SpeakerID)" *ngFor="let speaker of SpeakerListing" id="speaker-list-item19">\n				<div style="float: left; padding-right: 10px;">\n					<!-- <ion-icon name="{{speaker.speakerIcon}}"></ion-icon> -->\n					<ion-avatar item-start>\n						<img src="{{speaker.speakerAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n					</ion-avatar>\n				</div>\n				<ion-icon item-right name="{{speaker.navigationArrow}}"></ion-icon>\n				<h2 style="padding-top: 7px;">{{speaker.DisplayNameLastFirst}}</h2>\n				<p>{{speaker.DisplayCredentials}}</p>\n			</ion-item>\n		</ion-list>\n\n	</ion-list>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/speakers/speakers.html"*/,
-        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], SpeakersPage);
-
-//# sourceMappingURL=speakers.js.map
-
-/***/ }),
-
-/***/ 103:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SocialPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-/**
- * Generated class for the Social page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
-let SocialPage = class SocialPage {
-    constructor(navCtrl, navParams, actionSheetCtrl) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.actionSheetCtrl = actionSheetCtrl;
-    }
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad SocialPage');
-    }
-    presentActionSheet() {
-        let actionSheet = this.actionSheetCtrl.create({
-            title: 'Modify your album',
-            buttons: [
-                {
-                    text: 'Destructive',
-                    role: 'destructive',
-                    handler: () => {
-                        console.log('Destructive clicked');
-                    }
-                }, {
-                    text: 'Archive',
-                    handler: () => {
-                        console.log('Archive clicked');
-                    }
-                }, {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    handler: () => {
-                        console.log('Cancel clicked');
-                    }
-                }
-            ]
-        });
-        actionSheet.present();
-    }
-};
-SocialPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-social',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/social/social.html"*/'<!--\n  Generated template for the Social page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>AACD Social Media</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content has tabs>\n\n<div class="">\n            <img src="assets/img/social.jpg" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n        </div>\n\n\n        <ion-list>\n          <ion-item href="#" onclick="window.open(\'https://www.facebook.com/theaacd25/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left >\n              <img src="assets/img/facebook.png">\n            </ion-avatar>\n            <h2>Facebook</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://twitter.com/TheAACD?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/twitter.png">\n            </ion-avatar>\n            <h2>Twitter</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.linkedin.com/company/american-academy-of-cosmetic-dentistry\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/linkedin.png">\n            </ion-avatar>\n            <h2>Linkedin</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.instagram.com/theaacd/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/instagram.jpeg">\n            </ion-avatar>\n            <h2>Instagram</h2>\n          </ion-item>\n\n\n          <ion-item href="#" onclick="window.open(\'https://www.flickr.com/photos/theaacd/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/flickr.png">\n            </ion-avatar>\n            <h2>Flickr</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.pinterest.com/theaacd/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/pinterest.png">\n            </ion-avatar>\n            <h2>Pinterest</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.youtube.com/user/AACD123\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/youtube.png">\n            </ion-avatar>\n            <h2>YouTube</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.aacd.com/index.php?module=login\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/myaacd.png">\n            </ion-avatar>\n            <h2>MyAACD</h2>\n          </ion-item>\n\n        </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/social/social.html"*/,
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* ActionSheetController */]])
-], SocialPage);
-
-//# sourceMappingURL=social.js.map
-
-/***/ }),
-
-/***/ 108:
+/***/ 105:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProfilePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_image_loader__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_image_loader__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(50);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1072,15 +632,15 @@ let ProfilePage = class ProfilePage {
 };
 ProfilePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-profile',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/profile/profile.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Your Profile</ion-title>\n	</ion-navbar>\n</ion-header>\n\n\n<ion-content class="bg-style" padding>\n\n\n    <ion-grid>\n		<!-- Avatar row to show ehen using a device; allows updating image -->\n        <ion-row  *ngIf=avatarDevice>\n      \n            <ion-col>\n              <ion-item no-lines style="background:transparent">\n                  <ion-avatar>\n					<img [src]="_DomSanitizer.bypassSecurityTrustUrl(visualImageURL)" (click)="UploadImage()" onerror="this.src=\'assets/img/missing-image.png\'">\n                  </ion-avatar>\n                 </ion-item>\n                </ion-col>\n                \n                <ion-col style="background:transparent;color:#fff">\n                    <ion-item no-lines style="background:transparent;color:#fff">\n                        <p text-wrap style="background:transparent;color:#fff;font-size:14px;font-weight:600">Tap the image to change your profile picture</p>\n                    </ion-item>\n                </ion-col>\n            </ion-row>\n        </ion-grid>\n\n\n        <ion-grid>\n		<!-- Avatar row to show when using a browser; static image -->\n        <ion-row style="background:transparent" *ngIf=avatarBrowser>\n    \n          <ion-col col-6>\n              <ion-item no-lines style="background:transparent">\n                  <ion-avatar>\n					<img [src]="visualImageURL" onerror="this.src=\'assets/img/missing-image.png\'">\n                  </ion-avatar>\n                </ion-item>\n            </ion-col>\n\n                  <ion-col col-6>\n                        <ion-item no-lines style="background:transparent; margin-top:10%">\n                            <p text-wrap style="background:transparent;color:#fff;font-size:14px"></p>\n                        </ion-item>\n                    </ion-col>\n                </ion-row>\n            </ion-grid>\n\n\n\n\n<ion-grid>\n        <ion-row>\n			<ion-col>\n				<p style="text-align:center;color:#fff">Edit information that other attendees see when viewing your profile.<span *ngIf=avatarBrowser>&nbsp;\n				Update your profile image from your mobile device.</span></p>\n			</ion-col>\n        </ion-row>\n        <ion-row style="margin-left:10px; margin-right:10px">\n            <ion-col>\n				<ion-item style="color:#000; padding-left:12px">{{prAttendeeName}}</ion-item>\n            </ion-col>\n        </ion-row>\n        <ion-row style="margin-left:10px; margin-right:10px">\n            <ion-col>\n				<ion-item>\n					<ion-input class="InputBoxW" type="text" placeholder="Job Title" (input)=\'prAttendeeTitle = $event.target.value\' name="prAttendeeTitle" [value]="prAttendeeTitle" id="prAttendeeTitle"></ion-input>\n				</ion-item>\n            </ion-col>\n        </ion-row>\n        <ion-row style="margin-left:10px; margin-right:10px">\n            <ion-col>\n				<ion-item>\n					<ion-input class="InputBoxW" type="text" placeholder="Organization Name" (input)=\'prAttendeeOrganization = $event.target.value\' name="prAttendeeOrganization" [value]="prAttendeeOrganization" id="prAttendeeOrganization"></ion-input>\n				</ion-item>\n            </ion-col>\n        </ion-row>\n        <ion-row>\n            <ion-col>\n				<ion-grid>\n					<ion-row>\n						<ion-col>\n							<button ion-button block style="background:#2196f3" (click)="SaveProfileChanges()">\n								Save\n							</button>\n						</ion-col>\n						<ion-col>\n							<button ion-button block style="background:#2196f3" (click)="SignOut()">\n								Sign Out\n							</button>\n						</ion-col>\n					</ion-row>\n				</ion-grid>\n            </ion-col>\n        </ion-row>\n\n        <!--\n        <ion-row style="margin:0">\n		<ion-col col-11 style="margin:0">\n			<p style="text-align:center;color:#fff">Tap an icon to enter your URL and show the link in your profile.</p>\n        </ion-col>\n    </ion-row>\n-->\n\n        <ion-row>\n            <ion-col col-1>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-twitter" (tap)="EditSocialMediaLinks(\'statusTwitter\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-facebook" (tap)="EditSocialMediaLinks(\'statusFacebook\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-linkedin" (tap)="EditSocialMediaLinks(\'statusLinkedIn\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-instagram" (tap)="EditSocialMediaLinks(\'statusInstagram\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff"name="logo-pinterest" (tap)="EditSocialMediaLinks(\'statusPinterest\')"></ion-icon>\n            </ion-col>\n        </ion-row>\n      </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/profile/profile.html"*/,
+        selector: 'page-profile',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/profile/profile.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Your Profile</ion-title>\n	</ion-navbar>\n</ion-header>\n\n\n<ion-content class="bg-style" padding>\n\n\n    <ion-grid>\n		<!-- Avatar row to show ehen using a device; allows updating image -->\n        <ion-row  *ngIf=avatarDevice>\n      \n            <ion-col>\n              <ion-item no-lines style="background:transparent">\n                  <ion-avatar>\n					<img [src]="_DomSanitizer.bypassSecurityTrustUrl(visualImageURL)" (click)="UploadImage()" onerror="this.src=\'assets/img/missing-image.png\'">\n                  </ion-avatar>\n                 </ion-item>\n                </ion-col>\n                \n                <ion-col style="background:transparent;color:#fff">\n                    <ion-item no-lines style="background:transparent;color:#fff">\n                        <p text-wrap style="background:transparent;color:#fff;font-size:14px;font-weight:600">Tap the image to change your profile picture</p>\n                    </ion-item>\n                </ion-col>\n            </ion-row>\n        </ion-grid>\n\n\n        <ion-grid>\n		<!-- Avatar row to show when using a browser; static image -->\n        <ion-row style="background:transparent" *ngIf=avatarBrowser>\n    \n          <ion-col col-6>\n              <ion-item no-lines style="background:transparent">\n                  <ion-avatar>\n					<img [src]="visualImageURL" onerror="this.src=\'assets/img/missing-image.png\'">\n                  </ion-avatar>\n                </ion-item>\n            </ion-col>\n\n                  <ion-col col-6>\n                        <ion-item no-lines style="background:transparent; margin-top:10%">\n                            <p text-wrap style="background:transparent;color:#fff;font-size:14px"></p>\n                        </ion-item>\n                    </ion-col>\n                </ion-row>\n            </ion-grid>\n\n\n\n\n<ion-grid>\n        <ion-row>\n			<ion-col>\n				<p style="text-align:center;color:#fff">Edit information that other attendees see when viewing your profile.<span *ngIf=avatarBrowser>&nbsp;\n				Update your profile image from your mobile device.</span></p>\n			</ion-col>\n        </ion-row>\n        <ion-row style="margin-left:10px; margin-right:10px">\n            <ion-col>\n				<ion-item style="color:#000; padding-left:12px">{{prAttendeeName}}</ion-item>\n            </ion-col>\n        </ion-row>\n        <ion-row style="margin-left:10px; margin-right:10px">\n            <ion-col>\n				<ion-item>\n					<ion-input class="InputBoxW" type="text" placeholder="Job Title" (input)=\'prAttendeeTitle = $event.target.value\' name="prAttendeeTitle" [value]="prAttendeeTitle" id="prAttendeeTitle"></ion-input>\n				</ion-item>\n            </ion-col>\n        </ion-row>\n        <ion-row style="margin-left:10px; margin-right:10px">\n            <ion-col>\n				<ion-item>\n					<ion-input class="InputBoxW" type="text" placeholder="Organization Name" (input)=\'prAttendeeOrganization = $event.target.value\' name="prAttendeeOrganization" [value]="prAttendeeOrganization" id="prAttendeeOrganization"></ion-input>\n				</ion-item>\n            </ion-col>\n        </ion-row>\n        <ion-row>\n            <ion-col>\n				<ion-grid>\n					<ion-row>\n						<ion-col>\n							<button ion-button block style="background:#cc5d1d" (click)="SaveProfileChanges()">\n								Save\n							</button>\n						</ion-col>\n						<ion-col>\n							<button ion-button block style="background:#cc5d1d" (click)="SignOut()">\n								Sign Out\n							</button>\n						</ion-col>\n					</ion-row>\n				</ion-grid>\n            </ion-col>\n        </ion-row>\n\n        <!--\n        <ion-row style="margin:0">\n		<ion-col col-11 style="margin:0">\n			<p style="text-align:center;color:#fff">Tap an icon to enter your URL and show the link in your profile.</p>\n        </ion-col>\n    </ion-row>\n-->\n\n        <ion-row>\n            <ion-col col-1>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-twitter" (tap)="EditSocialMediaLinks(\'statusTwitter\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-facebook" (tap)="EditSocialMediaLinks(\'statusFacebook\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-linkedin" (tap)="EditSocialMediaLinks(\'statusLinkedIn\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff" name="logo-instagram" (tap)="EditSocialMediaLinks(\'statusInstagram\')"></ion-icon>\n            </ion-col>\n            <ion-col col-2>\n                <ion-icon style="color:#fff"name="logo-pinterest" (tap)="EditSocialMediaLinks(\'statusPinterest\')"></ion-icon>\n            </ion-col>\n        </ion-row>\n      </ion-grid>\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/profile/profile.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["s" /* ModalController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ModalController"],
         __WEBPACK_IMPORTED_MODULE_3_ionic_image_loader__["a" /* ImageLoaderConfig */],
         __WEBPACK_IMPORTED_MODULE_5__angular_platform_browser__["c" /* DomSanitizer */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
@@ -1091,7 +651,7 @@ ProfilePage = __decorate([
 
 /***/ }),
 
-/***/ 13:
+/***/ 12:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1125,242 +685,197 @@ Localstorage = __decorate([
 
 /***/ }),
 
-/***/ 158:
+/***/ 155:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProgramPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__speakers_speakers__ = __webpack_require__(102);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-// Components, functions, plugins
-
-
-
-
-// Pages
-
-let ProgramPage = class ProgramPage {
-    constructor(navCtrl, navParams, nav, localstorage) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.nav = nav;
-        this.localstorage = localstorage;
-    }
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad: ProgramPage');
-    }
-    DisplayListing(listingType) {
-        // Store selection in localStorage for the next page
-        this.localstorage.setLocalValue('ListingType', listingType);
-        console.log('Listing Type: ' + listingType);
-        switch (listingType) {
-            case "Speakers":
-                // Navigate to Speakers page
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__speakers_speakers__["a" /* SpeakersPage */], {}, { animate: true, direction: 'forward' });
-                break;
-            case "SearchbyTopic":
-                // Navigate to Speakers page
-                this.navCtrl.push('SearchByTopicPage', {}, { animate: true, direction: 'forward' });
-                break;
-            default:
-                // Navigate to Listing page
-                this.navCtrl.push('ListingLevel1', { listingType: listingType }, { animate: true, direction: 'forward' });
-                break;
-        }
-    }
-    navToClientWebsite() {
-        var WebsiteURL = "https://www.aacd.com/index.php?module=aacd.websiteforms&cmd=aacdconvergenceauth";
-        var u = this.localstorage.getLocalValue('loginUsername');
-        var p = this.localstorage.getLocalValue('loginPassword');
-        // Create URL string
-        WebsiteURL = WebsiteURL + "&u=" + u + "&p=" + p;
-        // Open website
-        window.open(WebsiteURL, '_system');
-    }
-};
-ProgramPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-program',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/program/program.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Program</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<!-- Search input \n	<div class="list marginTB0">\n		<div class="item item-input">\n			<i class="icon {{tabSearch}} iconSize"></i>\n			<input id="srchBarEntry" type="text" placeholder="Search" ngModel="search.EntryTerms">\n			<button class="button button-small blue" ngClick="GetSearchResults()">\n				Submit\n			</button>\n		</div>\n	</div>\n	-->\n\n	<div class="myPaddingLR" style="background:#f9f9f9; color:#444;padding-top:10px!important; padding-bottom:10px!important">\n\n		<h3>Getting Started!</h3>\n		<h6>  Step 1: Login to populate your pre-registered sessions.</h6> \n		<h6>  Step 2: Add sessions by using the button below.</h6>\n		<h6>  Step 3: New sessions should be shown within 30 mins.</h6>\n		<!-- Disabled per LIsa Bollenbach 2018-04-19 -->\n		<!--<p style="font-size:14px; margin-top:0px">Note: If you do not see a confirmed session, use the add button for that session.</p>-->\n	\n\n    <div text-center>\n			<button ion-button style="background:#2196f3" (click)="navToClientWebsite()">\n			  Edit / Select Courses \n			</button>\n		  </div>\n		</div>\n\n	<!-- Program Overview -->\n	<ion-list>\n		<!--\n		<ion-item class="item-icon-left item-icon-right wineBG myTextWhite" ngClick="navToClientWebsite()" >\n			<i class="icon {{tabRegistration}}"></i>Edit/Select Courses\n			<i class="icon {{navigationRightArrow}}"></i>\n		</ion-item>\n		-->\n\n	\n		<button ion-item (click)="DisplayListing(\'SearchbyTopic\')" id="program-list-item1">\n			<ion-icon color="secondary" item-left name="search"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Search by Topic</h2>\n		</button>\n\n\n		<button ion-item (click)="DisplayListing(\'Lectures\')" id="program-list-item3">\n			<ion-icon color="secondary" item-left name="list"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Lectures</h2>\n		</button>\n\n		<button ion-item (click)="DisplayListing(\'Participation\')" id="program-list-item4">\n			<ion-icon color="secondary" item-left name="list"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Workshops</h2>\n		</button>\n\n		<button ion-item (click)="DisplayListing(\'Receptions and Events\')" id="program-list-item5">\n			<ion-icon color="secondary" item-left name="people"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Receptions and Events</h2>\n		</button>\n\n		<button ion-item (click)="DisplayListing(\'Speakers\')" id="program-list-item2">\n			<ion-icon color="secondary" item-left name="mic"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Speakers</h2>\n		</button>\n\n	</ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/program/program.html"*/
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], ProgramPage);
-
-//# sourceMappingURL=program.js.map
-
-/***/ }),
-
-/***/ 159:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConferenceCityPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-let ConferenceCityPage = class ConferenceCityPage {
-    constructor(navCtrl) {
-        this.navCtrl = navCtrl;
-    }
-};
-ConferenceCityPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-conferencecity',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/conferencecity/conferencecity.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      San Diego\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n    <div class="">\n            <img src="assets/img/gaslamp.jpg" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n        </div>\n\n\n  <ion-list id="lasvegas-list11" class=" ">\n            <ion-item class="item-avatar item-icon-right  " id="lasvegas-list-item30" href="#" onclick="window.open(\'https://www.san.org/\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/sdap.jpg">\n                    </ion-avatar>\n                <h2>San Diego International Airport</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item33" href="#" \n            onclick="window.open(\'https://www.zagat.com/san-diego\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/Zagat_Logo.jpeg">\n                      </ion-avatar>\n                <h2>Restaurants</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item54" href="#" \n            onclick="window.open(\'https://www.marriott.com/hotels/travel/sandt-marriott-marquis-san-diego-marina/\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/sdhotel.jpg">\n                      </ion-avatar>\n                <h2>Hotels</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n\n\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item54" href="#" \n            onclick="window.open(\'https://www.sandiego.org/articles/shopping/san-diego-comprehensive-shopping-guide.aspx\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/sdshop.jpg">\n                      </ion-avatar>\n                <h2>Shopping</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n\n\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item55" href="#" \n            onclick="window.open(\'https://weather.com/weather/tenday/l/USCA0982:1:US\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/nicubunu-Weather-Symbols-Sun.png">\n                      </ion-avatar>\n                <h2>Weather</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item56" href="#" \n            onclick="window.open(\'https://www.yelp.com/city/san-diego\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/yelp.png">\n                      </ion-avatar>\n                <h2>Yelp!</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item57" href="#" onclick="window.open(\'https://www.uber.com/\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/Uber_Logo_1.png">\n                      </ion-avatar>\n                <h2>Uber</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n\n        </ion-list>\n    </ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/conferencecity/conferencecity.html"*/
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */]])
-], ConferenceCityPage);
-
-//# sourceMappingURL=conferencecity.js.map
-
-/***/ }),
-
-/***/ 160:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MapPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-let MapPage = class MapPage {
-    constructor(navCtrl, platform) {
-        this.navCtrl = navCtrl;
-        this.platform = platform;
-    }
-    ngOnInit() {
-        // -----------------
-        // Show Level 1
-        // -----------------
-        /*
-            this.myMap2 = L.map('mapLevel2', {
-                crs: L.CRS.Simple,
-                minZoom: -1,
-                maxZoom: 1,
-                zoomControl: true
-            });
-    
-            var bounds = L.latLngBounds([0, 0], [1900, 1700]);    // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
-            var image = L.imageOverlay('assets/img/overview.png', bounds, {
-                attribution: 'Convergence'
-            }).addTo(this.myMap2);
-    
-            this.myMap2.fitBounds(bounds);
-            this.myMap2.setMaxBounds(bounds);
-            
-    */
-        // -----------------
-        // Show Level 2
-        // -----------------
-        this.myMap3 = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('mapLevel3', {
-            crs: __WEBPACK_IMPORTED_MODULE_2_leaflet__["CRS"].Simple,
-            minZoom: -2,
-            maxZoom: 2,
-            zoomControl: true
-        });
-        var bounds = __WEBPACK_IMPORTED_MODULE_2_leaflet__["latLngBounds"]([0, 0], [2000, 1300]); // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
-        var image = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"]('assets/img/glevel.png', bounds, {
-            attribution: 'Convergence'
-        }).addTo(this.myMap3);
-        this.myMap3.fitBounds(bounds);
-        this.myMap3.setMaxBounds(bounds);
-        // -----------------
-        // Show Level 3
-        // -----------------
-        this.myMap4 = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('mapLevel4', {
-            crs: __WEBPACK_IMPORTED_MODULE_2_leaflet__["CRS"].Simple,
-            minZoom: -2,
-            maxZoom: 2,
-            zoomControl: true
-        });
-        var bounds = __WEBPACK_IMPORTED_MODULE_2_leaflet__["latLngBounds"]([0, 0], [2000, 1300]); // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
-        var image = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"]('assets/img/ulmap.png', bounds, {
-            attribution: 'Convergence'
-        }).addTo(this.myMap4);
-        this.myMap4.fitBounds(bounds);
-        this.myMap4.setMaxBounds(bounds);
-        /*
-                // -----------------
-                // Show Concourse
-                // -----------------
-                this.myMap5 = L.map('mapLevel5', {
-                    crs: L.CRS.Simple,
-                    minZoom: -1,
-                    maxZoom: 1,
-                    zoomControl: true
-                });
-        
-                var bounds = L.latLngBounds([0, 0], [1200, 1700]);    // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
-                var image = L.imageOverlay('assets/img/upperlevel.png', bounds, {
-                    attribution: 'Convergence'
-                }).addTo(this.myMap5);
-        
-                this.myMap5.fitBounds(bounds);
-                this.myMap5.setMaxBounds(bounds);
-        */
-    }
-};
-MapPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-map',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/map/map.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Maps</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n\n<ion-content padding>\n<!-- \n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			Overview\n		</ion-card-header>\n        <div id="mapLevel2" style="width:100%; height:500px;"></div>\n	</ion-card>\n-->\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			Ground Level\n		</ion-card-header>\n        <div class="position-fixed" id="mapLevel3" style="width:100%; height:500px;"></div>\n	</ion-card>\n\n	<ion-card>\n\n		<ion-card-header style="background:#283593; color:#fff">\n			Upper Level\n		</ion-card-header>\n        <div class="myMarginTopBottom; position-fixed" id="mapLevel4" style="width:100%; height:500px;"></div>\n	</ion-card>\n<!--\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			Ballroom Level\n		</ion-card-header>\n        <div id="mapLevel5" style="width:100%; height:500px;"></div>\n	</ion-card>\n-->\n	\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/map/map.html"*/
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["x" /* Platform */]])
-], MapPage);
-
-//# sourceMappingURL=map.js.map
-
-/***/ }),
-
-/***/ 161:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExhibitorsPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HelpPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__home_home__ = __webpack_require__(67);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Components, functions, plugins
+
+
+
+
+
+//import { CallNumber } from '@ionic-native/call-number';
+// Pages
+
+let HelpPage = class HelpPage {
+    constructor(navCtrl, loadingCtrl, alertCtrl, storage, databaseprovider, cd, 
+    //private callNumber: CallNumber,
+    localstorage) {
+        this.navCtrl = navCtrl;
+        this.loadingCtrl = loadingCtrl;
+        this.alertCtrl = alertCtrl;
+        this.storage = storage;
+        this.databaseprovider = databaseprovider;
+        this.cd = cd;
+        this.localstorage = localstorage;
+    }
+    ngOnInit() {
+        // Load diagnostic values
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        var DevPlatform = this.localstorage.getLocalValue('DevicePlatform');
+        this.cd.markForCheck();
+    }
+    sendEmail() {
+        // Saving progress
+        let saving = this.loadingCtrl.create({
+            spinner: 'crescent',
+            content: 'Sending...'
+        });
+        // Alert for successful save
+        let savealert = this.alertCtrl.create({
+            title: 'Help Screen',
+            subTitle: 'Your help note has been sent successfully',
+            buttons: ['Ok']
+        });
+        // Alert for failed save
+        let failalert = this.alertCtrl.create({
+            title: 'Help Screen',
+            subTitle: 'Unable to send your note at this time - please try again in a little bit.',
+            buttons: ['Ok']
+        });
+        // Alert for required fields
+        let requiredalert = this.alertCtrl.create({
+            title: 'Help Screen',
+            subTitle: 'All fields except Phone are required to be completed before sending.',
+            buttons: ['Ok']
+        });
+        // Show saving progress
+        saving.present();
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        var LoginName = this.localstorage.getLocalValue('LoginFullName');
+        var DevPlatform = this.localstorage.getLocalValue('DevicePlatform');
+        var flags = "";
+        // Validation checks
+        var ValidationPass = true;
+        // Diagnostics
+        console.log('hcfSenderName :' + this.hcfSenderName);
+        console.log('hcfSenderEmail :' + this.hcfSenderEmail);
+        console.log('hcfSenderPhone :' + this.hcfSenderPhone);
+        console.log('hcfSenderComments :' + this.hcfSenderComments);
+        if (this.hcfSenderName == null || this.hcfSenderName == "" || this.hcfSenderName == undefined) {
+            ValidationPass = false;
+        }
+        if (this.hcfSenderEmail == null || this.hcfSenderEmail == "" || this.hcfSenderEmail == undefined) {
+            ValidationPass = false;
+        }
+        //if (this.hcfSenderPhone == null || this.hcfSenderPhone == "" || this.hcfSenderPhone == undefined) {
+        //    ValidationPass = false;
+        //}
+        if (this.hcfSenderComments == null || this.hcfSenderComments == "" || this.hcfSenderComments == undefined) {
+            ValidationPass = false;
+        }
+        if (ValidationPass == false) {
+            saving.dismiss();
+            requiredalert.present();
+        }
+        else {
+            if (this.hcfSenderPhone == undefined) {
+                this.hcfSenderPhone = "";
+            }
+            flags = "cf|" + this.hcfSenderName;
+            flags = flags + "|" + this.hcfSenderEmail;
+            flags = flags + "|" + this.hcfSenderPhone;
+            flags = flags + "|" + this.hcfSenderComments;
+            this.databaseprovider.sendHelpData(flags, AttendeeID).then(data => {
+                if (data['length'] > 0) {
+                    if (data[0].hcfStatus == "Success") {
+                        // Saved
+                        saving.dismiss();
+                        savealert.present();
+                        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_5__home_home__["a" /* HomePage */]);
+                    }
+                    else {
+                        // Not saved
+                        saving.dismiss();
+                        failalert.present();
+                    }
+                }
+                else {
+                    // Not saved
+                    saving.dismiss();
+                    failalert.present();
+                }
+            }).catch(function () {
+                console.log("Help: Promise Rejected");
+            });
+        }
+    }
+    navToEmail(EmailAddress) {
+        if (EmailAddress === undefined) {
+            // Do nothing
+        }
+        else {
+            // Initiate mail program
+            window.open('mailto:' + EmailAddress + '?subject=Demo Planner Support', '_system', 'location=yes');
+        }
+    }
+    ;
+    callPhone3(phoneNumber) {
+        console.log("Dialer version 3");
+        var DevicePlatform = this.localstorage.getLocalValue('DevicePlatform');
+        if (DevicePlatform != 'Browser') {
+            if ((phoneNumber === undefined) || (phoneNumber == '')) {
+                console.log('No phone number defined');
+                // Do nothing
+            }
+            else {
+                // Remove characters from phone number string and format accordingly
+                phoneNumber = phoneNumber.replace('(', '');
+                phoneNumber = phoneNumber.replace(')', '');
+                phoneNumber = phoneNumber.replace(' ', '-');
+                console.log('Help, Dialer: corrected tel:' + phoneNumber);
+                window.open(`tel:${phoneNumber}`, '_system');
+            }
+        }
+    }
+};
+HelpPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-help',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/help/help.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Help</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n<ion-content>\n<!--\n      <ion-item>\n        <ion-label floating>Name</ion-label>\n        <ion-input type="text"></ion-input>\n      </ion-item>\n    \n      <ion-item>\n        <ion-label floating>Email</ion-label>\n        <ion-input type="password"></ion-input>\n      </ion-item>\n    \n      <ion-item>\n      <ion-label floating>Phone</ion-label>\n      <ion-input type="text"></ion-input>\n      </ion-item>\n \n      <ion-item>\n    <ion-label floating>Comments</ion-label>\n    <ion-input type="text"></ion-input>\n      </ion-item>\n\n      <div text-center style="margin-top:15px">\n        <button ion-button style="background:#2196f3" (click)="sendEmail()">\n          Request Assistance\n        </button>\n      </div>\n\n\n-->\n\n      \n        <ion-card>\n          <ion-card-header style="background:#283747;color:#fff">\n            Contact Convergence\n          </ion-card-header>\n          <ion-card-content style="margin:0;padding:0">\n      \n            <ion-grid style="margin:0;padding:0">\n              <ion-row style="margin:0;padding:0">\n           \n                    <img style="margin:0;padding:0; height:50%" src="assets/img/header1.png">\n              \n              </ion-row>\n      \n              <ion-row>	\n                <ion-col>\n                  <button ion-button full icon-start  color="secondary" class="btnHelp" (click)="navToEmail(\'pvroom@convergence-us.com\')">\n                    <ion-icon  name="mail"></ion-icon>\n                    <label>Email</label>\n                  </button>\n                </ion-col>\n      \n                <ion-col>\n                  <button ion-button full icon-start  color="secondary" class="btnHelp" onclick="window.open(\'https://convergence-us.com/\', \'_system\', \'location=yes\'); return false;">\n                    <ion-icon name="globe"></ion-icon>\n                    <label>Website</label>\n                  </button>\n            \n                </ion-col>\n              \n                <ion-col>\n                  <button ion-button full icon-start  color="secondary" class="btnHelp" (click)="callPhone3(\'703-635-7801\')">\n                    <ion-icon name="call"></ion-icon>\n                    <label>Call</label>\n                  </button>\n                </ion-col>\n              </ion-row>\n            </ion-grid>\n                    \n          </ion-card-content>\n        </ion-card>										\n      \n      \n        <ion-card>\n          <ion-card-header style="background:#283747;color:#fff">\n            Help Request\n          </ion-card-header>\n      \n          <ion-card-content>			\n            <ion-item>\n              <ion-label floating>Name</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderName = $event.target.value\' \n                    name="hcfSenderName" \n                    [value]="hcfSenderName" \n                    id="hcfSenderName"></ion-input>\n            </ion-item>\n      \n            <ion-item>\n              <ion-label floating>Email</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderEmail = $event.target.value\' \n                    name="hcfSenderEmail" \n                    [value]="hcfSenderEmail" \n                    id="hcfSenderEmail"></ion-input>\n            </ion-item>\n      \n            <ion-item>\n              <ion-label floating>Phone</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderPhone = $event.target.value\' \n                    name="hcfSenderPhone" \n                    [value]="hcfSenderPhone" \n                    id="hcfSenderPhone"></ion-input>\n            </ion-item>\n      \n            <ion-item>\n              <ion-label floating>Comments</ion-label>\n              <ion-input	type="text" \n                    (input)=\'hcfSenderComments = $event.target.value\' \n                    name="hcfSenderComments" \n                    [value]="hcfSenderComments" \n                    id="hcfSenderComments"></ion-input>\n            </ion-item>\n      \n            <div text-center style="margin-top:15px">\n              <button ion-button style="background:#2196f3" (click)="sendEmail()">\n                Request Assistance\n              </button>\n            </div>\n          </ion-card-content>	\n        </ion-card>\n      \n      \n\n\n\n\n\n\n\n      \n <!--\n\n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="calendar" item-left></ion-icon>\n    <h4>Add Session/Event</h4>\n    <p>Include item on your MyAgenda page</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="mic" item-left></ion-icon>\n    <h4>Speaker/Session Evaluation</h4>\n    <p>Provide your rating of the session</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="mail" item-left></ion-icon>\n    <h4>Send Email</h4>\n    <p>Use to follow up with the session speaker(s)</p>\n      </ion-item>\n    \n      <ion-item [navPush]="notesPage">\n    <ion-icon color="secondary" name="create" item-left></ion-icon>\n    <h4>Session Notes</h4>\n    <p>Let\'s you take notes associated with that session</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="more" item-left></ion-icon>\n    <h4>More Menu Options</h4>\n    <p>Look here for additional app functions</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="calendar" item-left></ion-icon>\n    <h4>Browse to Website</h4>\n    <p>Link to exhibitors website</p>\n      </ion-item>\n    \n      <ion-item [navPush]="personalPage">\n    <ion-icon color="secondary" name="person-add" item-left></ion-icon>\n    <h4>Add Personal Schedule Item</h4>\n    <p>Allows the inclusion of personal schedule items</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="eye" item-left></ion-icon>\n    <h4>View All</h4>\n    <p>See your entire schedule at a glance</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="list-box" item-left></ion-icon>\n    <h4>Session</h4>\n    <p>Get additional session information details</p>\n      </ion-item>\n    \n      <ion-item [navPush]="exhibitorPage">\n    <ion-icon color="secondary" name="pin" item-left></ion-icon>\n    <h4>Exhibit Hall Booth Locator</h4>\n    <p>Map pin showing exhibitor booth location</p>\n      </ion-item>\n    \n      <ion-item [navPush]="morePage">\n    <ion-icon color="secondary" name="document" item-left></ion-icon>\n    <h4>Handout/View PDF</h4>\n    <p>View or print a PDF handout</p>\n      </ion-item>\n    \n  \n      -->\n\n      </ion-content>\n    \n    \n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/help/help.html"*/,
+        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
+        __WEBPACK_IMPORTED_MODULE_3__providers_database_database__["a" /* Database */],
+        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
+        __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], HelpPage);
+
+//# sourceMappingURL=help.js.map
+
+/***/ }),
+
+/***/ 156:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SpeakersPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1377,7 +892,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-let ExhibitorsPage = class ExhibitorsPage {
+let SpeakersPage = class SpeakersPage {
     constructor(navCtrl, navParams, storage, databaseprovider, cd, loadingCtrl, localstorage) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
@@ -1386,10 +901,10 @@ let ExhibitorsPage = class ExhibitorsPage {
         this.cd = cd;
         this.loadingCtrl = loadingCtrl;
         this.localstorage = localstorage;
-        this.ExhibitorListing = [];
+        this.SpeakerListing = [];
     }
     ionViewDidLoad() {
-        console.log('ionViewDidLoad ExhibitorsPage');
+        console.log('ionViewDidLoad SpeakersPage');
     }
     handleKeyboardEvent(event) {
         if (event.key == 'Enter') {
@@ -1405,79 +920,87 @@ let ExhibitorsPage = class ExhibitorsPage {
         //});
         //loading.present();
         // Blank and show loading info
-        this.ExhibitorListing = [];
+        this.SpeakerListing = [];
         this.cd.markForCheck();
         // Temporary use variables
         var flags = "li|Alpha|0";
-        var dayID;
-        var DisplayLocation = "";
-        var ExhibitorDividerCharacter = "";
+        var DisplayName = "";
+        var visDisplayCredentials = "";
+        var SpeakerDividerCharacter = "";
         // Get the data
-        this.databaseprovider.getExhibitorData(flags).then(data => {
-            console.log("getExhibitorData: " + JSON.stringify(data));
-            // If data was returned, the create list
+        this.databaseprovider.getSpeakerData(flags, "0").then(data => {
+            //console.log("getSpeakerData: " + JSON.stringify(data));
             if (data['length'] > 0) {
-                // Loop through data
                 for (var i = 0; i < data['length']; i++) {
-                    // Construct location based on US or International
-                    if ((data[i].Country != "United States") && (data[i].Country != "")) {
-                        DisplayLocation = data[i].City + ", " + data[i].Country;
+                    DisplayName = "";
+                    // Concatenate fields to build displayable name
+                    DisplayName = DisplayName + data[i].LastName + ", " + data[i].FirstName;
+                    // AACD does not have middle name/initial for speakers
+                    //if (data[i].MiddleInitial != "") {
+                    //    DisplayName = DisplayName + " " + data[i].MiddleInitial;
+                    //}
+                    // Add credentials
+                    visDisplayCredentials = "";
+                    if (data[i].Credentials != "") {
+                        visDisplayCredentials = data[i].Credentials;
                     }
-                    else {
-                        DisplayLocation = data[i].City + ", " + data[i].State;
-                    }
-                    var imageAvatar = "https://aacdmobile.convergence-us.com/AdminGateway/2019/images/ExhibitorLogos/" + data[i].imageFilename;
-                    // If Exhibitor is not in same grouping, create new divider bar
-                    if (data[i].CompanyName.charAt(0) != ExhibitorDividerCharacter) {
+                    //var imageAvatar = data[i].imageFilename;
+                    //imageAvatar = imageAvatar.substr(0, imageAvatar.length - 3) + 'png';
+                    //console.log("imageAvatar: " + imageAvatar);
+                    //imageAvatar = "assets/img/speakers/" + imageAvatar;
+                    var imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Speakers/" + data[i].imageFilename;
+                    if (data[i].LastName.charAt(0) != SpeakerDividerCharacter) {
                         // Display the divider
-                        this.ExhibitorListing.push({
-                            ExhibitorID: 0,
-                            CompanyName: data[i].CompanyName.charAt(0),
-                            DisplayCityState: "",
-                            BoothNumber: "",
-                            exhibitorAvatar: "assets/img/SpeakerDivider.png",
-                            exhibitorIcon: "nothing",
-                            exhibitorClass: "wineDivider",
-                            navigationArrow: "nothing"
+                        this.SpeakerListing.push({
+                            SpeakerID: 0,
+                            DisplayNameLastFirst: data[i].LastName.charAt(0),
+                            DisplayCredentials: "",
+                            Affiliation: "",
+                            speakerIcon: "nothing",
+                            speakerAvatar: "assets/img/SpeakerDivider.png",
+                            exhibitorAvatar: "",
+                            speakerClass: "",
+                            navigationArrow: "nothing",
                         });
                         // Set the new marker point
-                        ExhibitorDividerCharacter = data[i].CompanyName.charAt(0);
+                        SpeakerDividerCharacter = data[i].LastName.charAt(0);
                         // Show the current record
-                        this.ExhibitorListing.push({
-                            ExhibitorID: data[i].ExhibitorID,
-                            CompanyName: data[i].CompanyName,
-                            DisplayCityState: DisplayLocation,
-                            BoothNumber: "Booth: " + data[i].BoothNumber,
-                            exhibitorIcon: "people",
-                            exhibitorAvatar: imageAvatar,
-                            exhibitorClass: "myLabelBold",
-                            navigationArrow: "arrow-dropright"
+                        this.SpeakerListing.push({
+                            SpeakerID: data[i].speakerID,
+                            DisplayNameLastFirst: DisplayName,
+                            DisplayCredentials: visDisplayCredentials,
+                            Affiliation: "",
+                            speakerIcon: "person",
+                            speakerAvatar: imageAvatar,
+                            speakerClass: "",
+                            navigationArrow: "arrow-dropright",
                         });
                     }
                     else {
-                        this.ExhibitorListing.push({
-                            ExhibitorID: data[i].ExhibitorID,
-                            CompanyName: data[i].CompanyName,
-                            DisplayCityState: DisplayLocation,
-                            BoothNumber: "Booth: " + data[i].BoothNumber,
-                            exhibitorIcon: "people",
-                            exhibitorAvatar: imageAvatar,
-                            exhibitorClass: "myLabelBold",
-                            navigationArrow: "arrow-dropright"
+                        // Add current record to the list
+                        this.SpeakerListing.push({
+                            SpeakerID: data[i].speakerID,
+                            DisplayNameLastFirst: DisplayName,
+                            DisplayCredentials: visDisplayCredentials,
+                            Affiliation: "",
+                            speakerIcon: "person",
+                            speakerAvatar: imageAvatar,
+                            speakerClass: "",
+                            navigationArrow: "arrow-dropright",
                         });
                     }
                 }
             }
             else {
-                this.ExhibitorListing.push({
-                    ExhibitorID: 0,
-                    CompanyName: "No records available",
-                    DisplayCityState: "",
-                    BoothNumber: "",
-                    exhibitorIcon: "",
-                    exhibitorAvatar: "assets/img/SpeakerDivider.png",
-                    exhibitorClass: "myLabelBold",
-                    navigationArrow: ""
+                // No records to show
+                this.SpeakerListing.push({
+                    SpeakerID: 0,
+                    DisplayNameLastFirst: "No records available",
+                    Affiliation: "",
+                    speakerIcon: "",
+                    speakerAvatar: "assets/img/personIcon.png",
+                    speakerClass: "myLabelBold",
+                    navigationArrow: "",
                 });
             }
             this.cd.markForCheck();
@@ -1486,10 +1009,10 @@ let ExhibitorsPage = class ExhibitorsPage {
             console.log("Promise Rejected");
         });
     }
-    ExhibitorDetails(ExhibitorID) {
-        if (ExhibitorID != 0) {
-            // Navigate to Exhibitor Details page
-            this.navCtrl.push('ExhibitorDetailsPage', { ExhibitorID: ExhibitorID }, { animate: true, direction: 'forward' });
+    SpeakerDetails(SpeakerID) {
+        if (SpeakerID != 0) {
+            // Navigate to Speaker Details page
+            this.navCtrl.push('SpeakerDetailsPage', { SpeakerID: SpeakerID }, { animate: true, direction: 'forward' });
         }
     }
     ;
@@ -1510,39 +1033,32 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [KeyboardEvent]),
     __metadata("design:returntype", void 0)
-], ExhibitorsPage.prototype, "handleKeyboardEvent", null);
-ExhibitorsPage = __decorate([
+], SpeakersPage.prototype, "handleKeyboardEvent", null);
+SpeakersPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-exhibitors',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/exhibitors/exhibitors.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Exhibitors</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n	<ion-list id="Exhibitors-list3">\n\n		<!-- Search input -->\n		<ion-grid>\n			<ion-row>\n				<ion-col col-9>	\n\n					<ion-item>\n						<ion-icon name="search" item-left></ion-icon>\n						<ion-input name="srchBarEntry" id="srchBarEntry" \n						type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n					</ion-item>\n				</ion-col>\n				<ion-col col-3>\n					<button ion-button full style="background:#2196f3; margin:0" (tap)="GetSearchResults()">Submit</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n\n		<!-- Exhibitor listing -->\n		<ion-list>\n			<ion-item (tap)="ExhibitorDetails(exhibitor.ExhibitorID)" style="float: left; padding-right: 10px;"\n			*ngFor="let exhibitor of ExhibitorListing" id="exhibitors-list-item19">\n			\n			<!--\n				<ion-icon color="secondary" item-left name="{{exhibitor.exhibitorIcon}}"></ion-icon>\n				<ion-icon color="secondary" item-right name="{{exhibitor.navigationArrow}}"></ion-icon>\n-->\n\n\n			\n		<!--	<ion-icon name="{{exhibitor.exhibitorIcon}}"></ion-icon> -->\n						<ion-thumbnail item-start>\n							<img src="{{exhibitor.exhibitorAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n						</ion-thumbnail>\n				\n				<h2>{{exhibitor.CompanyName}}</h2>\n				<p>{{exhibitor.DisplayCityState}}</p>\n				<p>{{exhibitor.BoothNumber}}</p>\n			</ion-item>\n		</ion-list>\n	</ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/exhibitors/exhibitors.html"*/,
+        selector: 'page-speakers',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/speakers/speakers.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Speakers</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content>\n	<ion-list id="speakers-list3">\n\n		<!-- Search input -->\n		<ion-grid>\n			<ion-row>\n				<ion-col col-9>	\n\n					<ion-item class="item-input; shadow">\n						<ion-icon style="color:#cc5d1d" name="search" item-left></ion-icon>\n						<ion-input name="srchBarEntry" id="srchBarEntry" \n						type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n					</ion-item>\n				</ion-col>\n				<ion-col col-3>\n					<button ion-button full class="buttonPadding" (tap)="GetSearchResults()">Submit</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n\n		<!-- Speaker listing -->\n		<ion-list>\n			<ion-item (tap)="SpeakerDetails(speaker.SpeakerID)" *ngFor="let speaker of SpeakerListing" id="speaker-list-item19">\n				<div style="float: left; padding-right: 10px;">\n					<!-- <ion-icon name="{{speaker.speakerIcon}}"></ion-icon> -->\n					<ion-avatar item-start>\n						<img src="{{speaker.speakerAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n					</ion-avatar>\n				</div>\n				<ion-icon style="color:#cc5d1d" item-right name="{{speaker.navigationArrow}}"></ion-icon>\n				<h2 style="padding-top: 7px;">{{speaker.DisplayNameLastFirst}}</h2>\n				<p>{{speaker.DisplayCredentials}}</p>\n			</ion-item>\n		</ion-list>\n\n	</ion-list>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/speakers/speakers.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], ExhibitorsPage);
+], SpeakersPage);
 
-//# sourceMappingURL=exhibitors.js.map
+//# sourceMappingURL=speakers.js.map
 
 /***/ }),
 
-/***/ 162:
+/***/ 157:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NetworkingPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SocialPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__attendees_attendees__ = __webpack_require__(189);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__profile_profile__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__notifications_notifications__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__activity_activity__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__social_social__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1552,141 +1068,64 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-// Components, functions, plugins
 
 
 
-
-// Pages
-
-//import { ConversationsPage } from '../conversations/conversations';
-//import { ConversationsPage } from '../conversations/conversations';
-
-
-
-
-let NetworkingPage = class NetworkingPage {
-    constructor(navCtrl, navParams, nav, databaseprovider, alertCtrl, cd, localstorage) {
+/**
+ * Generated class for the Social page.
+ *
+ * See http://ionicframework.com/docs/components/#navigation for more info
+ * on Ionic pages and navigation.
+ */
+let SocialPage = class SocialPage {
+    constructor(navCtrl, navParams, actionSheetCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
-        this.nav = nav;
-        this.databaseprovider = databaseprovider;
-        this.alertCtrl = alertCtrl;
-        this.cd = cd;
-        this.localstorage = localstorage;
-        this.NewMessagesIndicator = false;
+        this.actionSheetCtrl = actionSheetCtrl;
     }
-    ionViewDidEnter() {
-        console.log('ionViewDidEnter: NetworkingPage');
-        var DCArrayString = this.localstorage.getLocalValue('DirectChatMonitoringString');
-        console.log('DCArrayString: ' + DCArrayString);
-        if (DCArrayString !== null) {
-            var data2 = JSON.parse(DCArrayString);
-            if (data2['length'] > 0) {
-                console.log('data2, NewMessages: ' + data2[0].NewMessages);
-                this.NewMessagesCounter = data2[0].NewMessages;
-                if (data2[0].NewMessages == "0") {
-                    this.NewMessagesIndicator = false;
-                }
-                else {
-                    this.NewMessagesIndicator = true;
-                }
-            }
-            else {
-                this.NewMessagesIndicator = false;
-            }
-        }
-        else {
-            this.NewMessagesIndicator = true;
-        }
-        this.cd.markForCheck();
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad SocialPage');
     }
-    NavigateTo(page) {
-        if (page == 'Conversations' || page == 'ActivityFeed') {
-            var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
-            var flags = "cn";
-            this.databaseprovider.getDatabaseStats(flags, AttendeeID).then(data => {
-                if (data[0].Status == "Connected") {
-                    switch (page) {
-                        case "Conversations":
-                            // Navigate to Conversations page
-                            this.navCtrl.push('ConversationsPage', {}, { animate: true, direction: 'forward' });
-                            break;
-                        case "ActivityFeed":
-                            // Navigate to Activity Feed page
-                            this.localstorage.setLocalValue('ActivityFeedID', '0');
-                            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__activity_activity__["a" /* ActivityPage */], {}, { animate: true, direction: 'forward' });
-                            break;
-                        case "Attendees":
-                            // Navigate to Activity Feed page
-                            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__attendees_attendees__["a" /* AttendeesPage */], {}, { animate: true, direction: 'forward' });
-                            break;
-                        case "MyProfile":
-                            // Navigate to Activity Feed page
-                            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__profile_profile__["a" /* ProfilePage */], {}, { animate: true, direction: 'forward' });
-                            break;
+    presentActionSheet() {
+        let actionSheet = this.actionSheetCtrl.create({
+            title: 'Modify your album',
+            buttons: [
+                {
+                    text: 'Destructive',
+                    role: 'destructive',
+                    handler: () => {
+                        console.log('Destructive clicked');
+                    }
+                }, {
+                    text: 'Archive',
+                    handler: () => {
+                        console.log('Archive clicked');
+                    }
+                }, {
+                    text: 'Cancel',
+                    role: 'cancel',
+                    handler: () => {
+                        console.log('Cancel clicked');
                     }
                 }
-                else {
-                    let alert = this.alertCtrl.create({
-                        title: 'Internet Error',
-                        subTitle: 'You need to have Internet access in order to use that feature.',
-                        buttons: ['OK']
-                    });
-                    alert.present();
-                }
-            });
-        }
-        else {
-            switch (page) {
-                case "Attendees":
-                    // Navigate to Attendees page
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__attendees_attendees__["a" /* AttendeesPage */], {}, { animate: true, direction: 'forward' });
-                    break;
-                case "Conversations":
-                    // Navigate to Conversations page
-                    this.navCtrl.push('ConversationsPage', {}, { animate: true, direction: 'forward' });
-                    break;
-                case "MyProfile":
-                    // Navigate to Profile page
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__profile_profile__["a" /* ProfilePage */], {}, { animate: true, direction: 'forward' });
-                    break;
-                case "Notifications":
-                    // Navigate to Notifications page
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__notifications_notifications__["a" /* NotificationsPage */], {}, { animate: true, direction: 'forward' });
-                    break;
-                case "SocialMedia":
-                    // Navigate to Social Media page
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__social_social__["a" /* SocialPage */], {}, { animate: true, direction: 'forward' });
-                    break;
-                case "ActivityFeed":
-                    // Navigate to Activity Feed page
-                    this.localstorage.setLocalValue('ActivityFeedID', '0');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__activity_activity__["a" /* ActivityPage */], {}, { animate: true, direction: 'forward' });
-                    break;
-            }
-        }
+            ]
+        });
+        actionSheet.present();
     }
 };
-NetworkingPage = __decorate([
+SocialPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-networking',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/networking/networking.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Networking</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content class="networking" style="background:#0b172a">\n\n	<ion-grid>\n	\n		<ion-row style="background:#283593">\n			<ion-col align-self-center style="background:#283593; height:100%">\n				<ion-item no-lines detail-none class="buttonShape" style="background:#283593" (click)="NavigateTo(\'Attendees\')" id="program-list-item1">\n					<ion-icon name="contacts" class="buttonIconsL"></ion-icon>\n					<h2>Attendees</h2>\n				</ion-item>\n			</ion-col>\n\n			<ion-col align-self-center style="background:#2196f3; height:100%">\n				<ion-item no-lines detail-none class="buttonShape" style="background:#2196f3"  (click)="NavigateTo(\'Conversations\')" id="program-list-item3">\n					<ion-icon name="chatbubbles" class="buttonIconsL"></ion-icon>\n					<h2>Conversations</h2>\n					<p *ngIf=NewMessagesIndicator style="color:#fff;">{{NewMessagesCounter}} New Messages</p>\n				</ion-item>\n			</ion-col>\n		</ion-row>\n		\n		<ion-row style="background:#2196f3"> \n			<ion-col align-self-center style="background:#2196f3; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#2196f3;" (click)="NavigateTo(\'MyProfile\')" id="program-list-item5">\n					<ion-icon name="contact" class="buttonIconsL"></ion-icon>\n					<h2>My Profile</h2>\n				</button>\n			</ion-col>\n			\n			<ion-col align-self-center style="background:#283593; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#283593" (click)="NavigateTo(\'Notifications\')" id="program-list-item2">\n					<ion-icon name="alert" class="buttonIconsL"></ion-icon>\n					<h2>Notifications</h2>\n				</button>\n			</ion-col>\n		</ion-row>\n		\n		<ion-row style="background:#283593">\n			<ion-col align-self-center style="background:#283593; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#283593" (click)="NavigateTo(\'ActivityFeed\')" id="program-list-item5">\n					<ion-icon name="chatboxes" class="buttonIconsL"></ion-icon>\n					<h2>Activities Feed</h2>\n				</button>\n			</ion-col>\n			\n			<ion-col align-self-center style="background:#2196f3; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#2196f3;" (click)="NavigateTo(\'SocialMedia\')" id="program-list-item2">\n					<ion-icon name="text" class="buttonIconsL"></ion-icon>\n					<h2>Social Media</h2>\n				</button>\n			</ion-col>\n		</ion-row>\n			\n	</ion-grid>\n\n</ion-content>\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/networking/networking.html"*/,
-        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
+        selector: 'page-social',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/social/social.html"*/'<!--\n  Generated template for the Social page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Social Media</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content has tabs>\n\n<div class="">\n            <img src="assets/img/social.jpg" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n        </div>\n\n\n        <ion-list>\n          <ion-item href="#" onclick="window.open(\'https://www.facebook.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left >\n              <img src="assets/img/facebook.png">\n            </ion-avatar>\n            <h2>Facebook</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://twitter.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/twitter.png">\n            </ion-avatar>\n            <h2>Twitter</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.linkedin.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/linkedin.png">\n            </ion-avatar>\n            <h2>Linkedin</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.instagram.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/instagram.jpeg">\n            </ion-avatar>\n            <h2>Instagram</h2>\n          </ion-item>\n\n\n          <ion-item href="#" onclick="window.open(\'https://www.flickr.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/flickr.png">\n            </ion-avatar>\n            <h2>Flickr</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.pinterest.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/pinterest.png">\n            </ion-avatar>\n            <h2>Pinterest</h2>\n          </ion-item>\n\n          <ion-item href="#" onclick="window.open(\'https://www.youtube.com/\', \'_system\', \'location=yes\'); return false;">\n            <ion-avatar item-left>\n              <img src="assets/img/youtube.png">\n            </ion-avatar>\n            <h2>YouTube</h2>\n          </ion-item>\n\n\n        </ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/social/social.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_3__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_2__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], NetworkingPage);
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ActionSheetController"]])
+], SocialPage);
 
-//# sourceMappingURL=networking.js.map
+//# sourceMappingURL=social.js.map
 
 /***/ }),
 
-/***/ 163:
+/***/ 158:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1694,11 +1133,11 @@ NetworkingPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_moment__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -1973,22 +1412,22 @@ let ActivityPage = class ActivityPage {
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Content */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Content */])
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Content"]),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Content"])
 ], ActivityPage.prototype, "content", void 0);
 ActivityPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-activity',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/activity/activity.html"*/'\n<ion-header no-border>\n	<ion-navbar color="primary">\n		<ion-title>Activities Feed</ion-title>\n	</ion-navbar>\n</ion-header>\n   \n<ion-content fullscreen>\n   \n\n	<!-- List of attendee postings -->\n	<ion-card *ngFor="let activityFeedItem of activityFeedListing; index as i">\n		\n\n\n		<!-- Attendee avatar and name -->\n		<ion-item id="afID{{activityFeedItem.afID}}">\n			<ion-avatar item-start (click)="AttendeeDetails(activityFeedItem.AttendeeID)">\n				<!--<img-loader [src]="activityFeedItem.ActivityFeedCommentAvatar" useImg [spinner]=false [fallbackAsPlaceholder]=true></img-loader>-->\n				<img src="{{activityFeedItem.ActivityFeedCommentAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n			</ion-avatar>\n			<div (click)="AttendeeDetails(activityFeedItem.AttendeeID)">\n			<h2>{{activityFeedItem.ActivityFeedCommentBy}}</h2>\n			<p>{{activityFeedItem.ActivityFeedCommentPosted}}</p>\n			</div>\n		</ion-item>\n\n\n\n\n		<!-- Posting picture attachment -->\n		<!--<img-loader *ngIf=activityFeedItem.ActivityFeedAttached [src]="activityFeedItem.ActivityFeedAttachment" useImg [spinner]=false></img-loader>-->\n		<img src="{{activityFeedItem.ActivityFeedAttachment}}" (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n\n		<!-- Attendee\'s comment -->\n		<ion-card-content (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n			<p>{{activityFeedItem.ActivityFeedComment}}</p>\n		</ion-card-content>\n\n		<!-- Linked URL (Only for promoted postings entered via the Admin Gateway) -->\n		<ion-list *ngIf=activityFeedItem.showActivityFeedLinkedURL>\n			<button ion-item (click)="navToWeb(activityFeedItem.ActivityFeedLinkedURL)">\n				<ion-icon name="globe" item-start></ion-icon>\n				{{activityFeedItem.ActivityFeedLinkedURL}}\n			</button>\n		</ion-list>\n\n\n		<!-- Footer with details -->\n		<ion-row>\n			<ion-col>\n				<button style="color:#2196f3" ion-button icon-left clear small activityCard (click)="UpdateLikes(activityFeedItem, activityFeedItem.afID, activityCard)">\n					<ion-icon name="thumbs-up"></ion-icon>\n					<div>{{activityFeedItem.ActivityFeedLikesCounter}} Likes</div>\n				</button>\n			</ion-col>\n			<ion-col>\n				<button style="color:#2196f3" ion-button icon-left clear small (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n			\n				\n					<ion-icon name="text"></ion-icon>\n					<div>{{activityFeedItem.ActivityFeedCommentsCounter}} Comments</div>\n				</button>\n			</ion-col>\n\n\n			<ion-col center text-center (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n				<button ion-button color="secondary" icon-left clear small>\n						<div>\n					{{activityFeedItem.ActivityFeedCommentPostedDuration}}\n				</div>\n			</button>\n			</ion-col>\n		</ion-row>\n\n	</ion-card>\n\n	\n	<!-- Floating button menu for adding new comment -->\n    <ion-fab bottom right #fab>\n		<button ion-fab color="secondary" ion-fab>\n			<ion-icon name="add"></ion-icon>\n		</button>\n		<ion-fab-list side="top">\n			<button ion-fab (click)="ViewLeaderboard(fab)">\n				<ion-icon name="trophy"></ion-icon>\n				<div class="fabdivbutton">View Leaderboard</div>\n			</button>\n			<button ion-fab (click)="AddPosting(fab)">\n				<ion-icon name="chatboxes"></ion-icon>\n				<div class="fabdivbutton">Add Posting</div>\n			</button>\n		</ion-fab-list>\n    </ion-fab>\n\n\n</ion-content>'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/activity/activity.html"*/,
+        selector: 'page-activity',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/activity/activity.html"*/'\n<ion-header no-border>\n	<ion-navbar color="primary">\n		<ion-title>Activities Feed</ion-title>\n	</ion-navbar>\n</ion-header>\n   \n<ion-content fullscreen>\n   \n\n	<!-- List of attendee postings -->\n	<ion-card *ngFor="let activityFeedItem of activityFeedListing; index as i">\n		\n\n\n		<!-- Attendee avatar and name -->\n		<ion-item id="afID{{activityFeedItem.afID}}">\n			<ion-avatar item-start (click)="AttendeeDetails(activityFeedItem.AttendeeID)">\n				<!--<img-loader [src]="activityFeedItem.ActivityFeedCommentAvatar" useImg [spinner]=false [fallbackAsPlaceholder]=true></img-loader>-->\n				<img src="{{activityFeedItem.ActivityFeedCommentAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n			</ion-avatar>\n			<div (click)="AttendeeDetails(activityFeedItem.AttendeeID)">\n			<h2>{{activityFeedItem.ActivityFeedCommentBy}}</h2>\n			<p>{{activityFeedItem.ActivityFeedCommentPosted}}</p>\n			</div>\n		</ion-item>\n\n\n\n\n		<!-- Posting picture attachment -->\n		<!--<img-loader *ngIf=activityFeedItem.ActivityFeedAttached [src]="activityFeedItem.ActivityFeedAttachment" useImg [spinner]=false></img-loader>-->\n		<img src="{{activityFeedItem.ActivityFeedAttachment}}" (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n\n		<!-- Attendee\'s comment -->\n		<ion-card-content (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n			<p>{{activityFeedItem.ActivityFeedComment}}</p>\n		</ion-card-content>\n\n		<!-- Linked URL (Only for promoted postings entered via the Admin Gateway) -->\n		<ion-list *ngIf=activityFeedItem.showActivityFeedLinkedURL>\n			<button ion-item (click)="navToWeb(activityFeedItem.ActivityFeedLinkedURL)">\n				<ion-icon name="globe" item-start></ion-icon>\n				{{activityFeedItem.ActivityFeedLinkedURL}}\n			</button>\n		</ion-list>\n\n\n		<!-- Footer with details -->\n		<ion-row>\n			<ion-col>\n				<button style="color:#cc5d1d" ion-button icon-left clear small activityCard (click)="UpdateLikes(activityFeedItem, activityFeedItem.afID, activityCard)">\n					<ion-icon name="thumbs-up"></ion-icon>\n					<div>{{activityFeedItem.ActivityFeedLikesCounter}} Likes</div>\n				</button>\n			</ion-col>\n			<ion-col>\n				<button style="color:#cc5d1d" ion-button icon-left clear small (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n			\n				\n					<ion-icon name="text"></ion-icon>\n					<div>{{activityFeedItem.ActivityFeedCommentsCounter}} Comments</div>\n				</button>\n			</ion-col>\n\n\n			<ion-col center text-center (click)="ActivityFeedDetails(activityFeedItem, activityFeedItem.afID)">\n				<button ion-button color="secondary" icon-left clear small>\n						<div>\n					{{activityFeedItem.ActivityFeedCommentPostedDuration}}\n				</div>\n			</button>\n			</ion-col>\n		</ion-row>\n\n	</ion-card>\n\n	\n	<!-- Floating button menu for adding new comment -->\n    <ion-fab bottom right #fab>\n		<button ion-fab color="secondary" ion-fab>\n			<ion-icon name="add"></ion-icon>\n		</button>\n		<ion-fab-list side="top">\n			<button ion-fab (click)="ViewLeaderboard(fab)">\n				<ion-icon name="trophy"></ion-icon>\n				<div class="fabdivbutton">View Leaderboard</div>\n			</button>\n			<button ion-fab (click)="AddPosting(fab)">\n				<ion-icon name="chatboxes"></ion-icon>\n				<div class="fabdivbutton">Add Posting</div>\n			</button>\n		</ion-fab-list>\n    </ion-fab>\n\n\n</ion-content>'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/activity/activity.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__["a" /* ImageLoaderConfig */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["s" /* ModalController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ModalController"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], ActivityPage);
 
@@ -1996,216 +1435,7 @@ ActivityPage = __decorate([
 
 /***/ }),
 
-/***/ 189:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AttendeesPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(55);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-// Components, functions, plugins
-
-
-
-
-
-
-
-let AttendeesPage = class AttendeesPage {
-    constructor(navCtrl, navParams, storage, databaseprovider, imageLoaderConfig, cd, loadingCtrl, localstorage) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.storage = storage;
-        this.databaseprovider = databaseprovider;
-        this.imageLoaderConfig = imageLoaderConfig;
-        this.cd = cd;
-        this.loadingCtrl = loadingCtrl;
-        this.localstorage = localstorage;
-        this.AttendeeListing = [];
-        this.currentPageClass = this;
-    }
-    // Style 2 data pull
-    ngOnInit() {
-        this.LoadAttendees();
-    }
-    LoadAttendees() {
-        // Load initial data set here
-        //let loading = this.loadingCtrl.create({
-        //  spinner: 'crescent',
-        //  content: 'Please wait...'
-        //});
-        //loading.present();
-        // Blank and show loading info
-        this.AttendeeListing = [];
-        this.cd.markForCheck();
-        this.imageLoaderConfig.setFallbackUrl('assets/img/personIcon.png');
-        // Temporary use variables
-        var flags = "al|0|0|";
-        var DisplayName = "";
-        var visDisplayTitle = "";
-        var visDisplayCompany = "";
-        var AttendeeDividerCharacter = "";
-        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
-        var SpeakerDividerCharacter = "";
-        // Get the data
-        this.databaseprovider.getMessagingData(flags, AttendeeID).then(data => {
-            console.log("getMessagingData, Attendee Listing Count: " + data['length']);
-            if (data['length'] > 0) {
-                console.log('getMessagingData, Attendee Listing, starting data record loop');
-                for (var i = 0; i < data['length']; i++) {
-                    DisplayName = "";
-                    // Concatenate fields to build displayable name
-                    DisplayName = DisplayName + data[i].LastName + ", " + data[i].FirstName;
-                    // Show Title and Company/Association
-                    visDisplayTitle = "";
-                    if (data[i].Title != "") {
-                        visDisplayTitle = data[i].Title;
-                    }
-                    visDisplayCompany = "";
-                    if (data[i].Company != "") {
-                        visDisplayCompany = data[i].Company;
-                    }
-                    var imageAvatar = "";
-                    //console.log('avatarFilename for ' + data[i].AttendeeID + ': ' + data[i].avatarFilename);
-                    if (data[i].avatarFilename != 'undefined' && data[i].avatarFilename != undefined && data[i].avatarFilename != '' && data[i].avatarFilename.length > 0) {
-                        imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Attendees/" + data[i].avatarFilename;
-                        //console.log('imageAvatar: ' + imageAvatar);
-                    }
-                    else {
-                        imageAvatar = "assets/img/personIcon.png";
-                        //console.log('imageAvatar: ' + imageAvatar);
-                    }
-                    if (data[i].LastName.charAt(0) != AttendeeDividerCharacter) {
-                        // Display the divider
-                        this.AttendeeListing.push({
-                            AttendeeID: 0,
-                            AttendeeName: data[i].LastName.charAt(0),
-                            AttendeeTitle: "",
-                            AttendeeOrganization: "",
-                            AttendeeAvatar: "assets/img/SpeakerDivider.png",
-                            navigationArrow: "nothing",
-                            ShowHideAttendeeIcon: false,
-                        });
-                        // Set the new marker point
-                        AttendeeDividerCharacter = data[i].LastName.charAt(0);
-                        // Add current record to the list
-                        this.AttendeeListing.push({
-                            AttendeeID: data[i].AttendeeID,
-                            AttendeeName: DisplayName,
-                            AttendeeTitle: visDisplayTitle,
-                            AttendeeOrganization: visDisplayCompany,
-                            AttendeeAvatar: imageAvatar,
-                            navigationArrow: "arrow-dropright",
-                            ShowHideAttendeeIcon: true,
-                        });
-                    }
-                    else {
-                        // Add current record to the list
-                        this.AttendeeListing.push({
-                            AttendeeID: data[i].AttendeeID,
-                            AttendeeName: DisplayName,
-                            AttendeeTitle: visDisplayTitle,
-                            AttendeeOrganization: visDisplayCompany,
-                            AttendeeAvatar: imageAvatar,
-                            navigationArrow: "arrow-dropright",
-                            ShowHideAttendeeIcon: true,
-                        });
-                    }
-                }
-                this.cd.markForCheck();
-                console.log('Built data array: ' + JSON.stringify(this.AttendeeListing));
-            }
-            else {
-                console.log("getMessagingData, Attendee Listing, No records");
-                // No records to show
-                this.AttendeeListing.push({
-                    AttendeeID: 0,
-                    AttendeeName: "No attendees available",
-                    AttendeeTitle: "",
-                    AttendeeOrganization: "",
-                    AttendeeAvatar: "",
-                    navigationArrow: "nothing",
-                    ShowHideAttendeeIcon: false,
-                });
-                this.cd.markForCheck();
-                console.log('Built data array: ' + JSON.stringify(this.AttendeeListing));
-            }
-            //loading.dismiss();
-            console.log('getMessagingData, Attendee Listing, done loading names');
-        }).catch(function () {
-            console.log("Attendee Listing Style 2 Promise Rejected");
-        });
-    }
-    ionViewDidLoad() {
-        console.log('ionViewDidLoad AttendeesPage');
-    }
-    handleKeyboardEvent(event) {
-        if (event.key == 'Enter') {
-            console.log('Enter key detected');
-            this.GetSearchResults();
-        }
-    }
-    GetSearchResults() {
-        var SearchTerms = this.EntryTerms;
-        if ((SearchTerms == undefined) || (SearchTerms == "")) {
-            // Do nothing or show message
-        }
-        else {
-            this.localstorage.setLocalValue("SearchTerms", SearchTerms);
-            this.navCtrl.push('SearchResultsPage', { SearchTerms: SearchTerms }, { animate: true, direction: 'forward' });
-        }
-    }
-    ;
-    AttendeeDetails(oAttendeeID) {
-        console.log('oAttendeeID: ' + oAttendeeID);
-        if (oAttendeeID != '0') {
-            this.localstorage.setLocalValue("oAttendeeID", oAttendeeID);
-            this.navCtrl.push('AttendeesProfilePage', { oAttendeeID: oAttendeeID }, { animate: true, direction: 'forward' });
-        }
-    }
-};
-__decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('document:keypress', ['$event']),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [KeyboardEvent]),
-    __metadata("design:returntype", void 0)
-], AttendeesPage.prototype, "handleKeyboardEvent", null);
-AttendeesPage = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-attendees',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/attendees/attendees.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Attendees</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content class="attendees-page">\n\n	<ion-grid style="padding:0; margin:0">\n		<ion-row>\n			<ion-col col-9>	\n				<ion-item class="item-input">\n					<ion-icon color="secondary" name="search" item-left></ion-icon>\n					<ion-input name="srchBarEntry" id="srchBarEntry" \n					type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n				</ion-item>\n			</ion-col>\n			<ion-col col-3>\n				<button ion-button full style="padding:0; margin:0; background:#2196f3" (tap)="GetSearchResults()">Submit</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	<!-- Attendee Listing -->\n	<ion-grid>\n		<ion-row>\n			<ion-col>	\n				<ion-list>\n					<ion-item tappable (click)="AttendeeDetails(attendee.AttendeeID)" *ngFor="let attendee of AttendeeListing" id="Attendee-list19">\n						<div style="float: left; padding-right: 10px;">\n							<ion-avatar item-start>\n								<img *ngIf=attendee.ShowHideAttendeeIcon [src]="attendee.AttendeeAvatar" src="assets/img/personIcon.png" onerror="this.src=\'assets/img/personIcon.png\'">\n							</ion-avatar>\n						</div>\n						<ion-icon item-right name="{{attendee.navigationArrow}}"></ion-icon>\n							<h2 style="padding-top: 7px;">{{attendee.AttendeeName}}</h2>\n							<h3>{{attendee.AttendeeTitle}}</h3>\n							<h3 style="margin-left:20px" >{{attendee.AttendeeOrganization}}</h3>\n					</ion-item>\n				</ion-list>\n			</ion-col>\n\n		</ion-row>\n\n	</ion-grid>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/attendees/attendees.html"*/,
-        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
-    }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__["a" /* ImageLoaderConfig */],
-        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], AttendeesPage);
-
-;
-//# sourceMappingURL=attendees.js.map
-
-/***/ }),
-
-/***/ 19:
+/***/ 17:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2214,8 +1444,9 @@ AttendeesPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_sqlite__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_catch__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2226,6 +1457,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 // Components, functions, plugins
+
 
 
 
@@ -2235,11 +1467,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var APIURLReference = "https://demoplanner.convergence-us.com/cvPlanner.php?acy=2019&";
 var AttendeeListing = 'Offline';
 let Database = class Database {
-    constructor(pltfrm, httpCall, alertCtrl, sqlite) {
+    constructor(pltfrm, httpCall, alertCtrl, sqlite, localstorage) {
         this.pltfrm = pltfrm;
         this.httpCall = httpCall;
         this.alertCtrl = alertCtrl;
         this.sqlite = sqlite;
+        this.localstorage = localstorage;
         if (!this.isOpen) {
             // Determine platform that the app is running on
             this.DevicePlatform = "Browser";
@@ -2360,7 +1593,7 @@ let Database = class Database {
                 var SQLquery = "";
                 SQLquery = "SELECT pushTitle, pushMessage, datetime(pushDateTimeReceived, 'localtime') AS localDateTime ";
                 SQLquery = SQLquery + "FROM attendee_push_notifications ";
-                SQLquery = SQLquery + "ORDER BY pushDateTimeReceived ";
+                SQLquery = SQLquery + "ORDER BY pushDateTimeReceived DESC ";
                 // Perform query against local SQLite database
                 return new Promise(resolve => {
                     this.sqlite.create({ name: 'cvPlanner.db', location: 'default', createFromLocation: 1 }).then((db) => {
@@ -2375,7 +1608,8 @@ let Database = class Database {
                                     DatabaseResponse.push({
                                         pushTitle: data.rows.item(i).pushTitle,
                                         pushMessage: data.rows.item(i).pushMessage,
-                                        pushDateTimeReceived: data.rows.item(i).localDateTime
+                                        localDateTime: data.rows.item(i).localDateTime,
+                                        pushDateTimeReceived: data.rows.item(i).pushDateTimeReceived
                                     });
                                 }
                             }
@@ -3991,6 +3225,7 @@ let Database = class Database {
     getExhibitorData(flags) {
         console.log("flags passed: " + flags);
         var SQLquery = "";
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
         if (this.DevicePlatform == "iOS" || this.DevicePlatform == "Android") {
             var flagValues = flags.split("|");
             var listingType = flagValues[0];
@@ -4088,7 +3323,7 @@ let Database = class Database {
         }
         else {
             // Perform query against server-based MySQL database
-            var url = APIURLReference + "action=exhquery&flags=" + flags;
+            var url = APIURLReference + "action=exhquery&flags=" + flags + "&AttendeeID=" + AttendeeID;
             return new Promise(resolve => {
                 this.httpCall.get(url).subscribe(response => {
                     resolve(response.json());
@@ -5419,17 +4654,242 @@ let Database = class Database {
 };
 Database = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["x" /* Platform */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2_ionic_angular__["Platform"],
         __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* Http */],
-        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1__ionic_native_sqlite__["a" /* SQLite */]])
+        __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1__ionic_native_sqlite__["a" /* SQLite */],
+        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], Database);
 
 //# sourceMappingURL=database.js.map
 
 /***/ }),
 
-/***/ 190:
+/***/ 184:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AttendeesPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(56);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Components, functions, plugins
+
+
+
+
+
+
+
+let AttendeesPage = class AttendeesPage {
+    constructor(navCtrl, navParams, storage, databaseprovider, imageLoaderConfig, cd, loadingCtrl, localstorage) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.storage = storage;
+        this.databaseprovider = databaseprovider;
+        this.imageLoaderConfig = imageLoaderConfig;
+        this.cd = cd;
+        this.loadingCtrl = loadingCtrl;
+        this.localstorage = localstorage;
+        this.AttendeeListing = [];
+        this.currentPageClass = this;
+        this.triggerAlphaScrollChange = 0;
+    }
+    // Style 2 data pull
+    ngOnInit() {
+        this.LoadAttendees();
+    }
+    onItemClick(item) {
+        // This is an example of how you could manually trigger ngOnChange
+        // for the component. If you modify "listData" it won't perform
+        // an ngOnChange, you will have to trigger manually to refresh the component.
+        this.triggerAlphaScrollChange++;
+    }
+    LoadAttendees() {
+        // Load initial data set here
+        //let loading = this.loadingCtrl.create({
+        //  spinner: 'crescent',
+        //  content: 'Please wait...'
+        //});
+        //loading.present();
+        // Blank and show loading info
+        this.AttendeeListing = [];
+        this.cd.markForCheck();
+        this.imageLoaderConfig.setFallbackUrl('assets/img/personIcon.png');
+        // Temporary use variables
+        var flags = "al|0|0|";
+        var DisplayName = "";
+        var visDisplayTitle = "";
+        var visDisplayCompany = "";
+        var AttendeeDividerCharacter = "";
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        var SpeakerDividerCharacter = "";
+        // Get the data
+        this.databaseprovider.getMessagingData(flags, AttendeeID).then(data => {
+            console.log("getMessagingData, Attendee Listing Count: " + data['length']);
+            if (data['length'] > 0) {
+                console.log('getMessagingData, Attendee Listing, starting data record loop');
+                for (var i = 0; i < data['length']; i++) {
+                    DisplayName = "";
+                    // Concatenate fields to build displayable name
+                    DisplayName = DisplayName + data[i].LastName + ", " + data[i].FirstName;
+                    // Show Title and Company/Association
+                    visDisplayTitle = "";
+                    if (data[i].Title != "") {
+                        visDisplayTitle = data[i].Title;
+                    }
+                    visDisplayCompany = "";
+                    if (data[i].Company != "") {
+                        visDisplayCompany = data[i].Company;
+                    }
+                    var imageAvatar = "";
+                    //console.log('avatarFilename for ' + data[i].AttendeeID + ': ' + data[i].avatarFilename);
+                    if (data[i].avatarFilename != 'undefined' && data[i].avatarFilename != undefined && data[i].avatarFilename != '' && data[i].avatarFilename.length > 0) {
+                        imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Attendees/" + data[i].avatarFilename;
+                        //console.log('imageAvatar: ' + imageAvatar);
+                    }
+                    else {
+                        imageAvatar = "assets/img/personIcon.png";
+                        //console.log('imageAvatar: ' + imageAvatar);
+                    }
+                    /*
+                    if (data[i].LastName.charAt(0) != AttendeeDividerCharacter) {
+
+                        // Display the divider
+                        this.AttendeeListing.push({
+                            AttendeeID: 0,
+                            AttendeeName: data[i].LastName.charAt(0),
+                            AttendeeTitle: "",
+                            AttendeeOrganization: "",
+                            AttendeeAvatar: "assets/img/SpeakerDivider.png",
+                            navigationArrow: "nothing",
+                            ShowHideAttendeeIcon: false,
+                        });
+
+                        // Set the new marker point
+                        AttendeeDividerCharacter = data[i].LastName.charAt(0);
+                    */
+                    // Add current record to the list
+                    this.AttendeeListing.push({
+                        AttendeeID: data[i].AttendeeID,
+                        AttendeeName: DisplayName,
+                        AttendeeTitle: visDisplayTitle,
+                        AttendeeOrganization: visDisplayCompany,
+                        AttendeeAvatar: imageAvatar,
+                        navigationArrow: "arrow-dropright",
+                        ShowHideAttendeeIcon: true,
+                    });
+                    /*
+                    } else {
+
+                        // Add current record to the list
+                        this.AttendeeListing.push({
+                            AttendeeID: data[i].AttendeeID,
+                            AttendeeName: DisplayName,
+                            AttendeeTitle: visDisplayTitle,
+                            AttendeeOrganization: visDisplayCompany,
+                            AttendeeAvatar: imageAvatar,
+                            navigationArrow: "arrow-dropright",
+                            ShowHideAttendeeIcon: true,
+                        });
+                        
+                    }
+                    */
+                }
+                this.cd.markForCheck();
+                console.log('Built data array: ' + JSON.stringify(this.AttendeeListing));
+            }
+            else {
+                console.log("getMessagingData, Attendee Listing, No records");
+                // No records to show
+                this.AttendeeListing.push({
+                    AttendeeID: 0,
+                    AttendeeName: "No attendees available",
+                    AttendeeTitle: "",
+                    AttendeeOrganization: "",
+                    AttendeeAvatar: "",
+                    navigationArrow: "nothing",
+                    ShowHideAttendeeIcon: false,
+                });
+                this.cd.markForCheck();
+                console.log('Built data array: ' + JSON.stringify(this.AttendeeListing));
+            }
+            //loading.dismiss();
+            this.triggerAlphaScrollChange++;
+            console.log('getMessagingData, Attendee Listing, done loading names');
+        }).catch(function () {
+            console.log("Attendee Listing Style 2 Promise Rejected");
+        });
+    }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad AttendeesPage');
+    }
+    handleKeyboardEvent(event) {
+        if (event.key == 'Enter') {
+            console.log('Enter key detected');
+            this.GetSearchResults();
+        }
+    }
+    GetSearchResults() {
+        var SearchTerms = this.EntryTerms;
+        if ((SearchTerms == undefined) || (SearchTerms == "")) {
+            // Do nothing or show message
+        }
+        else {
+            this.localstorage.setLocalValue("SearchTerms", SearchTerms);
+            this.navCtrl.push('SearchResultsPage', { SearchTerms: SearchTerms }, { animate: true, direction: 'forward' });
+        }
+    }
+    ;
+    AttendeeDetails(oAttendeeID) {
+        console.log('oAttendeeID: ' + oAttendeeID);
+        if (oAttendeeID != '0') {
+            this.localstorage.setLocalValue("oAttendeeID", oAttendeeID);
+            this.navCtrl.push('AttendeesProfilePage', { oAttendeeID: oAttendeeID }, { animate: true, direction: 'forward' });
+        }
+    }
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('document:keypress', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [KeyboardEvent]),
+    __metadata("design:returntype", void 0)
+], AttendeesPage.prototype, "handleKeyboardEvent", null);
+AttendeesPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-attendees',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/attendees/attendees.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Attendees</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content class="attendees-page">\n\n	<ion-grid style="padding:0; margin:0">\n		<ion-row>\n			<ion-col col-9>	\n				<ion-item class="item-input">\n					<ion-icon color="secondary" name="search" item-left></ion-icon>\n					<ion-input name="srchBarEntry" id="srchBarEntry" \n					type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n				</ion-item>\n			</ion-col>\n			<ion-col col-3>\n				<button ion-button full style="padding:0; margin:0; background:#cc5d1d" (tap)="GetSearchResults()">Submit</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	<!-- Attendee Listing -->\n	<ion-grid>\n		<ion-row>\n			<ion-col>	\n				<ion-list>\n					<ion-alpha-scroll\n						[listData]="AttendeeListing"\n						key="AttendeeName"\n						[itemTemplate]="alphaScrollItemTemplateRef"\n						[currentPageClass]="currentPageClass"\n						[highlight]="true"\n						[triggerChange]="triggerAlphaScrollChange">\n\n							<ng-template #alphaScrollItemTemplateRef let-item>\n								<ion-item tappable (click)="AttendeeDetails(item.AttendeeID)" id="Attendee-list19">\n									<div style="float: left; padding-right: 10px;">\n										<ion-avatar item-start>\n											<img *ngIf=item.ShowHideAttendeeIcon [src]="item.AttendeeAvatar" src="assets/img/personIcon.png" onerror="this.src=\'assets/img/personIcon.png\'">\n										</ion-avatar>\n									</div>\n									<ion-icon item-right name="{{item.navigationArrow}}"></ion-icon>\n										<h2 style="padding-top: 7px;">{{item.AttendeeName}}</h2>\n										<h3>{{item.AttendeeTitle}}</h3>\n										<h3 style="margin-left:20px" >{{item.AttendeeOrganization}}</h3>\n								</ion-item>\n							</ng-template>\n						\n					</ion-alpha-scroll>\n\n\n					<!--\n					<ion-item tappable (click)="AttendeeDetails(attendee.AttendeeID)" *ngFor="let attendee of AttendeeListing" id="Attendee-list19">\n						<div style="float: left; padding-right: 10px;">\n							<ion-avatar item-start>\n								<img *ngIf=attendee.ShowHideAttendeeIcon [src]="attendee.AttendeeAvatar" src="assets/img/personIcon.png" onerror="this.src=\'assets/img/personIcon.png\'">\n							</ion-avatar>\n						</div>\n						<ion-icon item-right name="{{attendee.navigationArrow}}"></ion-icon>\n							<h2 style="padding-top: 7px;">{{attendee.AttendeeName}}</h2>\n							<h3>{{attendee.AttendeeTitle}}</h3>\n							<h3 style="margin-left:20px" >{{attendee.AttendeeOrganization}}</h3>\n					</ion-item>\n					-->\n				</ion-list>\n			</ion-col>\n\n		</ion-row>\n\n	</ion-grid>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/attendees/attendees.html"*/,
+        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
+        __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
+        __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__["a" /* ImageLoaderConfig */],
+        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], AttendeesPage);
+
+;
+//# sourceMappingURL=attendees.js.map
+
+/***/ }),
+
+/***/ 185:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5437,10 +4897,10 @@ Database = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5491,15 +4951,17 @@ let NotificationsPage = class NotificationsPage {
             console.log("getMessagingData: " + JSON.stringify(data));
             if (data['length'] > 0) {
                 for (var i = 0; i < data['length']; i++) {
-                    var dbEventDateTime = data[i].pushDateTimeReceived;
+                    var dbEventDateTime = data[i].localDateTime;
                     dbEventDateTime = dbEventDateTime.replace(/-/g, '/');
                     dbEventDateTime = dbEventDateTime.replace(/T/g, ' ');
                     var SQLDate = new Date(dbEventDateTime);
                     var DisplayDateTime = dateFormat(SQLDate, "mm/dd h:MMtt");
+                    var notificationHeader = "<h2 style='font-weight:500'><b>" + data[i].pushTitle + "</b></h2><h4>" + DisplayDateTime + "</h4><p>" + data[i].pushMessage + "</p>";
                     this.NotificationListing.push({
                         pushTitle: data[i].pushTitle,
                         pushDateTime: DisplayDateTime,
-                        pushMessage: data[i].pushMessage
+                        pushMessage: data[i].pushMessage,
+                        pushNotification: notificationHeader
                     });
                 }
             }
@@ -5520,14 +4982,14 @@ let NotificationsPage = class NotificationsPage {
 };
 NotificationsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-notifications',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/notifications/notifications.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Notifications</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<ion-item text-wrap>\n		<h2>Below are the conference notifications that have been sent:</h2>\n	</ion-item>\n\n	<ion-card>\n			<ion-card-content>\n			<ion-item text-wrap *ngFor="let notification of NotificationListing">\n				<ion-icon item-left color=secondary name="text"></ion-icon>\n				<h2 style="font-weight:500">{{notification.pushTitle}}</h2>\n				<h4>{{notification.pushDateTime}}</h4>\n				<p>{{notification.pushMessage}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n	\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/notifications/notifications.html"*/,
+        selector: 'page-notifications',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/notifications/notifications.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Notifications</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<ion-item text-wrap>\n		<h2>Below are the conference notifications that have been sent:</h2>\n	</ion-item>\n\n	<ion-card>\n			<ion-card-content>\n			<ion-item text-wrap *ngFor="let notification of NotificationListing">\n				<ion-icon item-left color=secondary name="text"></ion-icon>\n				<div [innerHTML]="notification.pushNotification">\n				</div>\n				<!--<h2 style="font-weight:500">{{notification.pushTitle}}</h2>\n				<h4>{{notification.pushDateTime}}</h4>\n				<p>{{notification.pushMessage}}</p>-->\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n	\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/notifications/notifications.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], NotificationsPage);
@@ -5536,7 +4998,7 @@ NotificationsPage = __decorate([
 
 /***/ }),
 
-/***/ 202:
+/***/ 197:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -5549,104 +5011,104 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 202;
+webpackEmptyAsyncContext.id = 197;
 
 /***/ }),
 
-/***/ 245:
+/***/ 240:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
 	"../pages/activityfeedcomment/activityfeedcomment.module": [
-		890,
-		18
-	],
-	"../pages/activityfeeddetails/activityfeeddetails.module": [
-		903,
+		897,
 		17
 	],
+	"../pages/activityfeeddetails/activityfeeddetails.module": [
+		909,
+		16
+	],
 	"../pages/activityfeedleaderboard/activityfeedleaderboard.module": [
-		891,
+		898,
 		0
 	],
 	"../pages/activityfeedposting/activityfeedposting.module": [
-		904,
-		16
-	],
-	"../pages/attendeesprofile/attendeesprofile.module": [
-		905,
+		911,
 		15
 	],
-	"../pages/cetracking/cetracking.module": [
-		892,
+	"../pages/attendeesprofile/attendeesprofile.module": [
+		910,
 		14
 	],
+	"../pages/cetracking/cetracking.module": [
+		899,
+		21
+	],
 	"../pages/conversations/conversations.module": [
-		893,
+		900,
 		13
 	],
 	"../pages/evaluationlecture/evaluationlecture.module": [
-		894,
+		901,
 		12
 	],
 	"../pages/evaluationworkshop/evaluationworkshop.module": [
-		906,
+		914,
 		11
 	],
 	"../pages/exhibitordetails/exhibitordetails.module": [
-		907,
+		916,
 		10
 	],
 	"../pages/listinglevel1/listinglevel1.module": [
-		910,
+		917,
 		9
 	],
 	"../pages/myagendapersonal/myagendapersonal.module": [
-		908,
+		912,
 		8
 	],
 	"../pages/notesdetails/notesdetails.module": [
-		895,
+		902,
 		7
 	],
 	"../pages/notifications/notifications.module": [
-		896,
-		21
-	],
-	"../pages/profile/profile.module": [
-		909,
+		904,
 		20
 	],
+	"../pages/profile/profile.module": [
+		913,
+		19
+	],
 	"../pages/profileimage/profileimage.module": [
-		897,
+		903,
 		6
 	],
 	"../pages/profilepasswordchange/profilepasswordchange.module": [
-		898,
+		905,
 		5
 	],
 	"../pages/profilesocialmediaentry/profilesocialmediaentry.module": [
-		899,
+		906,
 		4
 	],
 	"../pages/searchbytopic/searchbytopic.module": [
-		900,
+		907,
 		3
 	],
 	"../pages/searchresults/searchresults.module": [
-		911,
+		918,
 		2
 	],
 	"../pages/slider/slider.module": [
-		901,
-		19
+		908,
+		18
 	],
 	"../pages/speakerdetails/speakerdetails.module": [
-		902,
+		915,
 		1
 	],
 	"main.module": [
-		889,
+		896,
 		22
 	]
 };
@@ -5661,19 +5123,19 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 245;
+webpackAsyncContext.id = 240;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 383:
+/***/ 379:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ChatService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__ = __webpack_require__(51);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__ = __webpack_require__(52);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_operators_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(77);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -5790,14 +5252,14 @@ let ChatService = class ChatService {
 ChatService = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
     __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */]])
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"]])
 ], ChatService);
 
 //# sourceMappingURL=chat-service.js.map
 
 /***/ }),
 
-/***/ 474:
+/***/ 469:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -5805,14 +5267,14 @@ ChatService = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__database_database__ = __webpack_require__(475);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__help_help__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__database_database__ = __webpack_require__(470);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__help_help__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__notes_notes__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login__ = __webpack_require__(50);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__myagendafull_myagendafull__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__myagenda_myagenda__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__evaluationconference_evaluationconference__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__myagenda_myagenda__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__evaluationconference_evaluationconference__ = __webpack_require__(100);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -5973,12 +5435,12 @@ let MorePage = class MorePage {
 };
 MorePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-more',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/more/more.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>More</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n\n\n\n<ion-content>\n\n	<ion-list>\n	<!--\n		<button ion-item (click)="NavToPage(\'NotesPage\')">Notes\n			<ion-icon color="secondary" item-start name="create"></ion-icon>\n		</button>\n	-->\n\n		<button ion-item (click)="NavToPage(\'EventSurvey\')">Event Survey\n			<ion-icon color="secondary" item-start name="checkbox"></ion-icon>\n		</button>\n\n<!--\n		<button ion-item (click)="NavToPage(\'MyAgenda\')">MyAgenda\n			<ion-icon color="secondary" item-start name="list-box"></ion-icon>\n		</button>\n\n	-->\n\n		<!--Ad Not Yet Available\n		<img src="assets/img/gbasBig.jpeg" onclick="window.open(\'https://na01.safelinks.protection.outlook.com/?url=https%3A%2F%2Faacd.ejoinme.org%2FMyEvents%2FGiveBackaSmileSilentAuction2018%2Ftabid%2F886099%2FDefault.aspx&data=02%7C01%7Clisab%40aacd.com%7C3affa1cb6109443e9e2808d5a16dd04d%7C867291cda2d943f284571ed60b355ed5%7C0%7C0%7C636592415380677523&sdata=gvaFvM0Ce2X9QYhrsE1PcRiiQroR1MLaMRzdpVpNi9A%3D&reserved=0\', \'_system\', \'location=yes\'); return false;">\n\n-->\n\n<!--\n		<button ion-item (click)="NavToPage(\'MyAgendaFull\')">Agenda All\n			<ion-icon color="secondary" item-start name="list-box"></ion-icon>\n		</button>\n\n	-->\n		<button ion-item (click)="NavToPage(\'HelpPage\')">Help\n			<ion-icon color="secondary" item-start name="list-box"></ion-icon>\n		</button>\n\n\n	\n			<img src="assets/600x300.gif" onclick="window.open (\'http://events.clearthunder.com/ORLANDO2020\', \'_system\', \'location=yes\'); return false;">\n\n\n		<button ion-item (click)="NavToPage(\'DatabasePage\')">Database Stats\n			<ion-icon color="secondary" item-start name="stats"></ion-icon>\n		</button>\n\n		<!--\n		<button ion-item (click)="NavToPage(\'EvalTest1Page\')">Evaluation Test 1\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n\n		<button ion-item (click)="NavToPage(\'EvalTest2Page\')">Evaluation Test 2\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n\n		<button ion-item (click)="NavToPage(\'EvalTest3Page\')">Evaluation Test 3\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n\n		<button ion-item (click)="NavToPage(\'EvalTest4Page\')">Evaluation Test 4\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n		-->\n		\n	</ion-list>\n\n</ion-content>\n\n<ion-footer no-border style="background:#eee">\n\n			 <p style="margin-left:10px"\n			   >Deploy Version: 1.48<br>\n				Device Type: {{DeviceType}}<br>\n				Registration ID: {{RegistrationID}}<br>\n				Last Sync: {{LSync}}<br>\n				Push ID: {{PushID}}</p>\n\n</ion-footer>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/more/more.html"*/,
+        selector: 'page-more',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/more/more.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>More</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n\n\n\n<ion-content>\n\n	<ion-list>\n	<!--\n		<button ion-item (click)="NavToPage(\'NotesPage\')">Notes\n			<ion-icon color="secondary" item-start name="create"></ion-icon>\n		</button>\n	-->\n\n		<button ion-item (click)="NavToPage(\'EventSurvey\')">Event Survey\n			<ion-icon color="secondary" item-start name="checkbox"></ion-icon>\n		</button>\n\n<!--\n		<button ion-item (click)="NavToPage(\'MyAgenda\')">MyAgenda\n			<ion-icon color="secondary" item-start name="list-box"></ion-icon>\n		</button>\n\n	-->\n\n		<!--Ad Not Yet Available\n		<img src="assets/img/gbasBig.jpeg" onclick="window.open(\'https://na01.safelinks.protection.outlook.com/?url=https%3A%2F%2Faacd.ejoinme.org%2FMyEvents%2FGiveBackaSmileSilentAuction2018%2Ftabid%2F886099%2FDefault.aspx&data=02%7C01%7Clisab%40aacd.com%7C3affa1cb6109443e9e2808d5a16dd04d%7C867291cda2d943f284571ed60b355ed5%7C0%7C0%7C636592415380677523&sdata=gvaFvM0Ce2X9QYhrsE1PcRiiQroR1MLaMRzdpVpNi9A%3D&reserved=0\', \'_system\', \'location=yes\'); return false;">\n\n-->\n\n<!--\n		<button ion-item (click)="NavToPage(\'MyAgendaFull\')">Agenda All\n			<ion-icon color="secondary" item-start name="list-box"></ion-icon>\n		</button>\n\n	-->\n		<button ion-item (click)="NavToPage(\'HelpPage\')">Help\n			<ion-icon color="secondary" item-start name="list-box"></ion-icon>\n		</button>\n\n\n		<img src="assets/img/iphone.gif" onclick="window.open (\'http://events.clearthunder.com/ORLANDO2020\', \'_system\', \'location=yes\'); return false;">\n\n\n\n		<button ion-item (click)="NavToPage(\'DatabasePage\')">Database Stats\n			<ion-icon color="secondary" item-start name="stats"></ion-icon>\n		</button>\n\n		<!--\n		<button ion-item (click)="NavToPage(\'EvalTest1Page\')">Evaluation Test 1\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n\n		<button ion-item (click)="NavToPage(\'EvalTest2Page\')">Evaluation Test 2\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n\n		<button ion-item (click)="NavToPage(\'EvalTest3Page\')">Evaluation Test 3\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n\n		<button ion-item (click)="NavToPage(\'EvalTest4Page\')">Evaluation Test 4\n			<ion-icon item-start name="checkbox"></ion-icon>\n		</button>\n		-->\n		\n	</ion-list>\n\n	<!--\n\n	<img src="assets/img/codecycle.gif" onclick="window.open (\'http://events.clearthunder.com/ORLANDO2020\', \'_system\', \'location=yes\'); return false;">\n			\n\n	<img src="assets/img/Flip_flop.gif" onclick="window.open (\'http://events.clearthunder.com/ORLANDO2020\', \'_system\', \'location=yes\'); return false;">\n\n-->\n\n</ion-content>\n\n<ion-footer no-border style="background:#eee">\n\n			 <p style="margin-left:10px"\n			   >Deploy Version: 1.50<br>\n				Device Type: {{DeviceType}}<br>\n				Registration ID: {{RegistrationID}}<br>\n				Last Sync: {{LSync}}<br>\n				Push ID: {{PushID}}</p>\n\n</ion-footer>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/more/more.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], MorePage);
@@ -5987,17 +5449,17 @@ MorePage = __decorate([
 
 /***/ }),
 
-/***/ 475:
+/***/ 470:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DatabasePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_synchronization_synchronization__ = __webpack_require__(92);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -6100,38 +5562,255 @@ DatabasePage = __decorate([
         selector: 'page-database',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/database/database.html"*/'<ion-header>\n    <ion-navbar color="primary">\n      <button ion-button menuToggle>\n        <ion-icon name="menu"></ion-icon>\n			</button>\n			<ion-title>\n					Database Stats\n				</ion-title>\n			</ion-navbar>\n			</ion-header>\n\n\n<ion-content padding>\n\n	<div>\n		If you see N/A for any entry, then you need to be logged in to see that value.<br/>\n		Application version 4.0.0.0015\n	</div>\n\n	<ion-list id="databasestat-list3">\n		<ion-item class="item-icon-left item-icon-right" *ngFor="let databasestat of DatabaseStatsListing" id="databasestat-list-item19">\n			<div>\n				<div class="row">\n					<div class="col">\n						<div style="float: left; padding-right: 10px;">\n							<ion-icon name="document"></ion-icon>\n						</div>\n						<div class="col">\n							<p class="myLabelBold">\n								{{databasestat.DatabaseTable}}\n							</p>\n						</div>\n						<div style="float: right">\n							{{databasestat.DatabaseRecords}}\n						</div>\n					</div>\n				</div>\n			</div>\n		</ion-item>\n	</ion-list>\n\n	<div style="text-align:center">\n		<ion-row>\n			<ion-col>\n				<button ion-button outline [color]="btnEmail" (tap)="ResetAutoSync()">\n					<div>\n						<ion-icon name="refresh"></ion-icon>\n						<label>Reset AutoSync</label>\n					</div>\n				</button>\n			</ion-col>\n			<ion-col>\n				<button ion-button outline [color]="btnEmail" (tap)="ManualSync()">\n					<div>\n						<ion-icon name="refresh"></ion-icon>\n						<label>Manual Sync</label>\n					</div>\n				</button>\n			</ion-col>\n		</ion-row>\n\n		<ion-row>\n			<ion-col>\n				<ion-label><b>Last Sync: {{LastAutoSync}} UTC</b></ion-label>\n			</ion-col>\n			<ion-col>\n				<ion-label><b>&nbsp;</b></ion-label>\n			</ion-col>\n		</ion-row>\n	</div>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/database/database.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_3__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__["a" /* Localstorage */],
         __WEBPACK_IMPORTED_MODULE_5__providers_synchronization_synchronization__["a" /* Synchronization */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */]])
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"]])
 ], DatabasePage);
 
 //# sourceMappingURL=database.js.map
 
 /***/ }),
 
-/***/ 49:
+/***/ 471:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ProgramPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__ = __webpack_require__(384);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__providers_synchronization_synchronization__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__home_home__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__notes_notes__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__myagenda_myagenda__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__myagendafull_myagendafull__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__evaluationconference_evaluationconference__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__speakers_speakers__ = __webpack_require__(156);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Components, functions, plugins
+
+
+
+
+// Pages
+
+let ProgramPage = class ProgramPage {
+    constructor(navCtrl, navParams, nav, localstorage) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.nav = nav;
+        this.localstorage = localstorage;
+    }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad: ProgramPage');
+    }
+    DisplayListing(listingType) {
+        // Store selection in localStorage for the next page
+        this.localstorage.setLocalValue('ListingType', listingType);
+        console.log('Listing Type: ' + listingType);
+        switch (listingType) {
+            case "Speakers":
+                // Navigate to Speakers page
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__speakers_speakers__["a" /* SpeakersPage */], {}, { animate: true, direction: 'forward' });
+                break;
+            case "SearchbyTopic":
+                // Navigate to Speakers page
+                this.navCtrl.push('SearchByTopicPage', {}, { animate: true, direction: 'forward' });
+                break;
+            default:
+                // Navigate to Listing page
+                this.navCtrl.push('ListingLevel1', { listingType: listingType }, { animate: true, direction: 'forward' });
+                break;
+        }
+    }
+    navToClientWebsite() {
+        var WebsiteURL = "https://www.aacd.com/index.php?module=aacd.websiteforms&cmd=aacdconvergenceauth";
+        var u = this.localstorage.getLocalValue('loginUsername');
+        var p = this.localstorage.getLocalValue('loginPassword');
+        // Create URL string
+        WebsiteURL = WebsiteURL + "&u=" + u + "&p=" + p;
+        // Open website
+        window.open(WebsiteURL, '_system');
+    }
+};
+ProgramPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-program',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/program/program.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Program</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<!-- Search input \n	<div class="list marginTB0">\n		<div class="item item-input">\n			<i class="icon {{tabSearch}} iconSize"></i>\n			<input id="srchBarEntry" type="text" placeholder="Search" ngModel="search.EntryTerms">\n			<button class="button button-small blue" ngClick="GetSearchResults()">\n				Submit\n			</button>\n		</div>\n	</div>\n	-->\n\n	<div class="myPaddingLR" style="background:#f9f9f9; color:#444;padding-top:10px!important; padding-bottom:10px!important">\n\n		<h3>Getting Started!</h3>\n		<h6>  Step 1: Login to populate your pre-registered sessions.</h6> \n		<h6>  Step 2: Add sessions by using the button below.</h6>\n		<h6>  Step 3: New sessions should be shown within 30 mins.</h6>\n		<!-- Disabled per LIsa Bollenbach 2018-04-19 -->\n		<!--<p style="font-size:14px; margin-top:0px">Note: If you do not see a confirmed session, use the add button for that session.</p>-->\n	\n\n    <div text-center>\n			<button ion-button style="background:#cc5d1d" (click)="navToClientWebsite()">\n			  Edit / Select Courses \n			</button>\n		  </div>\n		</div>\n\n	<!-- Program Overview -->\n	<ion-list>\n		<!--\n		<ion-item class="item-icon-left item-icon-right wineBG myTextWhite" ngClick="navToClientWebsite()" >\n			<i class="icon {{tabRegistration}}"></i>Edit/Select Courses\n			<i class="icon {{navigationRightArrow}}"></i>\n		</ion-item>\n		-->\n\n	\n		<button ion-item (click)="DisplayListing(\'SearchbyTopic\')" id="program-list-item1">\n			<ion-icon color="secondary" item-left name="search"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Search by Topic</h2>\n		</button>\n\n\n		<button ion-item (click)="DisplayListing(\'Lectures\')" id="program-list-item3">\n			<ion-icon color="secondary" item-left name="list"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Lectures</h2>\n		</button>\n\n		<button ion-item (click)="DisplayListing(\'Participation\')" id="program-list-item4">\n			<ion-icon color="secondary" item-left name="list"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Workshops</h2>\n		</button>\n\n		<button ion-item (click)="DisplayListing(\'Receptions and Events\')" id="program-list-item5">\n			<ion-icon color="secondary" item-left name="people"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Receptions and Events</h2>\n		</button>\n\n		<button ion-item (click)="DisplayListing(\'Speakers\')" id="program-list-item2">\n			<ion-icon color="secondary" item-left name="mic"></ion-icon>\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>Speakers</h2>\n		</button>\n\n	</ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/program/program.html"*/
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], ProgramPage);
+
+//# sourceMappingURL=program.js.map
+
+/***/ }),
+
+/***/ 472:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConferenceCityPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+let ConferenceCityPage = class ConferenceCityPage {
+    constructor(navCtrl) {
+        this.navCtrl = navCtrl;
+    }
+};
+ConferenceCityPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-conferencecity',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/conferencecity/conferencecity.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>\n      San Diego\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n    <div class="">\n            <img src="assets/img/gaslamp.jpg" width="100%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n        </div>\n\n\n  <ion-list id="lasvegas-list11" class=" ">\n            <ion-item class="item-avatar item-icon-right  " id="lasvegas-list-item30" href="#" onclick="window.open(\'https://www.san.org/\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/sdap.jpg">\n                    </ion-avatar>\n                <h2>San Diego International Airport</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item33" href="#" \n            onclick="window.open(\'https://www.zagat.com/san-diego\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/Zagat_Logo.jpeg">\n                      </ion-avatar>\n                <h2>Restaurants</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item54" href="#" \n            onclick="window.open(\'https://www.marriott.com/hotels/travel/sandt-marriott-marquis-san-diego-marina/\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/sdhotel.jpg">\n                      </ion-avatar>\n                <h2>Hotels</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n\n\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item54" href="#" \n            onclick="window.open(\'https://www.sandiego.org/articles/shopping/san-diego-comprehensive-shopping-guide.aspx\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/sdshop.jpg">\n                      </ion-avatar>\n                <h2>Shopping</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n\n\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item55" href="#" \n            onclick="window.open(\'https://weather.com/weather/tenday/l/USCA0982:1:US\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/nicubunu-Weather-Symbols-Sun.png">\n                      </ion-avatar>\n                <h2>Weather</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item56" href="#" \n            onclick="window.open(\'https://www.yelp.com/city/san-diego\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/yelp.png">\n                      </ion-avatar>\n                <h2>Yelp!</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n            <ion-item class="item-avatar item-icon-right  " id="anaheim-list-item57" href="#" onclick="window.open(\'https://www.uber.com/\', \'_system\', \'location=yes\'); return false;">\n  <ion-avatar item-left>\n                <img src="assets/img/Uber_Logo_1.png">\n                      </ion-avatar>\n                <h2>Uber</h2>\n                <i class="icon ion-ios-arrow-right"></i>\n            </ion-item>\n\n        </ion-list>\n    </ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/conferencecity/conferencecity.html"*/
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"]])
+], ConferenceCityPage);
+
+//# sourceMappingURL=conferencecity.js.map
+
+/***/ }),
+
+/***/ 473:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MapPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_leaflet__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+let MapPage = class MapPage {
+    constructor(navCtrl, platform) {
+        this.navCtrl = navCtrl;
+        this.platform = platform;
+    }
+    ngOnInit() {
+        // -----------------
+        // Show Level 1
+        // -----------------
+        /*
+            this.myMap2 = L.map('mapLevel2', {
+                crs: L.CRS.Simple,
+                minZoom: -1,
+                maxZoom: 1,
+                zoomControl: true
+            });
+    
+            var bounds = L.latLngBounds([0, 0], [1900, 1700]);    // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
+            var image = L.imageOverlay('assets/img/overview.png', bounds, {
+                attribution: 'Convergence'
+            }).addTo(this.myMap2);
+    
+            this.myMap2.fitBounds(bounds);
+            this.myMap2.setMaxBounds(bounds);
+            
+    */
+        // -----------------
+        // Show Level 2
+        // -----------------
+        this.myMap3 = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('mapLevel3', {
+            crs: __WEBPACK_IMPORTED_MODULE_2_leaflet__["CRS"].Simple,
+            minZoom: -2,
+            maxZoom: 2,
+            zoomControl: true
+        });
+        var bounds = __WEBPACK_IMPORTED_MODULE_2_leaflet__["latLngBounds"]([0, 0], [2000, 1300]); // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
+        var image = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"]('assets/img/glevel.png', bounds, {
+            attribution: 'Convergence'
+        }).addTo(this.myMap3);
+        this.myMap3.fitBounds(bounds);
+        this.myMap3.setMaxBounds(bounds);
+        // -----------------
+        // Show Level 3
+        // -----------------
+        this.myMap4 = __WEBPACK_IMPORTED_MODULE_2_leaflet__["map"]('mapLevel4', {
+            crs: __WEBPACK_IMPORTED_MODULE_2_leaflet__["CRS"].Simple,
+            minZoom: -2,
+            maxZoom: 2,
+            zoomControl: true
+        });
+        var bounds = __WEBPACK_IMPORTED_MODULE_2_leaflet__["latLngBounds"]([0, 0], [2000, 1300]); // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
+        var image = __WEBPACK_IMPORTED_MODULE_2_leaflet__["imageOverlay"]('assets/img/ulmap.png', bounds, {
+            attribution: 'Convergence'
+        }).addTo(this.myMap4);
+        this.myMap4.fitBounds(bounds);
+        this.myMap4.setMaxBounds(bounds);
+        /*
+                // -----------------
+                // Show Concourse
+                // -----------------
+                this.myMap5 = L.map('mapLevel5', {
+                    crs: L.CRS.Simple,
+                    minZoom: -1,
+                    maxZoom: 1,
+                    zoomControl: true
+                });
+        
+                var bounds = L.latLngBounds([0, 0], [1200, 1700]);    // Normally 1000, 1000; stretched to 2000,1000 for AACD 2017
+                var image = L.imageOverlay('assets/img/upperlevel.png', bounds, {
+                    attribution: 'Convergence'
+                }).addTo(this.myMap5);
+        
+                this.myMap5.fitBounds(bounds);
+                this.myMap5.setMaxBounds(bounds);
+        */
+    }
+};
+MapPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-map',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/map/map.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Maps</ion-title>\n  </ion-navbar>\n</ion-header>\n\n\n\n<ion-content padding>\n<!-- \n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			Overview\n		</ion-card-header>\n        <div id="mapLevel2" style="width:100%; height:500px;"></div>\n	</ion-card>\n-->\n	<ion-card>\n		<ion-card-header style="background:#283747; color:#fff">\n			Ground Level\n		</ion-card-header>\n        <div class="position-fixed" id="mapLevel3" style="width:100%; height:500px;"></div>\n	</ion-card>\n\n	<ion-card>\n\n		<ion-card-header style="background:#283747; color:#fff">\n			Upper Level\n		</ion-card-header>\n        <div class="myMarginTopBottom; position-fixed" id="mapLevel4" style="width:100%; height:500px;"></div>\n	</ion-card>\n<!--\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			Ballroom Level\n		</ion-card-header>\n        <div id="mapLevel5" style="width:100%; height:500px;"></div>\n	</ion-card>\n-->\n	\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/map/map.html"*/
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"]])
+], MapPage);
+
+//# sourceMappingURL=map.js.map
+
+/***/ }),
+
+/***/ 474:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ExhibitorsPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6148,6 +5827,349 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+let ExhibitorsPage = class ExhibitorsPage {
+    constructor(navCtrl, navParams, storage, databaseprovider, cd, loadingCtrl, localstorage) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.storage = storage;
+        this.databaseprovider = databaseprovider;
+        this.cd = cd;
+        this.loadingCtrl = loadingCtrl;
+        this.localstorage = localstorage;
+        this.ExhibitorListing = [];
+    }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad ExhibitorsPage');
+    }
+    handleKeyboardEvent(event) {
+        if (event.key == 'Enter') {
+            console.log('Enter key detected');
+            this.GetSearchResults();
+        }
+    }
+    ngOnInit() {
+        // Load initial data set here
+        //let loading = this.loadingCtrl.create({
+        //	spinner: 'crescent',
+        //	content: 'Please wait...'
+        //});
+        //loading.present();
+        // Blank and show loading info
+        this.ExhibitorListing = [];
+        this.cd.markForCheck();
+        // Temporary use variables
+        var flags = "li|Alpha|0";
+        var dayID;
+        var DisplayLocation = "";
+        var ExhibitorDividerCharacter = "";
+        // Get the data
+        this.databaseprovider.getExhibitorData(flags).then(data => {
+            console.log("getExhibitorData: " + JSON.stringify(data));
+            // If data was returned, the create list
+            if (data['length'] > 0) {
+                // Loop through data
+                for (var i = 0; i < data['length']; i++) {
+                    // Construct location based on US or International
+                    if ((data[i].Country != "United States") && (data[i].Country != "")) {
+                        DisplayLocation = data[i].City + ", " + data[i].Country;
+                    }
+                    else {
+                        DisplayLocation = data[i].City + ", " + data[i].State;
+                    }
+                    var imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/ExhibitorLogos/" + data[i].imageFilename;
+                    // If Exhibitor is not in same grouping, create new divider bar
+                    if (data[i].CompanyName.charAt(0) != ExhibitorDividerCharacter) {
+                        // Display the divider
+                        this.ExhibitorListing.push({
+                            ExhibitorID: 0,
+                            CompanyName: data[i].CompanyName.charAt(0),
+                            DisplayCityState: "",
+                            BoothNumber: "",
+                            exhibitorAvatar: "assets/img/SpeakerDivider.png",
+                            exhibitorIcon: "nothing",
+                            exhibitorClass: "wineDivider",
+                            navigationArrow: "nothing"
+                        });
+                        // Set the new marker point
+                        ExhibitorDividerCharacter = data[i].CompanyName.charAt(0);
+                        // Show the current record
+                        this.ExhibitorListing.push({
+                            ExhibitorID: data[i].ExhibitorID,
+                            CompanyName: data[i].CompanyName,
+                            DisplayCityState: DisplayLocation,
+                            BoothNumber: "Booth: " + data[i].BoothNumber,
+                            exhibitorIcon: "people",
+                            exhibitorAvatar: imageAvatar,
+                            exhibitorClass: "myLabelBold",
+                            navigationArrow: "arrow-dropright"
+                        });
+                    }
+                    else {
+                        this.ExhibitorListing.push({
+                            ExhibitorID: data[i].ExhibitorID,
+                            CompanyName: data[i].CompanyName,
+                            DisplayCityState: DisplayLocation,
+                            BoothNumber: "Booth: " + data[i].BoothNumber,
+                            exhibitorIcon: "people",
+                            exhibitorAvatar: imageAvatar,
+                            exhibitorClass: "myLabelBold",
+                            navigationArrow: "arrow-dropright"
+                        });
+                    }
+                }
+            }
+            else {
+                this.ExhibitorListing.push({
+                    ExhibitorID: 0,
+                    CompanyName: "No records available",
+                    DisplayCityState: "",
+                    BoothNumber: "",
+                    exhibitorIcon: "",
+                    exhibitorAvatar: "assets/img/SpeakerDivider.png",
+                    exhibitorClass: "myLabelBold",
+                    navigationArrow: ""
+                });
+            }
+            this.cd.markForCheck();
+            //loading.dismiss();
+        }).catch(function () {
+            console.log("Promise Rejected");
+        });
+    }
+    ExhibitorDetails(ExhibitorID) {
+        if (ExhibitorID != 0) {
+            // Navigate to Exhibitor Details page
+            this.navCtrl.push('ExhibitorDetailsPage', { ExhibitorID: ExhibitorID }, { animate: true, direction: 'forward' });
+        }
+    }
+    ;
+    GetSearchResults() {
+        var SearchTerms = this.EntryTerms;
+        if ((SearchTerms == undefined) || (SearchTerms == "")) {
+            // Do nothing or show message
+        }
+        else {
+            this.localstorage.setLocalValue("SearchTerms", SearchTerms);
+            this.navCtrl.push('SearchResultsPage', { SearchTerms: SearchTerms }, { animate: true, direction: 'forward' });
+        }
+    }
+    ;
+};
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["HostListener"])('document:keypress', ['$event']),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [KeyboardEvent]),
+    __metadata("design:returntype", void 0)
+], ExhibitorsPage.prototype, "handleKeyboardEvent", null);
+ExhibitorsPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-exhibitors',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/exhibitors/exhibitors.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Exhibitors</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n<ion-content>\n\n	<ion-list id="Exhibitors-list3">\n\n		<!-- Search input -->\n		<ion-grid>\n			<ion-row>\n				<ion-col col-9>	\n\n					<ion-item>\n						<ion-icon name="search" item-left></ion-icon>\n						<ion-input name="srchBarEntry" id="srchBarEntry" \n						type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n					</ion-item>\n				</ion-col>\n				<ion-col col-3>\n					<button ion-button full style="background:#cc5d1d; margin:0" (tap)="GetSearchResults()">Submit</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n\n		<!-- Exhibitor listing -->\n		<ion-list>\n			<ion-item (tap)="ExhibitorDetails(exhibitor.ExhibitorID)" style="float: left; padding-right: 10px;"\n			*ngFor="let exhibitor of ExhibitorListing" id="exhibitors-list-item19">\n			\n			<!--\n				<ion-icon color="secondary" item-left name="{{exhibitor.exhibitorIcon}}"></ion-icon>\n				<ion-icon color="secondary" item-right name="{{exhibitor.navigationArrow}}"></ion-icon>\n-->\n\n\n			\n		<!--	<ion-icon name="{{exhibitor.exhibitorIcon}}"></ion-icon> -->\n						<ion-thumbnail item-start>\n							<img src="{{exhibitor.exhibitorAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n						</ion-thumbnail>\n				\n				<h2>{{exhibitor.CompanyName}}</h2>\n				<p>{{exhibitor.DisplayCityState}}</p>\n				<p>{{exhibitor.BoothNumber}}</p>\n			</ion-item>\n		</ion-list>\n	</ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/exhibitors/exhibitors.html"*/,
+        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
+        __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
+        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], ExhibitorsPage);
+
+//# sourceMappingURL=exhibitors.js.map
+
+/***/ }),
+
+/***/ 475:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NetworkingPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__attendees_attendees__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__profile_profile__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__notifications_notifications__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__activity_activity__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__social_social__ = __webpack_require__(157);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Components, functions, plugins
+
+
+
+
+// Pages
+
+//import { ConversationsPage } from '../conversations/conversations';
+//import { ConversationsPage } from '../conversations/conversations';
+
+
+
+
+let NetworkingPage = class NetworkingPage {
+    constructor(navCtrl, navParams, nav, databaseprovider, alertCtrl, cd, localstorage) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.nav = nav;
+        this.databaseprovider = databaseprovider;
+        this.alertCtrl = alertCtrl;
+        this.cd = cd;
+        this.localstorage = localstorage;
+        this.NewMessagesIndicator = false;
+    }
+    ionViewDidEnter() {
+        console.log('ionViewDidEnter: NetworkingPage');
+        var DCArrayString = this.localstorage.getLocalValue('DirectChatMonitoringString');
+        console.log('DCArrayString: ' + DCArrayString);
+        if (DCArrayString !== null) {
+            var data2 = JSON.parse(DCArrayString);
+            if (data2['length'] > 0) {
+                console.log('data2, NewMessages: ' + data2[0].NewMessages);
+                this.NewMessagesCounter = data2[0].NewMessages;
+                if (data2[0].NewMessages == "0") {
+                    this.NewMessagesIndicator = false;
+                }
+                else {
+                    this.NewMessagesIndicator = true;
+                }
+            }
+            else {
+                this.NewMessagesIndicator = false;
+            }
+        }
+        else {
+            this.NewMessagesIndicator = true;
+        }
+        this.cd.markForCheck();
+    }
+    NavigateTo(page) {
+        if (page == 'Conversations' || page == 'ActivityFeed') {
+            var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+            var flags = "cn";
+            this.databaseprovider.getDatabaseStats(flags, AttendeeID).then(data => {
+                if (data[0].Status == "Connected") {
+                    switch (page) {
+                        case "Conversations":
+                            // Navigate to Conversations page
+                            this.navCtrl.push('ConversationsPage', {}, { animate: true, direction: 'forward' });
+                            break;
+                        case "ActivityFeed":
+                            // Navigate to Activity Feed page
+                            this.localstorage.setLocalValue('ActivityFeedID', '0');
+                            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__activity_activity__["a" /* ActivityPage */], {}, { animate: true, direction: 'forward' });
+                            break;
+                        case "Attendees":
+                            // Navigate to Activity Feed page
+                            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__attendees_attendees__["a" /* AttendeesPage */], {}, { animate: true, direction: 'forward' });
+                            break;
+                        case "MyProfile":
+                            // Navigate to Activity Feed page
+                            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__profile_profile__["a" /* ProfilePage */], {}, { animate: true, direction: 'forward' });
+                            break;
+                    }
+                }
+                else {
+                    let alert = this.alertCtrl.create({
+                        title: 'Internet Error',
+                        subTitle: 'You need to have Internet access in order to use that feature.',
+                        buttons: ['OK']
+                    });
+                    alert.present();
+                }
+            });
+        }
+        else {
+            switch (page) {
+                case "Attendees":
+                    // Navigate to Attendees page
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__attendees_attendees__["a" /* AttendeesPage */], {}, { animate: true, direction: 'forward' });
+                    break;
+                case "Conversations":
+                    // Navigate to Conversations page
+                    this.navCtrl.push('ConversationsPage', {}, { animate: true, direction: 'forward' });
+                    break;
+                case "MyProfile":
+                    // Navigate to Profile page
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__profile_profile__["a" /* ProfilePage */], {}, { animate: true, direction: 'forward' });
+                    break;
+                case "Notifications":
+                    // Navigate to Notifications page
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_6__notifications_notifications__["a" /* NotificationsPage */], {}, { animate: true, direction: 'forward' });
+                    break;
+                case "SocialMedia":
+                    // Navigate to Social Media page
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__social_social__["a" /* SocialPage */], {}, { animate: true, direction: 'forward' });
+                    break;
+                case "ActivityFeed":
+                    // Navigate to Activity Feed page
+                    this.localstorage.setLocalValue('ActivityFeedID', '0');
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_7__activity_activity__["a" /* ActivityPage */], {}, { animate: true, direction: 'forward' });
+                    break;
+            }
+        }
+    }
+};
+NetworkingPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-networking',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/networking/networking.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Networking</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content class="networking" style="background:#0b172a">\n\n	<ion-grid>\n	\n		<ion-row style="background:#283747">\n			<ion-col align-self-center style="background:#283747; height:100%">\n				<ion-item no-lines detail-none class="buttonShape" style="background:#283747" (click)="NavigateTo(\'Attendees\')" id="program-list-item1">\n					<ion-icon name="contacts" class="buttonIconsL"></ion-icon>\n					<h2>Attendees</h2>\n				</ion-item>\n			</ion-col>\n\n			<ion-col align-self-center style="background:#cc5d1d; height:100%">\n				<ion-item no-lines detail-none class="buttonShape" style="background:#cc5d1d"  (click)="NavigateTo(\'Conversations\')" id="program-list-item3">\n					<ion-icon name="chatbubbles" class="buttonIconsL"></ion-icon>\n					<h2>Conversations</h2>\n					<p *ngIf=NewMessagesIndicator style="color:#fff;">{{NewMessagesCounter}} New Messages</p>\n				</ion-item>\n			</ion-col>\n		</ion-row>\n		\n		<ion-row style="background:#cc5d1d"> \n			<ion-col align-self-center style="background:#cc5d1d; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#cc5d1d;" (click)="NavigateTo(\'MyProfile\')" id="program-list-item5">\n					<ion-icon name="contact" class="buttonIconsL"></ion-icon>\n					<h2>My Profile</h2>\n				</button>\n			</ion-col>\n			\n			<ion-col align-self-center style="background:#283747; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#283747" (click)="NavigateTo(\'Notifications\')" id="program-list-item2">\n					<ion-icon name="alert" class="buttonIconsL"></ion-icon>\n					<h2>Notifications</h2>\n				</button>\n			</ion-col>\n		</ion-row>\n		\n		<ion-row style="background:#283747">\n			<ion-col align-self-center style="background:#283747; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#283747" (click)="NavigateTo(\'ActivityFeed\')" id="program-list-item5">\n					<ion-icon name="chatboxes" class="buttonIconsL"></ion-icon>\n					<h2>Activities Feed</h2>\n				</button>\n			</ion-col>\n			\n			<ion-col align-self-center style="background:#cc5d1d; height:100%">\n				<button ion-item no-lines detail-none class="buttonShape" style="background:#cc5d1d;" (click)="NavigateTo(\'SocialMedia\')" id="program-list-item2">\n					<ion-icon name="text" class="buttonIconsL"></ion-icon>\n					<h2>Social Media</h2>\n				</button>\n			</ion-col>\n		</ion-row>\n			\n	</ion-grid>\n\n</ion-content>\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/networking/networking.html"*/,
+        changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_3__providers_database_database__["a" /* Database */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
+        __WEBPACK_IMPORTED_MODULE_2__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], NetworkingPage);
+
+//# sourceMappingURL=networking.js.map
+
+/***/ }),
+
+/***/ 50:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_synchronization_synchronization__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__home_home__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__notes_notes__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__myagenda_myagenda__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__myagendafull_myagendafull__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__evaluationconference_evaluationconference__ = __webpack_require__(100);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Components, functions, plugins
+
+
+
+//import { HTTP } from '@ionic-native/http';
+
+
 
 
 
@@ -6158,11 +6180,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 let LoginPage = class LoginPage {
-    constructor(navCtrl, navParams, http, http2, alertCtrl, storage, cd, syncprovider, localstorage, events, loadingCtrl) {
+    constructor(navCtrl, navParams, 
+    //private http: HTTP, 
+    http, alertCtrl, storage, cd, syncprovider, localstorage, events, loadingCtrl) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.http = http;
-        this.http2 = http2;
         this.alertCtrl = alertCtrl;
         this.storage = storage;
         this.cd = cd;
@@ -6251,7 +6274,7 @@ let LoginPage = class LoginPage {
         this.LogoutSection = false;
         this.localstorage.setLocalValue('ForwardingPage', '');
         this.events.publish('user:Status', 'Logged Out');
-        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_8__home_home__["a" /* HomePage */], {}, { animate: true, direction: 'forward' });
+        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__home_home__["a" /* HomePage */], {}, { animate: true, direction: 'forward' });
     }
     // Login button clicked, process input
     LoginUser() {
@@ -6288,29 +6311,35 @@ let LoginPage = class LoginPage {
             var encodedLoginName = encodeURI(this.LoginName);
             var encodedLoginPassword = encodeURI(this.LoginPassword);
             var DevicePlatform = this.localstorage.getLocalValue('DevicePlatform');
-            this.http.get('https://demoplanner.convergence-us.com/cvplanner.php?acy=2019&action=authenticate&em=' + this.LoginName + '&ps=' + this.LoginPassword, {}, {}).then(data => {
-                var loginService4 = JSON.parse(data.data);
-                console.log("API Response: " + JSON.stringify(loginService4));
-                console.log("Status: " + loginService4.status);
-                console.log("Attendee ID: " + loginService4.AttendeeID);
-                console.log("Attendee Full Name: " + loginService4.AttendeeFullName);
-                console.log("Conference Dates: " + loginService4.ConferenceDates);
-                console.log("Conference Date Labels: " + loginService4.ConferenceDateLabels);
-                var initials = loginService4.AttendeeFullName.match(/\b\w/g) || [];
+            var URL = 'https://demoplanner.convergence-us.com/cvplanner.php?acy=2019';
+            URL = URL + '&action=authenticate';
+            URL = URL + '&em=' + this.LoginName;
+            URL = URL + '&ps=' + this.LoginPassword;
+            URL = URL + '&pushID=' + pushID;
+            URL = URL + '&deviceType=' + deviceType;
+            this.http.get(URL).map(res => res.json()).subscribe(data => {
+                //var loginService4 = JSON.parse(data.data);					
+                console.log("API Response: " + JSON.stringify(data));
+                console.log("Status: " + data.status);
+                console.log("Attendee ID: " + data.AttendeeID);
+                console.log("Attendee Full Name: " + data.AttendeeFullName);
+                console.log("Conference Dates: " + data.ConferenceDates);
+                console.log("Conference Date Labels: " + data.ConferenceDateLabels);
+                var initials = data.AttendeeFullName.match(/\b\w/g) || [];
                 initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
                 this.localstorage.setLocalValue("LoginNameInitials", initials);
                 // Store values
                 this.localstorage.setLocalValue('LoginName', this.LoginName);
-                this.localstorage.setLocalValue('LoginFullName', loginService4.AttendeeFullName);
-                this.localstorage.setLocalValue('AttendeeID', loginService4.AttendeeID);
+                this.localstorage.setLocalValue('LoginFullName', data.AttendeeFullName);
+                this.localstorage.setLocalValue('AttendeeID', data.AttendeeID);
                 //var diffDays = Math.round(Math.abs((StartDate.getTime() - EndDate.getTime())/(oneDay)));
-                var diffDays = loginService4.ConferenceDays;
+                var diffDays = data.ConferenceDays;
                 // Store values
                 this.localstorage.setLocalValue("AgendaDays", diffDays);
-                this.localstorage.setLocalValue("AgendaDates", loginService4.ConferenceDates);
-                this.localstorage.setLocalValue("AgendaDayButtonLabels", loginService4.ConferenceDateLabels);
+                this.localstorage.setLocalValue("AgendaDates", data.ConferenceDates);
+                this.localstorage.setLocalValue("AgendaDayButtonLabels", data.ConferenceDateLabels);
                 // Show response
-                if (loginService4.status == 200) {
+                if (data.status == 200) {
                     this.events.publish('user:Status', 'Logged In');
                     let alert = this.alertCtrl.create({
                         title: 'App Login',
@@ -6327,19 +6356,19 @@ let LoginPage = class LoginPage {
                 var ForwardingPage = this.localstorage.getLocalValue('ForwardingPage');
                 switch (ForwardingPage) {
                     case "MyAgenda":
-                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' }).then(() => {
+                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_9__myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' }).then(() => {
                             const startIndex = this.navCtrl.getActive().index - 1;
                             this.navCtrl.remove(startIndex, 1);
                         });
                         break;
                     case "MyAgendaFull":
-                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__myagendafull_myagendafull__["a" /* MyAgendaFull */], {}, { animate: true, direction: 'forward' }).then(() => {
+                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__myagendafull_myagendafull__["a" /* MyAgendaFull */], {}, { animate: true, direction: 'forward' }).then(() => {
                             const startIndex = this.navCtrl.getActive().index - 1;
                             this.navCtrl.remove(startIndex, 1);
                         });
                         break;
                     case "EventSurvey":
-                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_12__evaluationconference_evaluationconference__["a" /* EvaluationConference */], {}, { animate: true, direction: 'forward' }).then(() => {
+                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__evaluationconference_evaluationconference__["a" /* EvaluationConference */], {}, { animate: true, direction: 'forward' }).then(() => {
                             const startIndex = this.navCtrl.getActive().index - 1;
                             this.navCtrl.remove(startIndex, 1);
                         });
@@ -6351,14 +6380,14 @@ let LoginPage = class LoginPage {
                         });
                         break;
                     case "Notes":
-                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_9__notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' }).then(() => {
+                        this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_8__notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' }).then(() => {
                             const startIndex = this.navCtrl.getActive().index - 1;
                             this.navCtrl.remove(startIndex, 1);
                         });
                         break;
                     default:
                         // Navigate back to Home page but eliminate Back button by setting it to Root
-                        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_8__home_home__["a" /* HomePage */], {}, { animate: true, direction: 'forward' });
+                        this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_7__home_home__["a" /* HomePage */], {}, { animate: true, direction: 'forward' });
                         break;
                 }
                 loading.dismiss();
@@ -6376,51 +6405,67 @@ let LoginPage = class LoginPage {
             });
         }
     }
+    /*
     SelectLogin() {
+        
         console.log('SelectLogin method chosen');
         console.log(JSON.stringify(this.selectedLogin));
+        
         if ((this.selectedLogin["DisplayName"] === undefined) || (this.selectedLogin["DisplayName"] == "")) {
+
             let alert = this.alertCtrl.create({
                 title: 'Login Error',
                 subTitle: 'You cannot select a blank name.&nbsp; Please try again.',
                 buttons: ['OK']
             });
+            
             alert.present();
-        }
-        else {
+
+        } else {
+
             console.log("ID: " + this.selectedLogin["ct_id"]);
             console.log("Name: " + this.selectedLogin["DisplayName"]);
+
             var today = new Date();
             var dd = today.getDate();
             var mm = today.getMonth() + 1; //January is 0!
             var yyyy = today.getFullYear();
             var hr = today.getHours();
             var mn = today.getMinutes();
+
             if (dd < 10) {
-                var ds = '0' + dd;
+                var ds = '0' + dd
             }
+
             if (mm < 10) {
-                var ms = '0' + mm;
+                var ms = '0' + mm
             }
+
             if (hr < 10) {
-                var hs = '0' + hr;
+                var hs = '0' + hr
             }
+
             if (mn < 10) {
-                var ns = '0' + mn;
+                var ns = '0' + mn
             }
+
             var todayS = yyyy + '-' + ms + '-' + ds + ' ' + hs + ':' + ns + ':00';
+
             this.localstorage.setLocalValue("AttendeeID", this.selectedLogin["ct_id"]);
             this.localstorage.setLocalValue("AttendeeFullName", this.selectedLogin["DisplayName"]);
             this.localstorage.setLocalValue("LastLoggedInDate", todayS);
             this.localstorage.setLocalValue('LoginFullName', this.selectedLogin["DisplayName"]);
+
             var Fullname = this.selectedLogin["DisplayName"];
             var n = Fullname.indexOf(',');
             Fullname = Fullname.substring(0, n != -1 ? n : Fullname.length);
             var initials = Fullname.match(/\b\w/g) || [];
             initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
             this.localstorage.setLocalValue("LoginNameInitials", initials);
+
             var pushID = this.localstorage.getLocalValue('PlayerID');
             var deviceType = this.localstorage.getLocalValue('DevicePlatform');
+            
             // -------------------------------------------
             // Get conference dates after successful login
             // -------------------------------------------
@@ -6429,23 +6474,32 @@ let LoginPage = class LoginPage {
             URL2 = URL2 + '&atID=' + this.selectedLogin["ct_id"];
             URL2 = URL2 + '&pushID=' + pushID;
             URL2 = URL2 + '&deviceType=' + deviceType;
+            
             console.log('Login URL: ' + URL);
-            this.http.get(URL2, {}, {}).then(data2 => {
-                var loginService6 = JSON.parse(data2.data);
-                console.log("API Response: " + JSON.stringify(loginService6));
-                console.log("Status: " + loginService6.status);
-                console.log("Conference Dates: " + loginService6.ConferenceDates);
-                console.log("Conference Date Labels: " + loginService6.ConferenceDateLabels);
-                //var diffDays = Math.round(Math.abs((StartDate.getTime() - EndDate.getTime())/(oneDay)));
-                var diffDays = loginService6.ConferenceDays;
-                // Store values
-                this.localstorage.setLocalValue("AgendaDays", diffDays);
-                this.localstorage.setLocalValue("AgendaDates", loginService6.ConferenceDates);
-                this.localstorage.setLocalValue("AgendaDayButtonLabels", loginService6.ConferenceDateLabels);
-            });
+            
+            this.http.get(URL2, {}, {}).then(
+                data2 => {
+                    var loginService6 = JSON.parse(data2.data);
+                    console.log("API Response: " + JSON.stringify(loginService6));
+                    console.log("Status: " + loginService6.status);
+                    console.log("Conference Dates: " + loginService6.ConferenceDates);
+                    console.log("Conference Date Labels: " + loginService6.ConferenceDateLabels);
+
+                    //var diffDays = Math.round(Math.abs((StartDate.getTime() - EndDate.getTime())/(oneDay)));
+                    var diffDays = loginService6.ConferenceDays;
+                                        
+                    // Store values
+                    this.localstorage.setLocalValue("AgendaDays", diffDays);
+                    this.localstorage.setLocalValue("AgendaDates", loginService6.ConferenceDates);
+                    this.localstorage.setLocalValue("AgendaDayButtonLabels", loginService6.ConferenceDateLabels);
+
+                }
+            );
+
             // Initiate manual sync to get latest information
             this.ManualSync();
             this.events.publish('user:Status', 'Logged In');
+            
             // Save Push Notification token
             // var currentPlatform = ionic.Platform.platform();
             //$ionicPush.register().then(function (t) {
@@ -6454,47 +6508,52 @@ let LoginPage = class LoginPage {
             //    var PushPromise = PushSyncService.SendPushRecord(t.token, this.login.selectedLogin.ct_id, this.login.selectedLogin.DisplayName, currentPlatform, "Register");
             //    console.log('Push token saved: ' + t.token);
             //});
+
             // Depending of saved value, return to Home or move forward to MyAgenda or CE Tracking
             // Get forwarding page value
             var ForwardingPage = this.localstorage.getLocalValue('ForwardingPage');
-            switch (ForwardingPage) {
+                                    
+            switch(ForwardingPage) {
                 case "MyAgenda":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' }).then(() => {
+                    this.navCtrl.push(MyAgenda, {}, {animate: true, direction: 'forward'}).then(() => {
                         const startIndex = this.navCtrl.getActive().index - 1;
                         this.navCtrl.remove(startIndex, 1);
                     });
                     break;
                 case "MyAgendaFull":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__myagendafull_myagendafull__["a" /* MyAgendaFull */], {}, { animate: true, direction: 'forward' }).then(() => {
+                    this.navCtrl.push(MyAgendaFull, {}, {animate: true, direction: 'forward'}).then(() => {
                         const startIndex = this.navCtrl.getActive().index - 1;
                         this.navCtrl.remove(startIndex, 1);
                     });
                     break;
                 case "EventSurvey":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_12__evaluationconference_evaluationconference__["a" /* EvaluationConference */], {}, { animate: true, direction: 'forward' }).then(() => {
+                    this.navCtrl.push(EvaluationConference, {}, {animate: true, direction: 'forward'}).then(() => {
                         const startIndex = this.navCtrl.getActive().index - 1;
                         this.navCtrl.remove(startIndex, 1);
                     });
                     break;
                 case "CETracking":
-                    this.navCtrl.push('CetrackingPage', {}, { animate: true, direction: 'forward' }).then(() => {
+                    this.navCtrl.push('CetrackingPage', {}, {animate: true, direction: 'forward'}).then(() => {
                         const startIndex = this.navCtrl.getActive().index - 1;
                         this.navCtrl.remove(startIndex, 1);
                     });
                     break;
                 case "Notes":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_9__notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' }).then(() => {
+                    this.navCtrl.push(NotesPage, {}, {animate: true, direction: 'forward'}).then(() => {
                         const startIndex = this.navCtrl.getActive().index - 1;
                         this.navCtrl.remove(startIndex, 1);
                     });
                     break;
                 default:
                     // Navigate back to Home page but eliminate Back button by setting it to Root
-                    this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_8__home_home__["a" /* HomePage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.setRoot(HomePage, {}, {animate: true, direction: 'forward'});
                     break;
             }
+            
         }
+
     }
+    */
     ManualSync() {
         var DevicePlatform = this.localstorage.getLocalValue('DevicePlatform');
         // Check to start AutoSync if not running a browser and user is logged in
@@ -6537,20 +6596,19 @@ __decorate([
 ], LoginPage.prototype, "handleKeyboardEvent", null);
 LoginPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-login',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/login/login.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>User Account</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<!--Set background and notice that login is required for access to full app-->\n\n\n\n<ion-content style="background:url(assets/img/SDBeach.png)no-repeat center;background-size:cover;">\n\n\n\n	<div class="spacer" style="width: 300px; height: 3%;"></div>\n\n	<div style="text-align: center;" *ngIf="msgRequireLogin">\n\n		<div style="display: inline-block; width:75%; padding:10px; background-color:white; color: black; text-align:center;font-size:18px;">\n\n			The screen you are requesting requires that you be logged into your account.&nbsp; Please log in below.\n\n		</div>\n\n	</div>\n\n	<div style="text-align: center;" *ngIf="msgRequireLogin2">\n\n		<div style="display: inline-block; width:75%; padding:10px; background-color:white; color: black; text-align:center;font-size:18px;">\n\n			Managing your agenda requires that you be logged into your account.&nbsp; Please log in below.\n\n		</div>\n\n	</div>\n\n	<div class="spacer" style="width: 300px; height: 3%;"></div>\n\n\n\n\n\n<!--Enter Username and Password-->\n\n\n\n	<div *ngIf="LoginSection">\n\n		<ion-list>\n\n				<ion-item style="background:transparent!important;color:#fff;font-size:20px!important">\n\n				<ion-icon name="person" item-start></ion-icon>\n\n				<ion-label floating>Member ID</ion-label>\n\n				<ion-input [(ngModel)]="LoginName"></ion-input>\n\n			</ion-item>\n\n\n\n			<ion-item style="background:transparent!important;color:#fff;font-size:20px!important">\n\n				<ion-icon name="lock" item-start></ion-icon>\n\n				<ion-label floating>Password</ion-label>\n\n			<ion-input [(ngModel)]="LoginPassword" type="password"></ion-input>\n\n		</ion-item>\n\n\n\n	</ion-list>\n\n\n\n<!--Login Button-->\n\n\n\n		<div style="text-align:center; margin:auto">\n\n			<button ion-button color=secondary style="width:90%" (click)="LoginUser();">Sign In</button>\n\n		</div>\n\n</div>\n\n\n\n\n\n\n\n<!--Team Login option-->\n\n\n\n\n\n	<div *ngIf="displayMultipleLoginsDropdown">\n\n		<div style="text-align: center;">\n\n			<div style="display: inline-block; width:90%; padding:10px; background-color:white; \n\n			color: black; text-align:center;font-size:18px;">\n\n				Multiple team members are linked to that login. \n\n				&nbsp;Please choose your name below and tap the "Submit" button.\n\n			</div>\n\n		</div>\n\n\n\n\n\n		<div style="text-align:center;margin:auto">\n\n\n\n			<ion-select class="full-width-select" style="text-align:center;margin:auto;width:90%;background:#000; color:#fff!important" \n\n			[(ngModel)]="selectedLogin" placeholder="Select Team Member" (ionChange)="SetTeamMember($event)">\n\n				 <ion-option style="color:#fff" *ngFor="let teammember of teammembers" [value]="teammember"><h1>{{teammember.DisplayName}}</h1></ion-option>\n\n			</ion-select>\n\n\n\n\n\n\n\n<!--		\n\n	<button ion-button full *ngIf="LoginSelectButton" (click)="SelectLogin()">Select Team Member</button> \n\n-->\n\n	</div>\n\n\n\n</div>\n\n\n\n\n\n\n\n\n\n<div style="text-align:center;margin:auto">\n\n		<button  ion-button color=primary style="width:90%;margin-top:20px" *ngIf="LoginSelectButton" (click)="SelectLogin()">Submit</button>\n\n	</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n	\n\n	<div *ngIf="displayMultipleLogins">\n\n		<ion-list id="topic-list3" style="color:#fff">\n\n			<ion-item class="item-icon-right" (click)="ChooseID(login.ct_id)" \n\n			*ngFor="let login of teammembers" id="topics-list-item19" style="color:#fff">\n\n				<p class="myLabelBold" style="color:#fff">\n\n					{{login.DisplayName}}\n\n				</p>\n\n			</ion-item>\n\n		</ion-list>\n\n	</div>\n\n\n\n	<div *ngIf="LogoutSection">\n\n		<ion-label text-wrap style="width:90%; text-align:center; margin-left:30px; \n\n		background:transparent!important;color:#fff; padding: 10px">You are currently signed \n\n		in as <b>{{LoggedInUser}}</b>.  If you wish to view the\n\n		app under a different user, then Sign Out and sign back in using their credentials.</ion-label>\n\n		\n\n		<button ion-button full style="width:90%; text-align:center; margin:auto" (click)="LogoutUser();">Sign Out</button>\n\n\n\n	</div>\n\n\n\n\n\n\n\n	\n\n</ion-content>\n\n\n\n\n\n<!--  \n\n\n\n<div *ngIf="displayMultipleLoginsDropdown">\n\n	<div style="text-align: center;">\n\n		<div style="display: inline-block; width:75%; padding:10px; background-color:white; color: black; text-align:center;font-size:18px;">\n\n			Multiple team members are linked to that login. &nbsp;Please choose your name from the dropdown and tap Select Team Member.\n\n		</div>\n\n	</div>\n\n	<br/><br/>\n\n	<label class="item item-select" id="searchByTopic-select1">\n\n		<ion-label style="color:#fff">Team Member</ion-label>\n\n		<ion-select [(ngModel)]="selectedLogin" (ionChange)="SetTeamMember($event)" style="color:#fff">\n\n			 <ion-option *ngFor="let teammember of teammembers" [value]="teammember">{{teammember.DisplayName}}</ion-option>\n\n		</ion-select>\n\n	</label>\n\n	<button ion-button full *ngIf="LoginSelectButton" (click)="SelectLogin()">Select Team Member</button>\n\n</div>\n\n\n\n<div *ngIf="displayMultipleLogins">\n\n	<ion-list id="topic-list3" style="color:#fff">\n\n		<ion-item class="item-icon-right" (click)="ChooseID(login.ct_id)" *ngFor="let login of teammembers" id="topics-list-item19" style="color:#fff">\n\n			<p class="myLabelBold" style="color:#fff">\n\n				{{login.DisplayName}}\n\n			</p>\n\n		</ion-item>\n\n	</ion-list>\n\n</div>\n\n\n\n<div *ngIf="LogoutSection">\n\n	<ion-label text-wrap style="background:transparent!important;color:#fff; padding: 10px;">You are currently signed in as <b>{{LoggedInUser}}</b>.  If you wish to view the\n\n	app under a different user, then Sign Out and sign back in using their credentials.</ion-label>\n\n	<button ion-button full (click)="LogoutUser();">Sign Out</button>\n\n</div>\n\n\n\n -->\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/login/login.html"*/,
+        selector: 'page-login',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/login/login.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>User Account</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n\n\n<!--Set background and notice that login is required for access to full app-->\n\n\n\n<!--<ion-content style="background:url(assets/img/SDBeach.png)no-repeat center;background-size:cover;">  -->\n\n\n\n	<ion-content style="background: #283747">\n\n\n\n	<div class="spacer" style="width: 300px; height: 3%;"></div>\n\n	<div style="text-align: center;" *ngIf="msgRequireLogin">\n\n		<div style="display: inline-block; width:75%; padding:10px; background-color:transparent; color: #fff; text-align:center;font-size:18px;">\n\n			The screen you are requesting requires that you be logged into your account.&nbsp; Please log in below.\n\n		</div>\n\n	</div>\n\n	<div style="text-align: center;" *ngIf="msgRequireLogin2">\n\n		<div style="display: inline-block; width:75%; padding:10px; background-color:white; color: black; text-align:center;font-size:18px;">\n\n			Managing your agenda requires that you be logged into your account.&nbsp; Please log in below.\n\n		</div>\n\n	</div>\n\n	<div class="spacer" style="width: 300px; height: 3%;"></div>\n\n\n\n\n\n<!--Enter Username and Password-->\n\n\n\n	<div *ngIf="LoginSection">\n\n		<ion-list>\n\n				<ion-item style="background:transparent!important;color:#fff;font-size:20px!important">\n\n				<ion-icon name="person" item-start></ion-icon>\n\n				<ion-label floating>Member ID</ion-label>\n\n				<ion-input [(ngModel)]="LoginName"></ion-input>\n\n			</ion-item>\n\n\n\n			<ion-item style="background:transparent!important;color:#fff;font-size:20px!important">\n\n				<ion-icon name="lock" item-start></ion-icon>\n\n				<ion-label floating>Password</ion-label>\n\n			<ion-input [(ngModel)]="LoginPassword" type="password"></ion-input>\n\n		</ion-item>\n\n\n\n	</ion-list>\n\n\n\n<!--Login Button-->\n\n\n\n		<div style="text-align:center; margin:auto">\n\n			<button ion-button color=secondary style="width:90%" (click)="LoginUser();">Sign In</button>\n\n		</div>\n\n</div>\n\n\n\n\n\n\n\n<!--Team Login option-->\n\n\n\n\n\n	<div *ngIf="displayMultipleLoginsDropdown">\n\n		<div style="text-align: center;">\n\n			<div style="display: inline-block; width:90%; padding:10px; background-color:white; \n\n			color: black; text-align:center;font-size:18px;">\n\n				Multiple team members are linked to that login. \n\n				&nbsp;Please choose your name below and tap the "Submit" button.\n\n			</div>\n\n		</div>\n\n\n\n\n\n		<div style="text-align:center;margin:auto">\n\n\n\n			<ion-select class="full-width-select" style="text-align:center;margin:auto;width:90%;background:#000; color:#fff!important" \n\n			[(ngModel)]="selectedLogin" placeholder="Select Team Member" (ionChange)="SetTeamMember($event)">\n\n				 <ion-option style="color:#fff" *ngFor="let teammember of teammembers" [value]="teammember"><h1>{{teammember.DisplayName}}</h1></ion-option>\n\n			</ion-select>\n\n\n\n\n\n\n\n<!--		\n\n	<button ion-button full *ngIf="LoginSelectButton" (click)="SelectLogin()">Select Team Member</button> \n\n-->\n\n	</div>\n\n\n\n</div>\n\n\n\n\n\n\n\n\n\n<div style="text-align:center;margin:auto">\n\n		<button  ion-button color=primary style="width:90%;margin-top:20px" *ngIf="LoginSelectButton" (click)="SelectLogin()">Submit</button>\n\n	</div>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n	\n\n	<div *ngIf="displayMultipleLogins">\n\n		<ion-list id="topic-list3" style="color:#fff">\n\n			<ion-item class="item-icon-right" (click)="ChooseID(login.ct_id)" \n\n			*ngFor="let login of teammembers" id="topics-list-item19" style="color:#fff">\n\n				<p class="myLabelBold" style="color:#fff">\n\n					{{login.DisplayName}}\n\n				</p>\n\n			</ion-item>\n\n		</ion-list>\n\n	</div>\n\n\n\n	<div *ngIf="LogoutSection">\n\n		<ion-label text-wrap style="width:90%; text-align:center; margin-left:30px; \n\n		background:transparent!important;color:#fff; padding: 10px">You are currently signed \n\n		in as <b>{{LoggedInUser}}</b>.  If you wish to view the\n\n		app under a different user, then Sign Out and sign back in using their credentials.</ion-label>\n\n		\n\n		<button ion-button full style="width:90%; text-align:center; margin:auto" (click)="LogoutUser();">Sign Out</button>\n\n\n\n	</div>\n\n\n\n\n\n\n\n	\n\n</ion-content>\n\n\n\n\n\n<!--  \n\n\n\n<div *ngIf="displayMultipleLoginsDropdown">\n\n	<div style="text-align: center;">\n\n		<div style="display: inline-block; width:75%; padding:10px; background-color:white; color: black; text-align:center;font-size:18px;">\n\n			Multiple team members are linked to that login. &nbsp;Please choose your name from the dropdown and tap Select Team Member.\n\n		</div>\n\n	</div>\n\n	<br/><br/>\n\n	<label class="item item-select" id="searchByTopic-select1">\n\n		<ion-label style="color:#fff">Team Member</ion-label>\n\n		<ion-select [(ngModel)]="selectedLogin" (ionChange)="SetTeamMember($event)" style="color:#fff">\n\n			 <ion-option *ngFor="let teammember of teammembers" [value]="teammember">{{teammember.DisplayName}}</ion-option>\n\n		</ion-select>\n\n	</label>\n\n	<button ion-button full *ngIf="LoginSelectButton" (click)="SelectLogin()">Select Team Member</button>\n\n</div>\n\n\n\n<div *ngIf="displayMultipleLogins">\n\n	<ion-list id="topic-list3" style="color:#fff">\n\n		<ion-item class="item-icon-right" (click)="ChooseID(login.ct_id)" *ngFor="let login of teammembers" id="topics-list-item19" style="color:#fff">\n\n			<p class="myLabelBold" style="color:#fff">\n\n				{{login.DisplayName}}\n\n			</p>\n\n		</ion-item>\n\n	</ion-list>\n\n</div>\n\n\n\n<div *ngIf="LogoutSection">\n\n	<ion-label text-wrap style="background:transparent!important;color:#fff; padding: 10px;">You are currently signed in as <b>{{LoggedInUser}}</b>.  If you wish to view the\n\n	app under a different user, then Sign Out and sign back in using their credentials.</ion-label>\n\n	<button ion-button full (click)="LogoutUser();">Sign Out</button>\n\n</div>\n\n\n\n -->\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/login/login.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_3__ionic_native_http__["a" /* HTTP */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_5__ionic_storage__["b" /* Storage */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_4__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_7__providers_synchronization_synchronization__["a" /* Synchronization */],
-        __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__["a" /* Localstorage */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */]])
+        __WEBPACK_IMPORTED_MODULE_6__providers_synchronization_synchronization__["a" /* Synchronization */],
+        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"]])
 ], LoginPage);
 
 //# sourceMappingURL=login.js.map
@@ -6565,11 +6623,11 @@ LoginPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(56);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -6729,7 +6787,7 @@ let AttendeeBookmarksPage = class AttendeeBookmarksPage {
                                 visDisplayCredentials = data[i].Company;
                             }
                             var imageAvatar = data[i].imageFilename;
-                            imageAvatar = "https://naeyc.convergence-us.com/AdminGateway/images/Speakers/" + imageAvatar;
+                            imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Speakers/" + imageAvatar;
                             this.bookmarksSpeakers.push({
                                 SpeakerID: data[i].speakerID,
                                 DisplayNameLastFirst: DisplayName,
@@ -6819,7 +6877,7 @@ let AttendeeBookmarksPage = class AttendeeBookmarksPage {
                                     if (data[i].Company != "") {
                                         visDisplayCompany = data[i].Company;
                                     }
-                                    var imageAvatar = "https://naeyc.convergence-us.com/AdminGateway/images/Attendees/" + data[i].AttendeeID + ".jpg";
+                                    var imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Attendees/" + data[i].AttendeeID + ".jpg";
                                     console.log('imageAvatar: ' + imageAvatar);
                                     this.bookmarksAttendees.push({
                                         AttendeeID: data[i].AttendeeID,
@@ -6889,16 +6947,16 @@ let AttendeeBookmarksPage = class AttendeeBookmarksPage {
 };
 AttendeeBookmarksPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-attendeebookmarks',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/attendeebookmarks/attendeebookmarks.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Bookmarks</ion-title>\n	</ion-navbar>\n</ion-header>\n\n\n<ion-content style="padding:0!important;margin:0!important">\n		\n	<!-- Sessions -->\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			<h2 style="color:#fff">Sessions</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="EventDetails(session.EventID)" *ngFor="let session of bookmarksSessions" id="bookmarks-list-item19" >\n				<ion-icon item-left style="color:#7f8285" name="list-box"></ion-icon>\n				<ion-icon item-right name="{{session.navigationArrow}}"></ion-icon>\n				<h2 text-wrap>{{session.DisplayEventName}}</h2>\n				<p>{{session.DisplayEventTimeDateLocation}}</p>\n				<p>{{session.SpeakerDisplayName}}</p>\n				<p>{{session.DisplaySubjectCodeCECredits}}</p>\n				<p [ngClass]="session.SessionStatusStyle">{{session.SessionStatus}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n	<!-- Speakers -->\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			<h2 style="color:#fff">Speakers</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="SpeakerDetails(speaker.SpeakerID)" *ngFor="let speaker of bookmarksSpeakers" id="speakers-list-item19" >\n				<div style="float: left; padding-right: 10px;">\n					<ion-avatar item-start>\n						<img-loader [src]="speaker.speakerAvatar" useImg [spinner]=false></img-loader>\n					</ion-avatar>\n				</div>\n				<ion-icon item-right name="{{speaker.navigationArrow}}"></ion-icon>\n				<h2 style="padding-top: 7px">{{speaker.DisplayNameLastFirst}}</h2>\n				<p>{{speaker.DisplayTitle}}</p>\n				<p>{{speaker.DisplayCredentials}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n	<!-- Exhibitors -->\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			<h2 style="color:#fff">Exhibitors</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="ExhibitorDetails(exhibitor.ExhibitorID)" *ngFor="let exhibitor of bookmarksExhibitors" id="exhibitors-list-item19" >\n				<ion-icon item-left name="people"></ion-icon>\n				<ion-icon item-right name="{{exhibitor.navigationArrow}}"></ion-icon>\n				<h2>{{exhibitor.CompanyName}}</h2>\n				<p *ngIf=exhibitor.CityStateShow>{{exhibitor.DisplayCityState}}</p>\n				<p>{{exhibitor.BoothNumber}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n	<!-- Attendees -->\n	<ion-card>\n		<ion-card-header style="background:#283593; color:#fff">\n			<h2 style="color:#fff">Attendees</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="AttendeeDetails(attendee.AttendeeID)" *ngFor="let attendee of bookmarksAttendees" id="attendees-list-item19" >\n				<ion-avatar item-start>\n					<img-loader [src]="attendee.AttendeeAvatar" useImg [spinner]=false></img-loader>\n				</ion-avatar>\n				<ion-icon item-right name="{{attendee.navigationArrow}}"></ion-icon>\n				<h2>{{attendee.AttendeeName}}</h2>\n				<h3>{{attendee.AttendeeTitle}}</h3>\n				<h3>{{attendee.AttendeeOrganization}}</h3>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/attendeebookmarks/attendeebookmarks.html"*/,
+        selector: 'page-attendeebookmarks',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/attendeebookmarks/attendeebookmarks.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Bookmarks</ion-title>\n	</ion-navbar>\n</ion-header>\n\n\n<ion-content style="padding:0!important;margin:0!important">\n		\n	<!-- Sessions -->\n	<ion-card>\n		<ion-card-header style="background:#283747; color:#fff">\n			<h2 style="color:#fff">Sessions</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="EventDetails(session.EventID)" *ngFor="let session of bookmarksSessions" id="bookmarks-list-item19" >\n				<ion-icon style="color:#cc5d1d"  item-left style="color:#cc5d1d" name="list-box"></ion-icon>\n				<ion-icon style="color:#cc5d1d"  item-right name="{{session.navigationArrow}}"></ion-icon>\n				<h2 text-wrap>{{session.DisplayEventName}}</h2>\n				<p>{{session.DisplayEventTimeDateLocation}}</p>\n				<p>{{session.SpeakerDisplayName}}</p>\n				<p>{{session.DisplaySubjectCodeCECredits}}</p>\n				<p [ngClass]="session.SessionStatusStyle">{{session.SessionStatus}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n	<!-- Speakers -->\n	<ion-card>\n		<ion-card-header style="background:#283747; color:#fff">\n			<h2 style="color:#fff">Speakers</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="SpeakerDetails(speaker.SpeakerID)" *ngFor="let speaker of bookmarksSpeakers" id="speakers-list-item19" >\n				<div style="float: left; padding-right: 10px;">\n					<ion-avatar item-start>\n						<img-loader [src]="speaker.speakerAvatar" useImg [spinner]=false></img-loader>\n					</ion-avatar>\n				</div>\n				<ion-icon style="color:#cc5d1d" item-right name="{{speaker.navigationArrow}}"></ion-icon>\n				<h2 style="padding-top: 7px">{{speaker.DisplayNameLastFirst}}</h2>\n				<p>{{speaker.DisplayTitle}}</p>\n				<p>{{speaker.DisplayCredentials}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n	<!-- Exhibitors -->\n	<ion-card>\n		<ion-card-header style="background:#283747; color:#fff">\n			<h2 style="color:#fff">Exhibitors</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="ExhibitorDetails(exhibitor.ExhibitorID)" *ngFor="let exhibitor of bookmarksExhibitors" id="exhibitors-list-item19" >\n				<ion-icon style="color:#cc5d1d" item-left name="people"></ion-icon>\n				<ion-icon style="color:#cc5d1d" item-right name="{{exhibitor.navigationArrow}}"></ion-icon>\n				<h2>{{exhibitor.CompanyName}}</h2>\n				<p *ngIf=exhibitor.CityStateShow>{{exhibitor.DisplayCityState}}</p>\n				<p>{{exhibitor.BoothNumber}}</p>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n	<!-- Attendees -->\n	<ion-card>\n		<ion-card-header style="background:#283747; color:#fff">\n			<h2 style="color:#fff">Attendees</h2>\n		</ion-card-header>\n		<ion-card-content>\n			<ion-item (click)="AttendeeDetails(attendee.AttendeeID)" *ngFor="let attendee of bookmarksAttendees" id="attendees-list-item19" >\n				<ion-avatar item-start>\n					<img-loader [src]="attendee.AttendeeAvatar" useImg [spinner]=false></img-loader>\n				</ion-avatar>\n				<ion-icon style="color:#cc5d1d"  item-right name="{{attendee.navigationArrow}}"></ion-icon>\n				<h2>{{attendee.AttendeeName}}</h2>\n				<h3>{{attendee.AttendeeTitle}}</h3>\n				<h3>{{attendee.AttendeeOrganization}}</h3>\n			</ion-item>\n		</ion-card-content>\n	</ion-card>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/attendeebookmarks/attendeebookmarks.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__["a" /* ImageLoaderConfig */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], AttendeeBookmarksPage);
 
@@ -6906,16 +6964,16 @@ AttendeeBookmarksPage = __decorate([
 
 /***/ }),
 
-/***/ 524:
+/***/ 525:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ConversationPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_chat_service__ = __webpack_require__(383);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_keyboard__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__services_chat_service__ = __webpack_require__(379);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_keyboard__ = __webpack_require__(142);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7085,8 +7143,8 @@ let ConversationPage = class ConversationPage {
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Content */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* Content */])
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Content"]),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Content"])
 ], ConversationPage.prototype, "content", void 0);
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('chat_input'),
@@ -7098,27 +7156,27 @@ ConversationPage = __decorate([
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush,
         encapsulation: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewEncapsulation"].None
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
         __WEBPACK_IMPORTED_MODULE_2__services_chat_service__["a" /* ChatService */],
         __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__["a" /* Localstorage */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_4__ionic_native_keyboard__["a" /* Keyboard */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */]])
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"]])
 ], ConversationPage);
 
 //# sourceMappingURL=conversation.js.map
 
 /***/ }),
 
-/***/ 526:
+/***/ 527:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "MainPage", function() { return MainPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(529);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(533);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(531);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(535);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(6);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -7151,14 +7209,201 @@ MainPage = MainPage_1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["Component"])({
         selector: 'page-main',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/app/main.html"*/''/*ion-inline-end:"/Users/petervroom/demoplanner/src/app/main.html"*/
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["u" /* NavController */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["NavController"]])
 ], MainPage);
 
 //# sourceMappingURL=main.js.map
 
 /***/ }),
 
-/***/ 528:
+/***/ 529:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return CetrackingPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// Components, functions, plugins
+
+
+
+
+
+
+let CetrackingPage = class CetrackingPage {
+    constructor(navCtrl, navParams, nav, cd, storage, events, databaseprovider, localstorage) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.nav = nav;
+        this.cd = cd;
+        this.storage = storage;
+        this.events = events;
+        this.databaseprovider = databaseprovider;
+        this.localstorage = localstorage;
+        this.CEListing = [];
+        this.LegendDetails = false;
+        this.LegendDropdownIcon = 'arrow-dropdown-circle';
+        // Listen for sync events and 
+        // refresh side menu dashboard
+        this.events.subscribe('sync:Status', (SyncType) => {
+            console.log('CetrackingPage: Sync has ', SyncType);
+            this.LoadCETrackerData();
+        });
+    }
+    ionViewDidEnter() {
+        console.log('ionViewDidEnter: CetrackingPage');
+        this.LoadCETrackerData();
+    }
+    LoadCETrackerData() {
+        this.CEListing = [];
+        this.cd.markForCheck();
+        // Load / refresh data when coming to this page
+        var iconScan = "";
+        // Icons
+        var iconCEScanPendingScan = 'qr-scanner';
+        var iconCEScanNotCompleted = 'close-circle';
+        var iconCEScanTimeInSession = 'timer';
+        var iconCEScanComplete = 'checkmark';
+        var sumCreditsL = 0;
+        var sumCreditsP = 0;
+        /* Determine currently logged in user */
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        if (AttendeeID != '' && AttendeeID != null) {
+            console.log('Stored AttendeeID: ' + AttendeeID);
+            this.databaseprovider.getCETrackerData(AttendeeID).then(data => {
+                console.log("getCETrackerData: " + JSON.stringify(data));
+                if (data['length'] > 0) {
+                    for (var i = 0; i < data['length']; i++) {
+                        var EvalType = data[i].ce_credits_type.substring(0, 1);
+                        var iconSet = 0;
+                        if (EvalType == "") { // Evals that don't require an eval are completed
+                            iconScan = iconCEScanComplete;
+                            iconSet = 1;
+                            //sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
+                            //sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);
+                        }
+                        if (data[i].ceStatusScan == "0" && iconSet == 0) { // No scan (shouldn't happen with AACD)
+                            iconScan = iconCEScanPendingScan;
+                            iconSet = 1;
+                        }
+                        if ((data[i].Evaluated == "0" || data[i].Evaluated === null) && iconSet == 0) { // Eval not completed
+                            iconScan = iconCEScanNotCompleted;
+                            iconSet = 1;
+                        }
+                        if (iconSet == 0) { // Otherwise mark as completed
+                            iconScan = iconCEScanComplete;
+                            //sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
+                            //sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);
+                        }
+                        sumCreditsL = sumCreditsL + parseFloat(data[i].CEcreditsL);
+                        sumCreditsP = sumCreditsP + parseFloat(data[i].CEcreditsP);
+                        console.log("CE Record: " + data[i].session_title + ", Icon: " + iconScan);
+                        this.CEListing.push({
+                            EventID: data[i].session_id,
+                            EvaluationType: EvalType,
+                            DisplayEventName: data[i].session_title,
+                            sessionScanStatusIcon: iconScan,
+                            navigationRightArrow: "arrow-dropright"
+                        });
+                    }
+                    this.creditsTypeL = sumCreditsL.toFixed(2);
+                    this.creditsTypeP = sumCreditsP.toFixed(2);
+                    this.cd.markForCheck();
+                }
+                else {
+                    this.CEListing.push({
+                        EventID: "0",
+                        EvaluationType: "0",
+                        DisplayEventName: "No CE records available",
+                        sessionScanStatusIcon: iconCEScanPendingScan,
+                        navigationRightArrow: ""
+                    });
+                    this.creditsTypeL = '0.00';
+                    this.creditsTypeP = '0.00';
+                    this.cd.markForCheck();
+                }
+            }).catch(function () {
+                console.log("Promise Rejected");
+            });
+        }
+        else {
+            console.log('User not logged in');
+            this.creditsTypeL = '0.00';
+            this.creditsTypeP = '0.00';
+        }
+        this.events.publish('user:Status', 'CE Tracker Update');
+    }
+    toggleLegend() {
+        console.log('Toggle Legend: ' + this.LegendDetails);
+        this.LegendDetails = !this.LegendDetails;
+        switch (this.LegendDetails) {
+            case true:
+                this.LegendDropdownIcon = 'arrow-dropup-circle';
+                break;
+            case false:
+                this.LegendDropdownIcon = 'arrow-dropdown-circle';
+                break;
+        }
+    }
+    ;
+    isLegendShown() {
+        return this.LegendDetails;
+    }
+    ;
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad: CetrackingPage');
+    }
+    Survey(EventID, EvalType) {
+        console.log("Survey clicked; SurveyID: " + EventID + "; Evaluation Type: " + EvalType);
+        if (EventID != "0") {
+            this.localstorage.setLocalValue('MassEval', "1");
+            this.localstorage.setLocalValue('EventID', EventID);
+            if (EvalType == "L") {
+                // Navigate to Lecture Evaluation page
+                console.log('CE Tracker: Navigate to Lecture Evaluation');
+                this.navCtrl.push('EvaluationLecture', { EventID: EventID }, { animate: true, direction: 'forward' });
+            }
+            if (EvalType == "P") {
+                // Navigate to Workshop Evaluation page
+                console.log('CE Tracker: Navigate to Workshop Evaluation');
+                this.navCtrl.push('EvaluationWorkshop', { EventID: EventID }, { animate: true, direction: 'forward' });
+            }
+        }
+    }
+};
+CetrackingPage = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
+        selector: 'page-cetracking',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/cetracking/cetracking.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n\n    <button ion-button menuToggle>\n\n      <ion-icon name="menu"></ion-icon>\n\n    </button>\n\n    <ion-title>CE Tracking</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n\n\n	<div>\n\n		<p class="myLabelLRMargin" style="text-align:left;font-size:16px">\n\n			Below is your list of CE courses attended and credits earned. \n\n			Your feedback is important to us. Please take a few minutes to complete the course evaluations.\n\n		</p>\n\n	</div>\n\n\n\n\n\n	<ion-list>\n\n			<ion-item class="LegendHeader" id="icons-list-item31">\n\n						Currently Completed Credits\n\n				</ion-item>\n\n\n\n				<ion-item>{{creditsTypeL}}L / {{creditsTypeP}}P    </ion-item>\n\n				</ion-list>\n\n\n\n	<ion-list id="CEScans-list3">\n\n		<ion-item class="LegendHeader" style="background:#283593;color:#fff">Scanned Courses\n\n		</ion-item>\n\n\n\n\n\n	<ion-item>\n\n	<ion-grid>\n\n	<ion-row>\n\n	<ion-col col-8>\n\n		<ion-icon name="close-circle" style="color:#cc5d1d"></ion-icon> Evaluation not completed\n\n	</ion-col>\n\n	<ion-col>\n\n		<ion-icon name="checkmark-circle" style="color:#cc5d1d"></ion-icon> Completed\n\n	</ion-col>\n\n</ion-row>\n\n</ion-grid>\n\n</ion-item>\n\n\n\n			<ion-item (click)="Survey(session.EventID,session.EvaluationType)" *ngFor="let session of CEListing" id="cescans-list-item19">\n\n				<ion-icon item-left style="color:#cc5d1d" name="{{session.sessionScanStatusIcon}}"></ion-icon>\n\n				<ion-icon item-right style="color:#cc5d1d" name="arrow-dropright"></ion-icon>\n\n				<h2 text-wrap>{{session.DisplayEventName}}</h2>\n\n			</ion-item>\n\n		</ion-list>\n\n\n\n\n\n\n\n\n\n</ion-content>'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/cetracking/cetracking.html"*/,
+    }),
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
+        __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
+        __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
+        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], CetrackingPage);
+
+//# sourceMappingURL=cetracking.js.map
+
+/***/ }),
+
+/***/ 530:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7195,14 +7440,267 @@ SliderPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
         selector: 'page-slider',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/slider/slider.html"*/'<!--\n  Generated template for the SliderPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Slider</ion-title>\n  </ion-navbar>\n  </ion-header>\n\n\n  <ion-content>\n    <ion-slides autoplay="5000" loop="true" speed="1000">\n      <ion-slide>\n        <img src="../../assets/img/head5.jpg">\n      </ion-slide>\n      <ion-slide>\n        <img src="../../assets/img/head6.jpg">\n      </ion-slide>\n      <ion-slide>\n        <img src="../../assets/img/head17.jpg">\n      </ion-slide>\n    </ion-slides>\n  </ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/slider/slider.html"*/,
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */]])
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"]])
 ], SliderPage);
 
 //# sourceMappingURL=slider.js.map
 
 /***/ }),
 
-/***/ 53:
+/***/ 535:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(20);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_http__ = __webpack_require__(77);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_http__ = __webpack_require__(858);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_sqlite__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_component__ = __webpack_require__(859);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_onesignal__ = __webpack_require__(517);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ionic_img_viewer__ = __webpack_require__(860);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ionic_native_camera__ = __webpack_require__(526);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ionic_native_splash_screen__ = __webpack_require__(516);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ionic_text_avatar__ = __webpack_require__(867);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ionic_image_loader__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts__ = __webpack_require__(528);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_ng2_charts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ng2_file_upload__ = __webpack_require__(869);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_ng2_file_upload__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ionic2_alpha_scroll__ = __webpack_require__(872);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19_ionic2_alpha_scroll___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19_ionic2_alpha_scroll__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__ionic_native_keyboard__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__providers_synchronization_synchronization__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pipes_relative_time__ = __webpack_require__(877);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__services_post_service__ = __webpack_require__(892);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__services_user_service__ = __webpack_require__(894);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__services_chat_service__ = __webpack_require__(379);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_home_home__ = __webpack_require__(67);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__pages_conferencecity_conferencecity__ = __webpack_require__(472);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_social_social__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_more_more__ = __webpack_require__(469);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_slider_slider__ = __webpack_require__(530);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_help_help__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_speakers_speakers__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_program_program__ = __webpack_require__(471);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_map_map__ = __webpack_require__(473);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_login_login__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_exhibitors_exhibitors__ = __webpack_require__(474);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_notes_notes__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_database_database__ = __webpack_require__(470);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_evaluationconference_evaluationconference__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__pages_myagenda_myagenda__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__pages_myagendafull_myagendafull__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_educationdetails_educationdetails__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_activity_activity__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__pages_profile_profile__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__pages_notifications_notifications__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__pages_attendees_attendees__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__pages_networking_networking__ = __webpack_require__(475);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__pages_attendeebookmarks_attendeebookmarks__ = __webpack_require__(518);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_51__pages_conversation_conversation__ = __webpack_require__(525);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+// Components, functions, plugins
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
+// Providers
+
+
+
+
+// Services
+
+
+//import { NotificationService } from '../services/notification-service';
+
+// Pages
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Temporary Support Pages
+//import { FloorplanMappingPage } from '../pages/floorplanmapping/floorplanmapping';
+let AppModule = class AppModule {
+};
+AppModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["NgModule"])({
+        declarations: [
+            __WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */],
+            __WEBPACK_IMPORTED_MODULE_28__pages_home_home__["a" /* HomePage */],
+            __WEBPACK_IMPORTED_MODULE_30__pages_social_social__["a" /* SocialPage */],
+            __WEBPACK_IMPORTED_MODULE_31__pages_more_more__["a" /* MorePage */],
+            __WEBPACK_IMPORTED_MODULE_32__pages_slider_slider__["a" /* SliderPage */],
+            __WEBPACK_IMPORTED_MODULE_33__pages_help_help__["a" /* HelpPage */],
+            __WEBPACK_IMPORTED_MODULE_34__pages_speakers_speakers__["a" /* SpeakersPage */],
+            __WEBPACK_IMPORTED_MODULE_35__pages_program_program__["a" /* ProgramPage */],
+            __WEBPACK_IMPORTED_MODULE_36__pages_map_map__["a" /* MapPage */],
+            __WEBPACK_IMPORTED_MODULE_37__pages_login_login__["a" /* LoginPage */],
+            __WEBPACK_IMPORTED_MODULE_29__pages_conferencecity_conferencecity__["a" /* ConferenceCityPage */],
+            __WEBPACK_IMPORTED_MODULE_38__pages_exhibitors_exhibitors__["a" /* ExhibitorsPage */],
+            __WEBPACK_IMPORTED_MODULE_39__pages_notes_notes__["a" /* NotesPage */],
+            __WEBPACK_IMPORTED_MODULE_40__pages_database_database__["a" /* DatabasePage */],
+            __WEBPACK_IMPORTED_MODULE_44__pages_educationdetails_educationdetails__["a" /* EducationDetailsPage */],
+            __WEBPACK_IMPORTED_MODULE_41__pages_evaluationconference_evaluationconference__["a" /* EvaluationConference */],
+            //FloorplanMappingPage,
+            __WEBPACK_IMPORTED_MODULE_42__pages_myagenda_myagenda__["a" /* MyAgenda */],
+            __WEBPACK_IMPORTED_MODULE_43__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */],
+            __WEBPACK_IMPORTED_MODULE_51__pages_conversation_conversation__["a" /* ConversationPage */],
+            __WEBPACK_IMPORTED_MODULE_47__pages_notifications_notifications__["a" /* NotificationsPage */],
+            __WEBPACK_IMPORTED_MODULE_48__pages_attendees_attendees__["a" /* AttendeesPage */],
+            __WEBPACK_IMPORTED_MODULE_50__pages_attendeebookmarks_attendeebookmarks__["a" /* AttendeeBookmarksPage */],
+            __WEBPACK_IMPORTED_MODULE_49__pages_networking_networking__["a" /* NetworkingPage */],
+            __WEBPACK_IMPORTED_MODULE_24__pipes_relative_time__["a" /* RelativeTime */],
+            __WEBPACK_IMPORTED_MODULE_15_ionic_text_avatar__["a" /* IonTextAvatar */],
+            __WEBPACK_IMPORTED_MODULE_46__pages_profile_profile__["a" /* ProfilePage */],
+            //ProgressBarComponent,
+            __WEBPACK_IMPORTED_MODULE_45__pages_activity_activity__["a" /* ActivityPage */]
+        ],
+        imports: [
+            __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
+            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* HttpModule */],
+            __WEBPACK_IMPORTED_MODULE_17_ng2_charts__["ChartsModule"],
+            __WEBPACK_IMPORTED_MODULE_18_ng2_file_upload__["FileUploadModule"],
+            __WEBPACK_IMPORTED_MODULE_12_ionic_img_viewer__["a" /* IonicImageViewerModule */],
+            __WEBPACK_IMPORTED_MODULE_19_ionic2_alpha_scroll__["IonAlphaScrollModule"],
+            __WEBPACK_IMPORTED_MODULE_6__angular_common_http__["b" /* HttpClientModule */],
+            __WEBPACK_IMPORTED_MODULE_4__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_16_ionic_image_loader__["b" /* IonicImageLoader */].forRoot(),
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["IonicModule"].forRoot(__WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */], { tabsPlacement: 'bottom' }, {
+                links: [
+                    { loadChildren: 'main.module#MainPageModule', name: 'MainPage', segment: 'main', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/activityfeedcomment/activityfeedcomment.module#ActivityFeedCommentPageModule', name: 'ActivityFeedCommentPage', segment: 'activityfeedcomment', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/activityfeedleaderboard/activityfeedleaderboard.module#ActivityFeedLeaderboardPageModule', name: 'ActivityFeedLeaderboardPage', segment: 'activityfeedleaderboard', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/cetracking/cetracking.module#CetrackingPageModule', name: 'CetrackingPage', segment: 'cetracking', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/conversations/conversations.module#ConversationsPageModule', name: 'ConversationsPage', segment: 'conversations', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/evaluationlecture/evaluationlecture.module#EvaluationLectureModule', name: 'EvaluationLecture', segment: 'evaluationlecture', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/notesdetails/notesdetails.module#NotesDetailsPageModule', name: 'NotesDetailsPage', segment: 'notesdetails', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/profileimage/profileimage.module#ProfileImagePageModule', name: 'ProfileImagePage', segment: 'profileimage', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/notifications/notifications.module#NotificationsPageModule', name: 'NotificationsPage', segment: 'notifications', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/profilepasswordchange/profilepasswordchange.module#ProfilePasswordChangePageModule', name: 'ProfilePasswordChangePage', segment: 'profilepasswordchange', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/profilesocialmediaentry/profilesocialmediaentry.module#ProfileSocialMediaEntryPageModule', name: 'ProfileSocialMediaEntryPage', segment: 'profilesocialmediaentry', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/searchbytopic/searchbytopic.module#SearchByTopicPageModule', name: 'SearchByTopicPage', segment: 'searchbytopic', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/slider/slider.module#SliderPageModule', name: 'SliderPage', segment: 'slider', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/activityfeeddetails/activityfeeddetails.module#ActivityFeedDetailsPageModule', name: 'ActivityFeedDetailsPage', segment: 'activityfeeddetails', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/attendeesprofile/attendeesprofile.module#AttendeesProfilePageModule', name: 'AttendeesProfilePage', segment: 'attendeesprofile', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/activityfeedposting/activityfeedposting.module#ActivityFeedPostingPageModule', name: 'ActivityFeedPostingPage', segment: 'activityfeedposting', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/myagendapersonal/myagendapersonal.module#MyAgendaPersonalModule', name: 'MyAgendaPersonal', segment: 'myagendapersonal', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/evaluationworkshop/evaluationworkshop.module#EvaluationWorkshopModule', name: 'EvaluationWorkshop', segment: 'evaluationworkshop', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/speakerdetails/speakerdetails.module#SpeakerDetailsPageModule', name: 'SpeakerDetailsPage', segment: 'speakerdetails', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/exhibitordetails/exhibitordetails.module#ExhibitorDetailsPageModule', name: 'ExhibitorDetailsPage', segment: 'exhibitordetails', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/listinglevel1/listinglevel1.module#ListingLevel1Module', name: 'ListingLevel1', segment: 'listinglevel1', priority: 'low', defaultHistory: [] },
+                    { loadChildren: '../pages/searchresults/searchresults.module#SearchResultsPageModule', name: 'SearchResultsPage', segment: 'searchresults', priority: 'low', defaultHistory: [] }
+                ]
+            })
+        ],
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["IonicApp"]],
+        entryComponents: [
+            __WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */],
+            __WEBPACK_IMPORTED_MODULE_28__pages_home_home__["a" /* HomePage */],
+            __WEBPACK_IMPORTED_MODULE_32__pages_slider_slider__["a" /* SliderPage */],
+            __WEBPACK_IMPORTED_MODULE_30__pages_social_social__["a" /* SocialPage */],
+            __WEBPACK_IMPORTED_MODULE_31__pages_more_more__["a" /* MorePage */],
+            __WEBPACK_IMPORTED_MODULE_33__pages_help_help__["a" /* HelpPage */],
+            __WEBPACK_IMPORTED_MODULE_34__pages_speakers_speakers__["a" /* SpeakersPage */],
+            __WEBPACK_IMPORTED_MODULE_35__pages_program_program__["a" /* ProgramPage */],
+            __WEBPACK_IMPORTED_MODULE_36__pages_map_map__["a" /* MapPage */],
+            __WEBPACK_IMPORTED_MODULE_37__pages_login_login__["a" /* LoginPage */],
+            __WEBPACK_IMPORTED_MODULE_29__pages_conferencecity_conferencecity__["a" /* ConferenceCityPage */],
+            __WEBPACK_IMPORTED_MODULE_40__pages_database_database__["a" /* DatabasePage */],
+            __WEBPACK_IMPORTED_MODULE_44__pages_educationdetails_educationdetails__["a" /* EducationDetailsPage */],
+            __WEBPACK_IMPORTED_MODULE_38__pages_exhibitors_exhibitors__["a" /* ExhibitorsPage */],
+            __WEBPACK_IMPORTED_MODULE_39__pages_notes_notes__["a" /* NotesPage */],
+            __WEBPACK_IMPORTED_MODULE_41__pages_evaluationconference_evaluationconference__["a" /* EvaluationConference */],
+            //FloorplanMappingPage,
+            __WEBPACK_IMPORTED_MODULE_42__pages_myagenda_myagenda__["a" /* MyAgenda */],
+            __WEBPACK_IMPORTED_MODULE_43__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */],
+            __WEBPACK_IMPORTED_MODULE_51__pages_conversation_conversation__["a" /* ConversationPage */],
+            __WEBPACK_IMPORTED_MODULE_47__pages_notifications_notifications__["a" /* NotificationsPage */],
+            __WEBPACK_IMPORTED_MODULE_48__pages_attendees_attendees__["a" /* AttendeesPage */],
+            __WEBPACK_IMPORTED_MODULE_50__pages_attendeebookmarks_attendeebookmarks__["a" /* AttendeeBookmarksPage */],
+            __WEBPACK_IMPORTED_MODULE_49__pages_networking_networking__["a" /* NetworkingPage */],
+            __WEBPACK_IMPORTED_MODULE_46__pages_profile_profile__["a" /* ProfilePage */],
+            __WEBPACK_IMPORTED_MODULE_45__pages_activity_activity__["a" /* ActivityPage */]
+        ],
+        providers: [
+            __WEBPACK_IMPORTED_MODULE_13__ionic_native_camera__["a" /* Camera */],
+            __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__["a" /* StatusBar */],
+            __WEBPACK_IMPORTED_MODULE_11__ionic_native_onesignal__["a" /* OneSignal */],
+            __WEBPACK_IMPORTED_MODULE_14__ionic_native_splash_screen__["a" /* SplashScreen */],
+            __WEBPACK_IMPORTED_MODULE_7__ionic_native_http__["a" /* HTTP */],
+            __WEBPACK_IMPORTED_MODULE_20__ionic_native_keyboard__["a" /* Keyboard */],
+            __WEBPACK_IMPORTED_MODULE_22__providers_localstorage_localstorage__["a" /* Localstorage */],
+            { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["ErrorHandler"], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["IonicErrorHandler"] },
+            //[{ provide: ErrorHandler, useClass: MyErrorHandler }],
+            __WEBPACK_IMPORTED_MODULE_21__providers_database_database__["a" /* Database */],
+            __WEBPACK_IMPORTED_MODULE_9__ionic_native_sqlite__["a" /* SQLite */],
+            __WEBPACK_IMPORTED_MODULE_25__services_post_service__["a" /* PostService */],
+            __WEBPACK_IMPORTED_MODULE_26__services_user_service__["a" /* UserService */],
+            __WEBPACK_IMPORTED_MODULE_27__services_chat_service__["a" /* ChatService */],
+            __WEBPACK_IMPORTED_MODULE_23__providers_synchronization_synchronization__["a" /* Synchronization */]
+        ]
+    })
+], AppModule);
+
+//# sourceMappingURL=app.module.js.map
+
+/***/ }),
+
+/***/ 54:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7210,12 +7708,12 @@ SliderPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__myagendafull_myagendafull__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__educationdetails_educationdetails__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__educationdetails_educationdetails__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -8709,15 +9207,15 @@ let MyAgenda = class MyAgenda {
 };
 MyAgenda = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-myagenda',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/myagenda/myagenda.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>My Agenda</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content style="padding:0; margin:0">\n\n	<!-- Floating button menu for adding new comment -->\n    <ion-fab bottom right #fab>\n		<button ion-fab color="secondary" ion-fab>\n			<ion-icon name="add"></ion-icon>\n		</button>\n		<ion-fab-list side="top">\n			<button ion-fab (click)="AddPersonalEvent(fab)">\n				<ion-icon name="time"></ion-icon>\n				<div class="fabdivbutton">Personal Appt</div>\n			</button>\n			<button ion-fab (click)="GoMyAgendaFull(fab)">\n				<ion-icon name="calendar"></ion-icon>\n				<div class="fabdivbutton">Review Schedule</div>\n			</button>\n		</ion-fab-list>\n    </ion-fab>\n\n\n	<!-- Buttons in flexbox grid for date selection-->\n	<ion-grid style="padding:0; margin:0">\n		<ion-row style="padding:0; margin:0">\n\n			<ion-col style="padding:0" *ngIf=DayButton1Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton1" (click)="DayUpdate(\'1\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton1Label}}</label>\n				</button>\n			</ion-col>\n			<ion-col style="padding:0" *ngIf=DayButton2Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton2" (click)="DayUpdate(\'2\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton2Label}}</label>\n				</button>\n			</ion-col>\n			\n			<ion-col style="padding:0" *ngIf=DayButton3Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton3" style="padding:0; margin:0" (click)="DayUpdate(\'3\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton3Label}}</label>\n				</button>\n			</ion-col>\n\n			<ion-col style="padding:0" *ngIf=DayButton4Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton4" style="padding:0; margin:0" (click)="DayUpdate(\'4\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton4Label}}</label>\n				</button>\n			</ion-col>\n			<ion-col style="padding:0" *ngIf=DayButton5Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton5" style="padding:0; margin:0" (click)="DayUpdate(\'5\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton5Label}}</label>\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n\n	<!-- Announcement space at top of grid-->\n\n	<ion-grid style="padding:0; margin:0">\n\n		<ion-row class="MyGridCellMargin" style="margin:0; padding:0">\n			<ion-col col-2>\n				All Day\n			</ion-col>\n			\n		  <ion-col col-5 style="margin:0; padding:0">\n			<div *ngIf=AllDayLeft class="myCard25" (click)="nav(\'S-57987|0\')"><label style="font-size:13px">Splash Zone (Ex Hall)<br style="margin-left:4px">11 AM - 7 PM</label></div> \n			</ion-col>\n			<ion-col col-5 style="margin:0; padding:0">\n			<div *ngIf=AllDayRight class="myCard25" (click)="nav(\'S-57984|0\')"><label style="font-size:13px">Contour Cove (Ex Hall)<br>11 AM - 7 PM</label></div>\n				</ion-col>\n		</ion-row>\n\n\n\n\n		 \n\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0700}}" *ngIf="agendaEventShowW0700" (click)="nav(agendaEventIDW0700)">\n				<div class="myRow">{{agendaEventTitleW0700}}</div>\n				<div class="myRow2">{{agendaLocationW0700}}</div>\n				<div [ngClass]="agendaStatusStyleW0700">{{agendaStatusW0700}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0700}}" *ngIf="agendaEventShow0700" (click)="nav(agendaEventID0700)">\n				<div class="myRow">{{agendaEventTitle0700}}</div>\n				<div class="myRow2">{{agendaLocation0700}}</div>\n				<div [ngClass]="agendaStatusStyle0700">{{agendaStatus0700}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20700}}" *ngIf="agendaEventShowC20700" (click)="nav(agendaEventIDC20700)">\n				<div class="myRow">{{agendaEventTitleC20700}}</div>\n				<div>{{agendaLocationC20700}}</div>\n				<div [ngClass]="agendaStatusStyleC20700">{{agendaStatusC20700}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0730}}" *ngIf="agendaEventShowW0730" (click)="nav(agendaEventIDW0730)">\n				<div class="myRow">{{agendaEventTitleW0730}}</div>\n				<div class="myRow2">{{agendaLocationW0730}}</div>\n				<div [ngClass]="agendaStatusStyleW0730">{{agendaStatusW0730}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0730}}" *ngIf="agendaEventShow0730" (click)="nav(agendaEventID0730)">\n				<div class="myRow">{{agendaEventTitle0730}}</div>\n				<div class="myRow2">{{agendaLocation0730}}</div>\n				<div [ngClass]="agendaStatusStyle0730">{{agendaStatus0730}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20730}}" *ngIf="agendaEventShowC20730" (click)="nav(agendaEventIDC20730)">\n				<div class="myRow">{{agendaEventTitleC20730}}</div>\n				<div class="myRow2">{{agendaLocationC20730}}</div>\n				<div [ngClass]="agendaStatusStyleC20730">{{agendaStatusC20730}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0800}}" *ngIf="agendaEventShowW0800" (click)="nav(agendaEventIDW0800)">\n				<div class="myRow">{{agendaEventTitleW0800}}</div>\n				<div class="myRow2">{{agendaLocationW0800}}</div>\n				<div [ngClass]="agendaStatusStyleW0800">{{agendaStatusW0800}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0800}}" *ngIf="agendaEventShow0800" (click)="nav(agendaEventID0800)">\n				<div class="myRow">{{agendaEventTitle0800}}</div>\n				<div class="myRow2">{{agendaLocation0800}}</div>\n				<div [ngClass]="agendaStatusStyle0800">{{agendaStatus0800}}</div>\n			</ion-col>\n		\n			<ion-col col-5 class="{{agendaEventClassC20800}}" *ngIf="agendaEventShowC20800" (click)="nav(agendaEventIDC20800)">\n				<div class="myRow">{{agendaEventTitleC20800}}</div>\n				<div class="myRow2">{{agendaLocationC20800}}</div>\n				<div [ngClass]="agendaStatusStyleC20800">{{agendaStatusC20800}}</div>\n			</ion-col>\n		</ion-row>\n					\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0830}}" *ngIf="agendaEventShowW0830" (click)="nav(agendaEventIDW0830)">\n				<div class="myRow">{{agendaEventTitleW0830}}</div>\n				<div class="myRow2">{{agendaLocationW0830}}</div>\n				<div [ngClass]="agendaStatusStyleW0830">{{agendaStatusW0830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0830}}" *ngIf="agendaEventShow0830" (click)="nav(agendaEventID0830)">\n				<div class="myRow">{{agendaEventTitle0830}}</div>\n				<div class="myRow2">{{agendaLocation0830}}</div>\n				<div [ngClass]="agendaStatusStyle0830">{{agendaStatus0830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20830}}" *ngIf="agendaEventShowC20830" (click)="nav(agendaEventIDC20830)">\n				<div class="myRow">{{agendaEventTitleC20830}}</div>\n				<div class="myRow2">{{agendaLocationC20830}}</div>\n				<div [ngClass]="agendaStatusStyleC20830">{{agendaStatusC20830}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0900}}" *ngIf="agendaEventShowW0900" (click)="nav(agendaEventIDW0900)">\n				<div class="myRow">{{agendaEventTitleW0900}}</div>\n				<div class="myRow2">{{agendaLocationW0900}}</div>\n				<div [ngClass]="agendaStatusStyleW0900">{{agendaStatusW0900}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0900}}" *ngIf="agendaEventShow0900" (click)="nav(agendaEventID0900)">\n				<div class="myRow">{{agendaEventTitle0900}}</div>\n				<div class="myRow2">{{agendaLocation0900}}</div>\n				<div [ngClass]="agendaStatusStyle0900">{{agendaStatus0900}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20900}}" *ngIf="agendaEventShowC20900" (click)="nav(agendaEventIDC20900)">\n				<div class="myRow">{{agendaEventTitleC20900}}</div>\n				<div class="myRow2">{{agendaLocationC20900}}</div>\n				<div [ngClass]="agendaStatusStyleC20900">{{agendaStatusC20900}}</div>\n			</ion-col>\n		</ion-row>\n\n								\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0930}}" *ngIf="agendaEventShowW0930" (click)="nav(agendaEventIDW0930)">\n				<div class="myRow">{{agendaEventTitleW0930}}</div>\n				<div class="myRow2">{{agendaLocationW0930}}</div>\n				<div [ngClass]="agendaStatusStyleW0930">{{agendaStatusW0930}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0930}}" *ngIf="agendaEventShow0930" (click)="nav(agendaEventID0930)">\n				<div class="myRow">{{agendaEventTitle0930}}</div>\n				<div class="myRow2">{{agendaLocationC20930}}</div>\n				<div [ngClass]="agendaStatusStyle0930">{{agendaStatus0930}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC20930}}" *ngIf="agendaEventShowC20930" (click)="nav(agendaEventIDC20930)">\n				<div class="myRow">{{agendaEventTitleC20930}}</div>\n				<div class="myRow2">{{agendaLocationC20930}}</div>\n				<div [ngClass]="agendaStatusStyleC20930">{{agendaStatusC20930}}</div>\n			</ion-col>\n		</ion-row>\n\n				\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1000}}" *ngIf="agendaEventShowW1000" (click)="nav(agendaEventIDW1000)">\n				<div class="myRow">{{agendaEventTitleW1000}}</div>\n				<div class="myRow2">{{agendaLocationW1000}}</div>\n				<div [ngClass]="agendaStatusStyleW1000">{{agendaStatusW1000}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1000}}" *ngIf="agendaEventShow1000" (click)="nav(agendaEventID1000)">\n				<div class="myRow">{{agendaEventTitle1000}}</div>\n				<div class="myRow2">{{agendaLocation1000}}</div>\n				<div [ngClass]="agendaStatusStyle1000">{{agendaStatus1000}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21000}}" *ngIf="agendaEventShowC21000" (click)="nav(agendaEventIDC21000)">\n				<div class="myRow">{{agendaEventTitleC21000}}</div>\n				<div class="myRow2">{{agendaLocationC21000}}</div>\n				<div [ngClass]="agendaStatusStyleC21000">{{agendaStatusC21000}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1030}}" *ngIf="agendaEventShowW1030" (click)="nav(agendaEventIDW1030)">\n				<div class="myRow">{{agendaEventTitleW1030}}</div>\n				<div class="myRow2">{{agendaLocationW1030}}</div>\n				<div [ngClass]="agendaStatusStyleW1030">{{agendaStatusW1030}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1030}}" *ngIf="agendaEventShow1030" (click)="nav(agendaEventID1030)">\n				<div class="myRow">{{agendaEventTitle1030}}</div>\n				<div class="myRow2">{{agendaLocation1030}}</div>\n				<div [ngClass]="agendaStatusStyle1030">{{agendaStatus1030}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21030}}" *ngIf="agendaEventShowC21030" (click)="nav(agendaEventIDC21030)">\n				<div class="myRow">{{agendaEventTitleC21030}}</div>\n				<div class="myRow2">{{agendaLocationC21030}}</div>\n				<div [ngClass]="agendaStatusStyleC21030">{{agendaStatusC21030}}</div>\n			</ion-col>\n		</ion-row>				\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1100}}" *ngIf="agendaEventShowW1100" (click)="nav(agendaEventIDW1100)">\n				<div class="myRow">{{agendaEventTitleW1100}}</div>\n				<div class="myRow2">{{agendaLocationW1100}}</div>\n				<div [ngClass]="agendaStatusStyleW1100">{{agendaStatusW1100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1100}}" *ngIf="agendaEventShow1100" (click)="nav(agendaEventID1100)">\n				<div class="myRow">{{agendaEventTitle1100}}</div>\n				<div class="myRow2">{{agendaLocation1100}}</div>\n				<div [ngClass]="agendaStatusStyle1100">{{agendaStatus1100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21100}}" *ngIf="agendaEventShowC21100" (click)="nav(agendaEventIDC21100)">\n				<div class="myRow">{{agendaEventTitleC21100}}</div>\n				<div class="myRow2">{{agendaLocationC21100}}</div>\n				<div [ngClass]="agendaStatusStyleC21100">{{agendaStatusC21100}}</div>\n			</ion-col>\n		</ion-row>\n				\n	\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1130}}" *ngIf="agendaEventShowW1130" (click)="nav(agendaEventIDW1130)">\n				<div class="myRow">{{agendaEventTitleW1130}}</div>\n				<div class="myRow2">{{agendaLocationW1130}}</div>\n				<div [ngClass]="agendaStatusStyleW1130">{{agendaStatusW1130}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1130}}" *ngIf="agendaEventShow1130" (click)="nav(agendaEventID1130)">\n				<div class="myRow">{{agendaEventTitle1130}}</div>\n				<div class="myRow2">{{agendaLocation1130}}</div>\n				<div [ngClass]="agendaStatusStyle1130">{{agendaStatus1130}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21130}}" *ngIf="agendaEventShowC21130" (click)="nav(agendaEventIDC21130)">\n				<div class="myRow">{{agendaEventTitleC21130}}</div>\n				<div class="myRow2">{{agendaLocationC21130}}</div>\n				<div [ngClass]="agendaStatusStyleC21130">{{agendaStatusC21130}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				12:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1200}}" *ngIf="agendaEventShowW1200" (click)="nav(agendaEventIDW1200)">\n				<div class="myRow">{{agendaEventTitleW1200}}</div>\n				<div class="myRow2">{{agendaLocationW1200}}</div>\n				<div [ngClass]="agendaStatusStyleW1200">{{agendaStatusW1200}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1200}}" *ngIf="agendaEventShow1200" (click)="nav(agendaEventID1200)">\n				<div class="myRow">{{agendaEventTitle1200}}</div>\n				<div class="myRow2">{{agendaLocation1200}}</div>\n				<div [ngClass]="agendaStatusStyle1200">{{agendaStatus1200}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21200}}" *ngIf="agendaEventShowC21200" (click)="nav(agendaEventIDC21200)">\n				<div class="myRow">{{agendaEventTitleC21200}}</div>\n				<div class="myRow2">{{agendaLocationC21200}}</div>\n				<div [ngClass]="agendaStatusStyleC21200">{{agendaStatusC21200}}</div>\n			</ion-col>\n		</ion-row>\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				12:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1230}}" *ngIf="agendaEventShowW1230" (click)="nav(agendaEventIDW1230)">\n				<div class="myRow">{{agendaEventTitleW1230}}</div>\n				<div class="myRow2">{{agendaLocationW1230}}</div>\n				<div [ngClass]="agendaStatusStyleW1230">{{agendaStatusW1230}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1230}}" *ngIf="agendaEventShow1230" (click)="nav(agendaEventID1230)">\n				<div class="myRow">{{agendaEventTitle1230}}</div>\n				<div class="myRow2">{{agendaLocation1230}}</div>\n				<div [ngClass]="agendaStatusStyle1230">{{agendaStatus1230}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21230}}" *ngIf="agendaEventShowC21230" (click)="nav(agendaEventIDC21230)">\n				<div class="myRow">{{agendaEventTitleC21230}}</div>\n				<div class="myRow2">{{agendaLocationC21230}}</div>\n				<div [ngClass]="agendaStatusStyleC21230">{{agendaStatusC21230}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				1:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1300}}" *ngIf="agendaEventShowW1300" (click)="nav(agendaEventIDW1300)">\n				<div class="myRow">{{agendaEventTitleW1300}}</div>\n				<div class="myRow2">{{agendaLocationW1300}}</div>\n				<div [ngClass]="agendaStatusStyleW1300">{{agendaStatusW1300}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1300}}" *ngIf="agendaEventShow1300" (click)="nav(agendaEventID1300)">\n				<div class="myRow truncate">{{agendaEventTitle1300}}</div>\n				<div class="myRow2">{{agendaLocation1300}}</div>\n				<div [ngClass]="agendaStatusStyle1300">{{agendaStatus1300}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21300}}" *ngIf="agendaEventShowC21300" (click)="nav(agendaEventIDC21300)">\n				<div class="myRow">{{agendaEventTitleC21300}}</div>\n				<div class="myRow2">{{agendaLocationC21300}}</div>\n				<div [ngClass]="agendaStatusStyleC21300">{{agendaStatusC21300}}</div>\n			</ion-col>\n		</ion-row>\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				1:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1330}}" *ngIf="agendaEventShowW1330" (click)="nav(agendaEventIDW1330)">\n				<div class="myRow">{{agendaEventTitleW1330}}</div>\n				<div class="myRow2">{{agendaLocationW1330}}</div>\n				<div [ngClass]="agendaStatusStyleW1330">{{agendaStatusW1330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1330}}" *ngIf="agendaEventShow1330" (click)="nav(agendaEventID1330)">\n				<div class="myRow">{{agendaEventTitle1330}}</div>\n				<div class="myRow2">{{agendaLocation1330}}</div>\n				<div [ngClass]="agendaStatusStyle1330">{{agendaStatus1330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21330}}" *ngIf="agendaEventShowC21330" (click)="nav(agendaEventIDC21330)">\n				<div class="myRow">{{agendaEventTitleC21330}}</div>\n				<div class="myRow2">{{agendaLocationC21330}}</div>\n				<div [ngClass]="agendaStatusStyleC21330">{{agendaStatusC21330}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				2:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1400}}" *ngIf="agendaEventShowW1400" (click)="nav(agendaEventIDW1400)">\n				<div class="myRow">{{agendaEventTitleW1400}}</div>\n				<div class="myRow2">{{agendaLocationW1400}}</div>\n				<div [ngClass]="agendaStatusStyleW1400">{{agendaStatusW1400}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1400}}" *ngIf="agendaEventShow1400" (click)="nav(agendaEventID1400)">\n				<div class="myRow truncate">{{agendaEventTitle1400}}</div>\n				<div class="myRow2">{{agendaLocation1400}}</div>\n				<div [ngClass]="agendaStatusStyle1400">{{agendaStatus1400}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21400}}" *ngIf="agendaEventShowC21400" (click)="nav(agendaEventIDC21400)">\n				<div class="myRow">{{agendaEventTitleC21400}}</div>\n				<div class="myRow2">{{agendaLocationC21400}}</div>\n				<div [ngClass]="agendaStatusStyleC21400">{{agendaStatusC21400}}</div>\n			</ion-col>\n		</ion-row>\n		\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				2:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1430}}" *ngIf="agendaEventShowW1430" (click)="nav(agendaEventIDW1430)">\n				<div class="myRow">{{agendaEventTitleW1430}}</div>\n				<div class="myRow2">{{agendaLocationW1430}}</div>\n				<div [ngClass]="agendaStatusStyleW1430">{{agendaStatusW1430}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1430}}" *ngIf="agendaEventShow1430" (click)="nav(agendaEventID1430)">\n				<div class="myRow">{{agendaEventTitle1430}}</div>\n				<div class="myRow2">{{agendaLocation1430}}</div>\n				<div [ngClass]="agendaStatusStyle1430">{{agendaStatus1430}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21430}}" *ngIf="agendaEventShowC21430" (click)="nav(agendaEventIDC21430)">\n				<div class="myRow">{{agendaEventTitleC21430}}</div>\n				<div class="myRow2">{{agendaLocationC21430}}</div>\n				<div [ngClass]="agendaStatusStyleC21430">{{agendaStatusC21430}}</div>\n			</ion-col>\n		</ion-row>	\n				\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				3:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1500}}" *ngIf="agendaEventShowW1500" (click)="nav(agendaEventIDW1500)">\n				<div class="myRow">{{agendaEventTitleW1500}}</div>\n				<div class="myRow2">{{agendaLocationW1500}}</div>\n				<div [ngClass]="agendaStatusStyleW1500">{{agendaStatusW1500}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1500}}" *ngIf="agendaEventShow1500" (click)="nav(agendaEventID1500)">\n				<div class="myRow">{{agendaEventTitle1500}}</div>\n				<div class="myRow2">{{agendaLocation1500}}</div>\n				<div [ngClass]="agendaStatusStyle1500">{{agendaStatus1500}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21500}}" *ngIf="agendaEventShowC21500" (click)="nav(agendaEventIDC21500)">\n				<div class="myRow">{{agendaEventTitleC21500}}</div>\n				<div class="myRow2">{{agendaLocationC21500}}</div>\n				<div [ngClass]="agendaStatusStyleC21500">{{agendaStatusC21500}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				3:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1530}}" *ngIf="agendaEventShowW1530" (click)="nav(agendaEventIDW1530)">\n				<div class="myRow">{{agendaEventTitleW1530}}</div>\n				<div class="myRow2">{{agendaLocationW1530}}</div>\n				<div [ngClass]="agendaStatusStyleW1530">{{agendaStatusW1530}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1530}}" *ngIf="agendaEventShow1530" (click)="nav(agendaEventID1530)">\n				<div class="myRow">{{agendaEventTitle1530}}</div>\n				<div class="myRow2">{{agendaLocation1530}}</div>\n				<div [ngClass]="agendaStatusStyle1530">{{agendaStatus1530}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21530}}" *ngIf="agendaEventShowC21530" (click)="nav(agendaEventIDC21530)">\n				<div class="myRow">{{agendaEventTitleC21530}}</div>\n				<div class="myRow2">{{agendaLocationC21530}}</div>\n				<div [ngClass]="agendaStatusStyleC21530">{{agendaStatusC21530}}</div>\n			</ion-col>\n		</ion-row>	\n						\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				4:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1600}}" *ngIf="agendaEventShowW1600" (click)="nav(agendaEventIDW1600)">\n				<div class="myRow">{{agendaEventTitleW1600}}</div>\n				<div class="myRow2">{{agendaLocationW1600}}</div>\n				<div [ngClass]="agendaStatusStyleW1600">{{agendaStatusW1600}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1600}}" *ngIf="agendaEventShow1600" (click)="nav(agendaEventID1600)">\n				<div class="myRow">{{agendaEventTitle1600}}</div>\n				<div class="myRow2">{{agendaLocation1600}}</div>\n				<div [ngClass]="agendaStatusStyle1600">{{agendaStatus1600}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21600}}" *ngIf="agendaEventShowC21600" (click)="nav(agendaEventIDC21600)">\n				<div class="myRow">{{agendaEventTitleC21600}}</div>\n				<div class="myRow2">{{agendaLocationC21600}}</div>\n				<div [ngClass]="agendaStatusStyleC21600">{{agendaStatusC21600}}</div>\n			</ion-col>\n		</ion-row>\n				\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				4:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1630}}" *ngIf="agendaEventShowW1630" (click)="nav(agendaEventIDW1630)">\n				<div class="myRow">{{agendaEventTitleW1630}}</div>\n				<div class="myRow2">{{agendaLocationW1630}}</div>\n				<div [ngClass]="agendaStatusStyleW1630">{{agendaStatusW1630}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1630}}" *ngIf="agendaEventShow1630" (click)="nav(agendaEventID1630)">\n				<div class="myRow">{{agendaEventTitle1630}}</div>\n				<div class="myRow2">{{agendaLocation1630}}</div>\n				<div [ngClass]="agendaStatusStyle1630">{{agendaStatus1630}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21630}}" *ngIf="agendaEventShowC21630" (click)="nav(agendaEventIDC21630)">\n				<div class="myRow">{{agendaEventTitleC21630}}</div>\n				<div class="myRow2">{{agendaLocationC21630}}</div>\n				<div [ngClass]="agendaStatusStyleC21630">{{agendaStatusC21630}}</div>\n			</ion-col>\n		</ion-row>	\n						\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				5:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1700}}" *ngIf="agendaEventShowW1700" (click)="nav(agendaEventIDW1700)">\n				<div class="myRow">{{agendaEventTitleW1700}}</div>\n				<div class="myRow2">{{agendaLocationW1700}}</div>\n				<div [ngClass]="agendaStatusStyleW1700">{{agendaStatusW1700}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1700}}" *ngIf="agendaEventShow1700" (click)="nav(agendaEventID1700)">\n				<div class="myRow">{{agendaEventTitle1700}}</div>\n				<div class="myRow2">{{agendaLocation1700}}</div>\n				<div [ngClass]="agendaStatusStyle1700">{{agendaStatus1700}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21700}}" *ngIf="agendaEventShowC21700" (click)="nav(agendaEventIDC21700)">\n				<div class="myRow">{{agendaEventTitleC21700}}</div>\n				<div class="myRow2">{{agendaLocationC21700}}</div>\n				<div [ngClass]="agendaStatusStyleC21700">{{agendaStatusC21700}}</div>\n			</ion-col>\n		</ion-row>\n						\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				5:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1730}}" *ngIf="agendaEventShowW1730" (click)="nav(agendaEventIDW1730)">\n				<div class="myRow">{{agendaEventTitleW1730}}</div>\n				<div class="myRow2">{{agendaLocationW1730}}</div>\n				<div [ngClass]="agendaStatusStyleW1730">{{agendaStatusW1730}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1730}}" *ngIf="agendaEventShow1730" (click)="nav(agendaEventID1730)">\n				<div class="myRow">{{agendaEventTitle1730}}</div>\n				<div class="myRow2">{{agendaLocationC21730}}</div>\n				<div [ngClass]="agendaStatusStyle1730">{{agendaStatus1730}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21730}}" *ngIf="agendaEventShowC21730" (click)="nav(agendaEventIDC21730)">\n				<div class="myRow">{{agendaEventTitleC21730}}</div>\n				<div class="myRow2">{{agendaLocationC21730}}</div>\n				<div [ngClass]="agendaStatusStyleC21730">{{agendaStatusC21730}}</div>\n			</ion-col>\n		</ion-row>	\n								\n		\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				6:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1800}}" *ngIf="agendaEventShowW1800" (click)="nav(agendaEventIDW1800)">\n				<div class="myRow">{{agendaEventTitleW1800}}</div>\n				<div class="myRow2">{{agendaLocationW1800}}</div>\n				<div [ngClass]="agendaStatusStyleW1800">{{agendaStatusW1800}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1800}}" *ngIf="agendaEventShow1800" (click)="nav(agendaEventID1800)">\n				<div class="myRow">{{agendaEventTitle1800}}</div>\n				<div class="myRow2">{{agendaLocation1800}}</div>\n				<div [ngClass]="agendaStatusStyle1800">{{agendaStatus1800}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21800}}" *ngIf="agendaEventShowC21800" (click)="nav(agendaEventIDC21800)">\n				<div class="myRow">{{agendaEventTitleC21800}}</div>\n				<div class="myRow2">{{agendaLocationC21800}}</div>\n				<div [ngClass]="agendaStatusStyleC21800">{{agendaStatusC21800}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				6:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1830}}" *ngIf="agendaEventShowW1830" (click)="nav(agendaEventIDW1830)">\n				<div class="myRow">{{agendaEventTitleW1830}}</div>\n				<div class="myRow2">{{agendaLocationW1830}}</div>\n				<div [ngClass]="agendaStatusStyleW1830">{{agendaStatusW1830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1830}}" *ngIf="agendaEventShow1830" (click)="nav(agendaEventID1830)">\n				<div class="myRow">{{agendaEventTitle1830}}</div>\n				<div class="myRow2">{{agendaLocation1830}}</div>\n				<div [ngClass]="agendaStatusStyle1830">{{agendaStatus1830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21830}}" *ngIf="agendaEventShowC21830" (click)="nav(agendaEventIDC21830)">\n				<div class="myRow">{{agendaEventTitleC21830}}</div>\n				<div class="myRow2">{{agendaLocationC21830}}</div>\n				<div [ngClass]="agendaStatusStyleC21830">{{agendaStatusC21830}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1900}}" *ngIf="agendaEventShowW1900" (click)="nav(agendaEventIDW1900)">\n				<div class="myRow">{{agendaEventTitleW1900}}</div>\n				<div class="myRow2">{{agendaLocationW1900}}</div>\n				<div [ngClass]="agendaStatusStyleW1900">{{agendaStatusW1900}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1900}}" *ngIf="agendaEventShow1900" (click)="nav(agendaEventID1900)">\n				<div class="myRow">{{agendaEventTitle1900}}</div>\n				<div class="myRow2">{{agendaLocation1900}}</div>\n				<div [ngClass]="agendaStatusStyle1900">{{agendaStatus1900}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21900}}" *ngIf="agendaEventShowC21900" (click)="nav(agendaEventIDC21900)">\n				<div class="myRow">{{agendaEventTitleC21900}}</div>\n				<div class="myRow2">{{agendaLocationC21900}}</div>\n				<div [ngClass]="agendaStatusStyleC2700">{{agendaStatusC21900}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1930}}" *ngIf="agendaEventShowW1930" (click)="nav(agendaEventIDW1930)">\n				<div class="myRow">{{agendaEventTitleW1930}}</div>\n				<div class="myRow2">{{agendaLocationW1930}}</div>\n				<div [ngClass]="agendaStatusStyleW1930">{{agendaStatusW1930}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1930}}" *ngIf="agendaEventShow1930" (click)="nav(agendaEventID1930)">\n				<div class="myRow">{{agendaEventTitle1930}}</div>\n				<div class="myRow2">{{agendaLocation1930}}</div>\n				<div [ngClass]="agendaStatusStyle1930">{{agendaStatus1930}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21930}}" *ngIf="agendaEventShowC21930" (click)="nav(agendaEventIDC21930)">\n				<div class="myRow">{{agendaEventTitleC21930}}</div>\n				<div class="myRow2">{{agendaLocationC21930}}</div>\n				<div [ngClass]="agendaStatusStyleC21930">{{agendaStatusC21930}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2000}}" *ngIf="agendaEventShowW2000" (click)="nav(agendaEventIDW2000)">\n				<div class="myRow">{{agendaEventTitleW2000}}</div>\n				<div class="myRow2">{{agendaLocationW2000}}</div>\n				<div [ngClass]="agendaStatusStyleW2000">{{agendaStatusW2000}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2000}}" *ngIf="agendaEventShow2000" (click)="nav(agendaEventID2000)">\n				<div class="myRow">{{agendaEventTitle2000}}</div>\n				<div class="myRow2">{{agendaLocation2000}}</div>\n				<div [ngClass]="agendaStatusStyle2000">{{agendaStatus2000}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC22000}}" *ngIf="agendaEventShowC22000" (click)="nav(agendaEventIDC22000)">\n				<div class="myRow">{{agendaEventTitleC22000}}</div>\n				<div class="myRow2">{{agendaLocationC22000}}</div>\n				<div [ngClass]="agendaStatusStyleC22000">{{agendaStatusC22000}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2030}}" *ngIf="agendaEventShowW2030" (click)="nav(agendaEventIDW2030)">\n				<div class="myRow">{{agendaEventTitleW2030}}</div>\n				<div class="myRow2">{{agendaLocationW2030}}</div>\n				<div [ngClass]="agendaStatusStyleW2030">{{agendaStatusW2030}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2030}}" *ngIf="agendaEventShow2030" (click)="nav(agendaEventID2030)">\n				<div class="myRow">{{agendaEventTitle2030}}</div>\n				<div class="myRow2">{{agendaLocation2030}}</div>\n				<div [ngClass]="agendaStatusStyle2030">{{agendaStatus2030}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22030}}" *ngIf="agendaEventShowC22030" (click)="nav(agendaEventIDC22030)">\n				<div class="myRow">{{agendaEventTitleC22030}}</div>\n				<div class="myRow2">{{agendaLocationC22030}}</div>\n				<div [ngClass]="agendaStatusStyleC22030">{{agendaStatusC22030}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2100}}" *ngIf="agendaEventShowW2100" (click)="nav(agendaEventIDW2100)">\n				<div class="myRow">{{agendaEventTitleW2100}}</div>\n				<div class="myRow2">{{agendaLocationW2100}}</div>\n				<div [ngClass]="agendaStatusStyleW2100">{{agendaStatusW2100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2100}}" *ngIf="agendaEventShow2100" (click)="nav(agendaEventID2100)">\n				<div class="myRow">{{agendaEventTitle2100}}</div>\n				<div class="myRow2">{{agendaLocation2100}}</div>\n				<div [ngClass]="agendaStatusStyle2100">{{agendaStatus2100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22100}}" *ngIf="agendaEventShowC22100" (click)="nav(agendaEventIDC22100)">\n				<div class="myRow">{{agendaEventTitleC22100}}</div>\n				<div class="myRow2">{{agendaLocationC22100}}</div>\n				<div [ngClass]="agendaStatusStyleC22100">{{agendaStatusC22100}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2130}}" *ngIf="agendaEventShowW2130" (click)="nav(agendaEventIDW2130)">\n				<div class="myRow">{{agendaEventTitleW2130}}</div>\n				<div class="myRow2">{{agendaLocationW2130}}</div>\n				<div [ngClass]="agendaStatusStyleW2130">{{agendaStatusW2130}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2130}}" *ngIf="agendaEventShow2130" (click)="nav(agendaEventID2130)">\n				<div class="myRow">{{agendaEventTitle2130}}</div>\n				<div class="myRow2">{{agendaLocation2130}}</div>\n				<div [ngClass]="agendaStatusStyle2130">{{agendaStatus2130}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22130}}" *ngIf="agendaEventShowC22130" (click)="nav(agendaEventIDC22130)">\n				<div class="myRow">{{agendaEventTitleC22130}}</div>\n				<div class="myRow2">{{agendaLocationC22130}}</div>\n				<div [ngClass]="agendaStatusStyleC2130">{{agendaStatusC22130}}</div>\n			</ion-col>\n		</ion-row>	\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2200}}" *ngIf="agendaEventShowW2200" (click)="nav(agendaEventIDW2200)">\n				<div class="myRow">{{agendaEventTitleW2200}}</div>\n				<div class="myRow2">{{agendaLocationW2200}}</div>\n				<div [ngClass]="agendaStatusStyleW2200">{{agendaStatusW2200}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2200}}" *ngIf="agendaEventShow2200" (click)="nav(agendaEventID2200)">\n				<div class="myRow">{{agendaEventTitle2200}}</div>\n				<div class="myRow2">{{agendaLocation2200}}</div>\n				<div [ngClass]="agendaStatusStyle2200">{{agendaStatus2200}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22200}}" *ngIf="agendaEventShowC22200" (click)="nav(agendaEventIDC22200)">\n				<div class="myRow">{{agendaEventTitleC22200}}</div>\n				<div class="myRow2">{{agendaLocationC22200}}</div>\n				<div [ngClass]="agendaStatusStyleC22200">{{agendaStatusC22200}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2230}}" *ngIf="agendaEventShowW2230" (click)="nav(agendaEventIDW2230)">\n				<div class="myRow">{{agendaEventTitleW2230}}</div>\n				<div class="myRow2">{{agendaLocationW2230}}</div>\n				<div [ngClass]="agendaStatusStyleW2230">{{agendaStatusW2230}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2230}}" *ngIf="agendaEventShow2230" (click)="nav(agendaEventID2230)">\n				<div class="myRow">{{agendaEventTitle2230}}</div>\n				<div class="myRow2">{{agendaLocation2230}}</div>\n				<div [ngClass]="agendaStatusStyle2230">{{agendaStatus2230}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22230}}" *ngIf="agendaEventShowC22230" (click)="nav(agendaEventIDC22230)">\n				<div class="myRow">{{agendaEventTitleC22230}}</div>\n				<div class="myRow2">{{agendaLocationC22230}}</div>\n				<div [ngClass]="agendaStatusStyleC22230">{{agendaStatusC22230}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2300}}" *ngIf="agendaEventShowW2300" (click)="nav(agendaEventIDW2300)">\n				<div class="myRow">{{agendaEventTitleW2300}}</div>\n				<div class="myRow2">{{agendaLocationW2300}}</div>\n				<div [ngClass]="agendaStatusStyleW2300">{{agendaStatusW2300}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2300}}" *ngIf="agendaEventShow2300" (click)="nav(agendaEventID2300)">\n				<div class="myRow">{{agendaEventTitle2300}}</div>\n				<div class="myRow2">{{agendaLocation2300}}</div>\n				<div [ngClass]="agendaStatusStyle2300">{{agendaStatus2300}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22300}}" *ngIf="agendaEventShowC22300" (click)="nav(agendaEventIDC22300)">\n				<div class="myRow">{{agendaEventTitleC22300}}</div>\n				<div class="myRow2">{{agendaLocationC22300}}</div>\n				<div [ngClass]="agendaStatusStyleC22300">{{agendaStatusC22300}}</div>\n			</ion-col>\n		</ion-row>													\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2330}}" *ngIf="agendaEventShowW2330" (click)="nav(agendaEventIDW2330)">\n				<div class="myRow">{{agendaEventTitleW2330}}</div>\n				<div class="myRow2">{{agendaLocationW2330}}</div>\n				<div [ngClass]="agendaStatusStyleW2330">{{agendaStatusW2330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2330}}" *ngIf="agendaEventShow2330" (click)="nav(agendaEventID2330)">\n				<div class="myRow">{{agendaEventTitle2330}}</div>\n				<div class="myRow2">{{agendaLocationC22330}}</div>\n				<div [ngClass]="agendaStatusStyle2330">{{agendaStatus2330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22330}}" *ngIf="agendaEventShowC22330" (click)="nav(agendaEventIDC22330)">\n				<div class="myRow">{{agendaEventTitleC22330}}</div>\n				<div class="myRow2">{{agendaLocationC22330}}</div>\n				<div [ngClass]="agendaStatusStyleC22330">{{agendaStatusC22330}}</div>\n			</ion-col>\n		</ion-row>	\n\n	</ion-grid>\n\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/myagenda/myagenda.html"*/,
+        selector: 'page-myagenda',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/myagenda/myagenda.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>My Agenda</ion-title>\n	</ion-navbar>\n\n	<!-- Buttons in flexbox grid for date selection-->\n	<ion-grid style="padding:0; margin:0; position: fixed">\n			<ion-row style="padding:0; margin:0">\n	\n				<ion-col style="padding:0" *ngIf=DayButton1Show>\n					<button ion-button full style="margin:0"[ngClass]="dayButton1" (click)="DayUpdate(\'1\')">\n							<ion-icon name="calendar"></ion-icon>\n							<label style="padding-left:3px">{{DayButton1Label}}</label>\n					</button>\n				</ion-col>\n				<ion-col style="padding:0" *ngIf=DayButton2Show>\n					<button ion-button full style="margin:0"[ngClass]="dayButton2" (click)="DayUpdate(\'2\')">\n							<ion-icon name="calendar"></ion-icon>\n							<label style="padding-left:3px">{{DayButton2Label}}</label>\n					</button>\n				</ion-col>\n				\n				<ion-col style="padding:0" *ngIf=DayButton3Show>\n					<button ion-button full style="margin:0"[ngClass]="dayButton3" style="padding:0; margin:0" (click)="DayUpdate(\'3\')">\n							<ion-icon name="calendar"></ion-icon>\n							<label style="padding-left:3px">{{DayButton3Label}}</label>\n					</button>\n				</ion-col>\n	\n				<ion-col style="padding:0" *ngIf=DayButton4Show>\n					<button ion-button full style="margin:0"[ngClass]="dayButton4" style="padding:0; margin:0" (click)="DayUpdate(\'4\')">\n							<ion-icon name="calendar"></ion-icon>\n							<label style="padding-left:3px">{{DayButton4Label}}</label>\n					</button>\n				</ion-col>\n				<ion-col style="padding:0" *ngIf=DayButton5Show>\n					<button ion-button full style="margin:0"[ngClass]="dayButton5" style="padding:0; margin:0" (click)="DayUpdate(\'5\')">\n							<ion-icon name="calendar"></ion-icon>\n							<label style="padding-left:3px">{{DayButton5Label}}</label>\n					</button>\n				</ion-col>\n	\n			</ion-row>\n		</ion-grid>\n</ion-header>\n\n<ion-content style="padding:0; margin:0">\n\n	<!-- Floating button menu for adding new comment -->\n    <ion-fab bottom right #fab>\n		<button ion-fab color="secondary" ion-fab>\n			<ion-icon name="add"></ion-icon>\n		</button>\n		<ion-fab-list side="top">\n			<button ion-fab (click)="AddPersonalEvent(fab)">\n				<ion-icon name="time"></ion-icon>\n				<div class="fabdivbutton">Personal Appt</div>\n			</button>\n			<button ion-fab (click)="GoMyAgendaFull(fab)">\n				<ion-icon name="calendar"></ion-icon>\n				<div class="fabdivbutton">Review Schedule</div>\n			</button>\n		</ion-fab-list>\n    </ion-fab>\n\n\n\n\n\n\n\n\n\n\n\n	<!-- Announcement space at top of grid-->\n\n	<ion-grid style="padding:0; margin:0">\n\n		<ion-row class="MyGridCellMargin" style="margin:0; padding:0">\n			<ion-col col-2>\n				All Day\n			</ion-col>\n			\n		  <ion-col col-5 style="margin:0; padding:0">\n			<div *ngIf=AllDayLeft class="myCard25" (click)="nav(\'S-57987|0\')"><label style="font-size:13px">Splash Zone (Ex Hall)<br style="margin-left:4px">11 AM - 7 PM</label></div> \n			</ion-col>\n			<ion-col col-5 style="margin:0; padding:0">\n			<div *ngIf=AllDayRight class="myCard25" (click)="nav(\'S-57984|0\')"><label style="font-size:13px">Contour Cove (Ex Hall)<br>11 AM - 7 PM</label></div>\n				</ion-col>\n		</ion-row>\n\n\n\n\n		 \n\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0700}}" *ngIf="agendaEventShowW0700" (click)="nav(agendaEventIDW0700)">\n				<div class="myRow">{{agendaEventTitleW0700}}</div>\n				<div class="myRow2">{{agendaLocationW0700}}</div>\n				<div [ngClass]="agendaStatusStyleW0700">{{agendaStatusW0700}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0700}}" *ngIf="agendaEventShow0700" (click)="nav(agendaEventID0700)">\n				<div class="myRow">{{agendaEventTitle0700}}</div>\n				<div class="myRow2">{{agendaLocation0700}}</div>\n				<div [ngClass]="agendaStatusStyle0700">{{agendaStatus0700}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20700}}" *ngIf="agendaEventShowC20700" (click)="nav(agendaEventIDC20700)">\n				<div class="myRow">{{agendaEventTitleC20700}}</div>\n				<div>{{agendaLocationC20700}}</div>\n				<div [ngClass]="agendaStatusStyleC20700">{{agendaStatusC20700}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0730}}" *ngIf="agendaEventShowW0730" (click)="nav(agendaEventIDW0730)">\n				<div class="myRow">{{agendaEventTitleW0730}}</div>\n				<div class="myRow2">{{agendaLocationW0730}}</div>\n				<div [ngClass]="agendaStatusStyleW0730">{{agendaStatusW0730}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0730}}" *ngIf="agendaEventShow0730" (click)="nav(agendaEventID0730)">\n				<div class="myRow">{{agendaEventTitle0730}}</div>\n				<div class="myRow2">{{agendaLocation0730}}</div>\n				<div [ngClass]="agendaStatusStyle0730">{{agendaStatus0730}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20730}}" *ngIf="agendaEventShowC20730" (click)="nav(agendaEventIDC20730)">\n				<div class="myRow">{{agendaEventTitleC20730}}</div>\n				<div class="myRow2">{{agendaLocationC20730}}</div>\n				<div [ngClass]="agendaStatusStyleC20730">{{agendaStatusC20730}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0800}}" *ngIf="agendaEventShowW0800" (click)="nav(agendaEventIDW0800)">\n				<div class="myRow">{{agendaEventTitleW0800}}</div>\n				<div class="myRow2">{{agendaLocationW0800}}</div>\n				<div [ngClass]="agendaStatusStyleW0800">{{agendaStatusW0800}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0800}}" *ngIf="agendaEventShow0800" (click)="nav(agendaEventID0800)">\n				<div class="myRow">{{agendaEventTitle0800}}</div>\n				<div class="myRow2">{{agendaLocation0800}}</div>\n				<div [ngClass]="agendaStatusStyle0800">{{agendaStatus0800}}</div>\n			</ion-col>\n		\n			<ion-col col-5 class="{{agendaEventClassC20800}}" *ngIf="agendaEventShowC20800" (click)="nav(agendaEventIDC20800)">\n				<div class="myRow">{{agendaEventTitleC20800}}</div>\n				<div class="myRow2">{{agendaLocationC20800}}</div>\n				<div [ngClass]="agendaStatusStyleC20800">{{agendaStatusC20800}}</div>\n			</ion-col>\n		</ion-row>\n					\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0830}}" *ngIf="agendaEventShowW0830" (click)="nav(agendaEventIDW0830)">\n				<div class="myRow">{{agendaEventTitleW0830}}</div>\n				<div class="myRow2">{{agendaLocationW0830}}</div>\n				<div [ngClass]="agendaStatusStyleW0830">{{agendaStatusW0830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0830}}" *ngIf="agendaEventShow0830" (click)="nav(agendaEventID0830)">\n				<div class="myRow">{{agendaEventTitle0830}}</div>\n				<div class="myRow2">{{agendaLocation0830}}</div>\n				<div [ngClass]="agendaStatusStyle0830">{{agendaStatus0830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20830}}" *ngIf="agendaEventShowC20830" (click)="nav(agendaEventIDC20830)">\n				<div class="myRow">{{agendaEventTitleC20830}}</div>\n				<div class="myRow2">{{agendaLocationC20830}}</div>\n				<div [ngClass]="agendaStatusStyleC20830">{{agendaStatusC20830}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0900}}" *ngIf="agendaEventShowW0900" (click)="nav(agendaEventIDW0900)">\n				<div class="myRow">{{agendaEventTitleW0900}}</div>\n				<div class="myRow2">{{agendaLocationW0900}}</div>\n				<div [ngClass]="agendaStatusStyleW0900">{{agendaStatusW0900}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0900}}" *ngIf="agendaEventShow0900" (click)="nav(agendaEventID0900)">\n				<div class="myRow">{{agendaEventTitle0900}}</div>\n				<div class="myRow2">{{agendaLocation0900}}</div>\n				<div [ngClass]="agendaStatusStyle0900">{{agendaStatus0900}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC20900}}" *ngIf="agendaEventShowC20900" (click)="nav(agendaEventIDC20900)">\n				<div class="myRow">{{agendaEventTitleC20900}}</div>\n				<div class="myRow2">{{agendaLocationC20900}}</div>\n				<div [ngClass]="agendaStatusStyleC20900">{{agendaStatusC20900}}</div>\n			</ion-col>\n		</ion-row>\n\n								\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW0930}}" *ngIf="agendaEventShowW0930" (click)="nav(agendaEventIDW0930)">\n				<div class="myRow">{{agendaEventTitleW0930}}</div>\n				<div class="myRow2">{{agendaLocationW0930}}</div>\n				<div [ngClass]="agendaStatusStyleW0930">{{agendaStatusW0930}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass0930}}" *ngIf="agendaEventShow0930" (click)="nav(agendaEventID0930)">\n				<div class="myRow">{{agendaEventTitle0930}}</div>\n				<div class="myRow2">{{agendaLocationC20930}}</div>\n				<div [ngClass]="agendaStatusStyle0930">{{agendaStatus0930}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC20930}}" *ngIf="agendaEventShowC20930" (click)="nav(agendaEventIDC20930)">\n				<div class="myRow">{{agendaEventTitleC20930}}</div>\n				<div class="myRow2">{{agendaLocationC20930}}</div>\n				<div [ngClass]="agendaStatusStyleC20930">{{agendaStatusC20930}}</div>\n			</ion-col>\n		</ion-row>\n\n				\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1000}}" *ngIf="agendaEventShowW1000" (click)="nav(agendaEventIDW1000)">\n				<div class="myRow">{{agendaEventTitleW1000}}</div>\n				<div class="myRow2">{{agendaLocationW1000}}</div>\n				<div [ngClass]="agendaStatusStyleW1000">{{agendaStatusW1000}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1000}}" *ngIf="agendaEventShow1000" (click)="nav(agendaEventID1000)">\n				<div class="myRow">{{agendaEventTitle1000}}</div>\n				<div class="myRow2">{{agendaLocation1000}}</div>\n				<div [ngClass]="agendaStatusStyle1000">{{agendaStatus1000}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21000}}" *ngIf="agendaEventShowC21000" (click)="nav(agendaEventIDC21000)">\n				<div class="myRow">{{agendaEventTitleC21000}}</div>\n				<div class="myRow2">{{agendaLocationC21000}}</div>\n				<div [ngClass]="agendaStatusStyleC21000">{{agendaStatusC21000}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1030}}" *ngIf="agendaEventShowW1030" (click)="nav(agendaEventIDW1030)">\n				<div class="myRow">{{agendaEventTitleW1030}}</div>\n				<div class="myRow2">{{agendaLocationW1030}}</div>\n				<div [ngClass]="agendaStatusStyleW1030">{{agendaStatusW1030}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1030}}" *ngIf="agendaEventShow1030" (click)="nav(agendaEventID1030)">\n				<div class="myRow">{{agendaEventTitle1030}}</div>\n				<div class="myRow2">{{agendaLocation1030}}</div>\n				<div [ngClass]="agendaStatusStyle1030">{{agendaStatus1030}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21030}}" *ngIf="agendaEventShowC21030" (click)="nav(agendaEventIDC21030)">\n				<div class="myRow">{{agendaEventTitleC21030}}</div>\n				<div class="myRow2">{{agendaLocationC21030}}</div>\n				<div [ngClass]="agendaStatusStyleC21030">{{agendaStatusC21030}}</div>\n			</ion-col>\n		</ion-row>				\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1100}}" *ngIf="agendaEventShowW1100" (click)="nav(agendaEventIDW1100)">\n				<div class="myRow">{{agendaEventTitleW1100}}</div>\n				<div class="myRow2">{{agendaLocationW1100}}</div>\n				<div [ngClass]="agendaStatusStyleW1100">{{agendaStatusW1100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1100}}" *ngIf="agendaEventShow1100" (click)="nav(agendaEventID1100)">\n				<div class="myRow">{{agendaEventTitle1100}}</div>\n				<div class="myRow2">{{agendaLocation1100}}</div>\n				<div [ngClass]="agendaStatusStyle1100">{{agendaStatus1100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21100}}" *ngIf="agendaEventShowC21100" (click)="nav(agendaEventIDC21100)">\n				<div class="myRow">{{agendaEventTitleC21100}}</div>\n				<div class="myRow2">{{agendaLocationC21100}}</div>\n				<div [ngClass]="agendaStatusStyleC21100">{{agendaStatusC21100}}</div>\n			</ion-col>\n		</ion-row>\n				\n	\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1130}}" *ngIf="agendaEventShowW1130" (click)="nav(agendaEventIDW1130)">\n				<div class="myRow">{{agendaEventTitleW1130}}</div>\n				<div class="myRow2">{{agendaLocationW1130}}</div>\n				<div [ngClass]="agendaStatusStyleW1130">{{agendaStatusW1130}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1130}}" *ngIf="agendaEventShow1130" (click)="nav(agendaEventID1130)">\n				<div class="myRow">{{agendaEventTitle1130}}</div>\n				<div class="myRow2">{{agendaLocation1130}}</div>\n				<div [ngClass]="agendaStatusStyle1130">{{agendaStatus1130}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21130}}" *ngIf="agendaEventShowC21130" (click)="nav(agendaEventIDC21130)">\n				<div class="myRow">{{agendaEventTitleC21130}}</div>\n				<div class="myRow2">{{agendaLocationC21130}}</div>\n				<div [ngClass]="agendaStatusStyleC21130">{{agendaStatusC21130}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				12:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1200}}" *ngIf="agendaEventShowW1200" (click)="nav(agendaEventIDW1200)">\n				<div class="myRow">{{agendaEventTitleW1200}}</div>\n				<div class="myRow2">{{agendaLocationW1200}}</div>\n				<div [ngClass]="agendaStatusStyleW1200">{{agendaStatusW1200}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1200}}" *ngIf="agendaEventShow1200" (click)="nav(agendaEventID1200)">\n				<div class="myRow">{{agendaEventTitle1200}}</div>\n				<div class="myRow2">{{agendaLocation1200}}</div>\n				<div [ngClass]="agendaStatusStyle1200">{{agendaStatus1200}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21200}}" *ngIf="agendaEventShowC21200" (click)="nav(agendaEventIDC21200)">\n				<div class="myRow">{{agendaEventTitleC21200}}</div>\n				<div class="myRow2">{{agendaLocationC21200}}</div>\n				<div [ngClass]="agendaStatusStyleC21200">{{agendaStatusC21200}}</div>\n			</ion-col>\n		</ion-row>\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				12:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1230}}" *ngIf="agendaEventShowW1230" (click)="nav(agendaEventIDW1230)">\n				<div class="myRow">{{agendaEventTitleW1230}}</div>\n				<div class="myRow2">{{agendaLocationW1230}}</div>\n				<div [ngClass]="agendaStatusStyleW1230">{{agendaStatusW1230}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1230}}" *ngIf="agendaEventShow1230" (click)="nav(agendaEventID1230)">\n				<div class="myRow">{{agendaEventTitle1230}}</div>\n				<div class="myRow2">{{agendaLocation1230}}</div>\n				<div [ngClass]="agendaStatusStyle1230">{{agendaStatus1230}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21230}}" *ngIf="agendaEventShowC21230" (click)="nav(agendaEventIDC21230)">\n				<div class="myRow">{{agendaEventTitleC21230}}</div>\n				<div class="myRow2">{{agendaLocationC21230}}</div>\n				<div [ngClass]="agendaStatusStyleC21230">{{agendaStatusC21230}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				1:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1300}}" *ngIf="agendaEventShowW1300" (click)="nav(agendaEventIDW1300)">\n				<div class="myRow">{{agendaEventTitleW1300}}</div>\n				<div class="myRow2">{{agendaLocationW1300}}</div>\n				<div [ngClass]="agendaStatusStyleW1300">{{agendaStatusW1300}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1300}}" *ngIf="agendaEventShow1300" (click)="nav(agendaEventID1300)">\n				<div class="myRow truncate">{{agendaEventTitle1300}}</div>\n				<div class="myRow2">{{agendaLocation1300}}</div>\n				<div [ngClass]="agendaStatusStyle1300">{{agendaStatus1300}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21300}}" *ngIf="agendaEventShowC21300" (click)="nav(agendaEventIDC21300)">\n				<div class="myRow">{{agendaEventTitleC21300}}</div>\n				<div class="myRow2">{{agendaLocationC21300}}</div>\n				<div [ngClass]="agendaStatusStyleC21300">{{agendaStatusC21300}}</div>\n			</ion-col>\n		</ion-row>\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				1:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1330}}" *ngIf="agendaEventShowW1330" (click)="nav(agendaEventIDW1330)">\n				<div class="myRow">{{agendaEventTitleW1330}}</div>\n				<div class="myRow2">{{agendaLocationW1330}}</div>\n				<div [ngClass]="agendaStatusStyleW1330">{{agendaStatusW1330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1330}}" *ngIf="agendaEventShow1330" (click)="nav(agendaEventID1330)">\n				<div class="myRow">{{agendaEventTitle1330}}</div>\n				<div class="myRow2">{{agendaLocation1330}}</div>\n				<div [ngClass]="agendaStatusStyle1330">{{agendaStatus1330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21330}}" *ngIf="agendaEventShowC21330" (click)="nav(agendaEventIDC21330)">\n				<div class="myRow">{{agendaEventTitleC21330}}</div>\n				<div class="myRow2">{{agendaLocationC21330}}</div>\n				<div [ngClass]="agendaStatusStyleC21330">{{agendaStatusC21330}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				2:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1400}}" *ngIf="agendaEventShowW1400" (click)="nav(agendaEventIDW1400)">\n				<div class="myRow">{{agendaEventTitleW1400}}</div>\n				<div class="myRow2">{{agendaLocationW1400}}</div>\n				<div [ngClass]="agendaStatusStyleW1400">{{agendaStatusW1400}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1400}}" *ngIf="agendaEventShow1400" (click)="nav(agendaEventID1400)">\n				<div class="myRow truncate">{{agendaEventTitle1400}}</div>\n				<div class="myRow2">{{agendaLocation1400}}</div>\n				<div [ngClass]="agendaStatusStyle1400">{{agendaStatus1400}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21400}}" *ngIf="agendaEventShowC21400" (click)="nav(agendaEventIDC21400)">\n				<div class="myRow">{{agendaEventTitleC21400}}</div>\n				<div class="myRow2">{{agendaLocationC21400}}</div>\n				<div [ngClass]="agendaStatusStyleC21400">{{agendaStatusC21400}}</div>\n			</ion-col>\n		</ion-row>\n		\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				2:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1430}}" *ngIf="agendaEventShowW1430" (click)="nav(agendaEventIDW1430)">\n				<div class="myRow">{{agendaEventTitleW1430}}</div>\n				<div class="myRow2">{{agendaLocationW1430}}</div>\n				<div [ngClass]="agendaStatusStyleW1430">{{agendaStatusW1430}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1430}}" *ngIf="agendaEventShow1430" (click)="nav(agendaEventID1430)">\n				<div class="myRow">{{agendaEventTitle1430}}</div>\n				<div class="myRow2">{{agendaLocation1430}}</div>\n				<div [ngClass]="agendaStatusStyle1430">{{agendaStatus1430}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21430}}" *ngIf="agendaEventShowC21430" (click)="nav(agendaEventIDC21430)">\n				<div class="myRow">{{agendaEventTitleC21430}}</div>\n				<div class="myRow2">{{agendaLocationC21430}}</div>\n				<div [ngClass]="agendaStatusStyleC21430">{{agendaStatusC21430}}</div>\n			</ion-col>\n		</ion-row>	\n				\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				3:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1500}}" *ngIf="agendaEventShowW1500" (click)="nav(agendaEventIDW1500)">\n				<div class="myRow">{{agendaEventTitleW1500}}</div>\n				<div class="myRow2">{{agendaLocationW1500}}</div>\n				<div [ngClass]="agendaStatusStyleW1500">{{agendaStatusW1500}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1500}}" *ngIf="agendaEventShow1500" (click)="nav(agendaEventID1500)">\n				<div class="myRow">{{agendaEventTitle1500}}</div>\n				<div class="myRow2">{{agendaLocation1500}}</div>\n				<div [ngClass]="agendaStatusStyle1500">{{agendaStatus1500}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21500}}" *ngIf="agendaEventShowC21500" (click)="nav(agendaEventIDC21500)">\n				<div class="myRow">{{agendaEventTitleC21500}}</div>\n				<div class="myRow2">{{agendaLocationC21500}}</div>\n				<div [ngClass]="agendaStatusStyleC21500">{{agendaStatusC21500}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				3:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1530}}" *ngIf="agendaEventShowW1530" (click)="nav(agendaEventIDW1530)">\n				<div class="myRow">{{agendaEventTitleW1530}}</div>\n				<div class="myRow2">{{agendaLocationW1530}}</div>\n				<div [ngClass]="agendaStatusStyleW1530">{{agendaStatusW1530}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1530}}" *ngIf="agendaEventShow1530" (click)="nav(agendaEventID1530)">\n				<div class="myRow">{{agendaEventTitle1530}}</div>\n				<div class="myRow2">{{agendaLocation1530}}</div>\n				<div [ngClass]="agendaStatusStyle1530">{{agendaStatus1530}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21530}}" *ngIf="agendaEventShowC21530" (click)="nav(agendaEventIDC21530)">\n				<div class="myRow">{{agendaEventTitleC21530}}</div>\n				<div class="myRow2">{{agendaLocationC21530}}</div>\n				<div [ngClass]="agendaStatusStyleC21530">{{agendaStatusC21530}}</div>\n			</ion-col>\n		</ion-row>	\n						\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				4:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1600}}" *ngIf="agendaEventShowW1600" (click)="nav(agendaEventIDW1600)">\n				<div class="myRow">{{agendaEventTitleW1600}}</div>\n				<div class="myRow2">{{agendaLocationW1600}}</div>\n				<div [ngClass]="agendaStatusStyleW1600">{{agendaStatusW1600}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1600}}" *ngIf="agendaEventShow1600" (click)="nav(agendaEventID1600)">\n				<div class="myRow">{{agendaEventTitle1600}}</div>\n				<div class="myRow2">{{agendaLocation1600}}</div>\n				<div [ngClass]="agendaStatusStyle1600">{{agendaStatus1600}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21600}}" *ngIf="agendaEventShowC21600" (click)="nav(agendaEventIDC21600)">\n				<div class="myRow">{{agendaEventTitleC21600}}</div>\n				<div class="myRow2">{{agendaLocationC21600}}</div>\n				<div [ngClass]="agendaStatusStyleC21600">{{agendaStatusC21600}}</div>\n			</ion-col>\n		</ion-row>\n				\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				4:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1630}}" *ngIf="agendaEventShowW1630" (click)="nav(agendaEventIDW1630)">\n				<div class="myRow">{{agendaEventTitleW1630}}</div>\n				<div class="myRow2">{{agendaLocationW1630}}</div>\n				<div [ngClass]="agendaStatusStyleW1630">{{agendaStatusW1630}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1630}}" *ngIf="agendaEventShow1630" (click)="nav(agendaEventID1630)">\n				<div class="myRow">{{agendaEventTitle1630}}</div>\n				<div class="myRow2">{{agendaLocation1630}}</div>\n				<div [ngClass]="agendaStatusStyle1630">{{agendaStatus1630}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21630}}" *ngIf="agendaEventShowC21630" (click)="nav(agendaEventIDC21630)">\n				<div class="myRow">{{agendaEventTitleC21630}}</div>\n				<div class="myRow2">{{agendaLocationC21630}}</div>\n				<div [ngClass]="agendaStatusStyleC21630">{{agendaStatusC21630}}</div>\n			</ion-col>\n		</ion-row>	\n						\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				5:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1700}}" *ngIf="agendaEventShowW1700" (click)="nav(agendaEventIDW1700)">\n				<div class="myRow">{{agendaEventTitleW1700}}</div>\n				<div class="myRow2">{{agendaLocationW1700}}</div>\n				<div [ngClass]="agendaStatusStyleW1700">{{agendaStatusW1700}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1700}}" *ngIf="agendaEventShow1700" (click)="nav(agendaEventID1700)">\n				<div class="myRow">{{agendaEventTitle1700}}</div>\n				<div class="myRow2">{{agendaLocation1700}}</div>\n				<div [ngClass]="agendaStatusStyle1700">{{agendaStatus1700}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21700}}" *ngIf="agendaEventShowC21700" (click)="nav(agendaEventIDC21700)">\n				<div class="myRow">{{agendaEventTitleC21700}}</div>\n				<div class="myRow2">{{agendaLocationC21700}}</div>\n				<div [ngClass]="agendaStatusStyleC21700">{{agendaStatusC21700}}</div>\n			</ion-col>\n		</ion-row>\n						\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				5:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1730}}" *ngIf="agendaEventShowW1730" (click)="nav(agendaEventIDW1730)">\n				<div class="myRow">{{agendaEventTitleW1730}}</div>\n				<div class="myRow2">{{agendaLocationW1730}}</div>\n				<div [ngClass]="agendaStatusStyleW1730">{{agendaStatusW1730}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1730}}" *ngIf="agendaEventShow1730" (click)="nav(agendaEventID1730)">\n				<div class="myRow">{{agendaEventTitle1730}}</div>\n				<div class="myRow2">{{agendaLocationC21730}}</div>\n				<div [ngClass]="agendaStatusStyle1730">{{agendaStatus1730}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21730}}" *ngIf="agendaEventShowC21730" (click)="nav(agendaEventIDC21730)">\n				<div class="myRow">{{agendaEventTitleC21730}}</div>\n				<div class="myRow2">{{agendaLocationC21730}}</div>\n				<div [ngClass]="agendaStatusStyleC21730">{{agendaStatusC21730}}</div>\n			</ion-col>\n		</ion-row>	\n								\n		\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				6:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1800}}" *ngIf="agendaEventShowW1800" (click)="nav(agendaEventIDW1800)">\n				<div class="myRow">{{agendaEventTitleW1800}}</div>\n				<div class="myRow2">{{agendaLocationW1800}}</div>\n				<div [ngClass]="agendaStatusStyleW1800">{{agendaStatusW1800}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1800}}" *ngIf="agendaEventShow1800" (click)="nav(agendaEventID1800)">\n				<div class="myRow">{{agendaEventTitle1800}}</div>\n				<div class="myRow2">{{agendaLocation1800}}</div>\n				<div [ngClass]="agendaStatusStyle1800">{{agendaStatus1800}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21800}}" *ngIf="agendaEventShowC21800" (click)="nav(agendaEventIDC21800)">\n				<div class="myRow">{{agendaEventTitleC21800}}</div>\n				<div class="myRow2">{{agendaLocationC21800}}</div>\n				<div [ngClass]="agendaStatusStyleC21800">{{agendaStatusC21800}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				6:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1830}}" *ngIf="agendaEventShowW1830" (click)="nav(agendaEventIDW1830)">\n				<div class="myRow">{{agendaEventTitleW1830}}</div>\n				<div class="myRow2">{{agendaLocationW1830}}</div>\n				<div [ngClass]="agendaStatusStyleW1830">{{agendaStatusW1830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1830}}" *ngIf="agendaEventShow1830" (click)="nav(agendaEventID1830)">\n				<div class="myRow">{{agendaEventTitle1830}}</div>\n				<div class="myRow2">{{agendaLocation1830}}</div>\n				<div [ngClass]="agendaStatusStyle1830">{{agendaStatus1830}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC21830}}" *ngIf="agendaEventShowC21830" (click)="nav(agendaEventIDC21830)">\n				<div class="myRow">{{agendaEventTitleC21830}}</div>\n				<div class="myRow2">{{agendaLocationC21830}}</div>\n				<div [ngClass]="agendaStatusStyleC21830">{{agendaStatusC21830}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1900}}" *ngIf="agendaEventShowW1900" (click)="nav(agendaEventIDW1900)">\n				<div class="myRow">{{agendaEventTitleW1900}}</div>\n				<div class="myRow2">{{agendaLocationW1900}}</div>\n				<div [ngClass]="agendaStatusStyleW1900">{{agendaStatusW1900}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1900}}" *ngIf="agendaEventShow1900" (click)="nav(agendaEventID1900)">\n				<div class="myRow">{{agendaEventTitle1900}}</div>\n				<div class="myRow2">{{agendaLocation1900}}</div>\n				<div [ngClass]="agendaStatusStyle1900">{{agendaStatus1900}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21900}}" *ngIf="agendaEventShowC21900" (click)="nav(agendaEventIDC21900)">\n				<div class="myRow">{{agendaEventTitleC21900}}</div>\n				<div class="myRow2">{{agendaLocationC21900}}</div>\n				<div [ngClass]="agendaStatusStyleC2700">{{agendaStatusC21900}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				7:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW1930}}" *ngIf="agendaEventShowW1930" (click)="nav(agendaEventIDW1930)">\n				<div class="myRow">{{agendaEventTitleW1930}}</div>\n				<div class="myRow2">{{agendaLocationW1930}}</div>\n				<div [ngClass]="agendaStatusStyleW1930">{{agendaStatusW1930}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass1930}}" *ngIf="agendaEventShow1930" (click)="nav(agendaEventID1930)">\n				<div class="myRow">{{agendaEventTitle1930}}</div>\n				<div class="myRow2">{{agendaLocation1930}}</div>\n				<div [ngClass]="agendaStatusStyle1930">{{agendaStatus1930}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC21930}}" *ngIf="agendaEventShowC21930" (click)="nav(agendaEventIDC21930)">\n				<div class="myRow">{{agendaEventTitleC21930}}</div>\n				<div class="myRow2">{{agendaLocationC21930}}</div>\n				<div [ngClass]="agendaStatusStyleC21930">{{agendaStatusC21930}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2000}}" *ngIf="agendaEventShowW2000" (click)="nav(agendaEventIDW2000)">\n				<div class="myRow">{{agendaEventTitleW2000}}</div>\n				<div class="myRow2">{{agendaLocationW2000}}</div>\n				<div [ngClass]="agendaStatusStyleW2000">{{agendaStatusW2000}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2000}}" *ngIf="agendaEventShow2000" (click)="nav(agendaEventID2000)">\n				<div class="myRow">{{agendaEventTitle2000}}</div>\n				<div class="myRow2">{{agendaLocation2000}}</div>\n				<div [ngClass]="agendaStatusStyle2000">{{agendaStatus2000}}</div>\n			</ion-col>\n			\n			<ion-col col-5 class="{{agendaEventClassC22000}}" *ngIf="agendaEventShowC22000" (click)="nav(agendaEventIDC22000)">\n				<div class="myRow">{{agendaEventTitleC22000}}</div>\n				<div class="myRow2">{{agendaLocationC22000}}</div>\n				<div [ngClass]="agendaStatusStyleC22000">{{agendaStatusC22000}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				8:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2030}}" *ngIf="agendaEventShowW2030" (click)="nav(agendaEventIDW2030)">\n				<div class="myRow">{{agendaEventTitleW2030}}</div>\n				<div class="myRow2">{{agendaLocationW2030}}</div>\n				<div [ngClass]="agendaStatusStyleW2030">{{agendaStatusW2030}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2030}}" *ngIf="agendaEventShow2030" (click)="nav(agendaEventID2030)">\n				<div class="myRow">{{agendaEventTitle2030}}</div>\n				<div class="myRow2">{{agendaLocation2030}}</div>\n				<div [ngClass]="agendaStatusStyle2030">{{agendaStatus2030}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22030}}" *ngIf="agendaEventShowC22030" (click)="nav(agendaEventIDC22030)">\n				<div class="myRow">{{agendaEventTitleC22030}}</div>\n				<div class="myRow2">{{agendaLocationC22030}}</div>\n				<div [ngClass]="agendaStatusStyleC22030">{{agendaStatusC22030}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2100}}" *ngIf="agendaEventShowW2100" (click)="nav(agendaEventIDW2100)">\n				<div class="myRow">{{agendaEventTitleW2100}}</div>\n				<div class="myRow2">{{agendaLocationW2100}}</div>\n				<div [ngClass]="agendaStatusStyleW2100">{{agendaStatusW2100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2100}}" *ngIf="agendaEventShow2100" (click)="nav(agendaEventID2100)">\n				<div class="myRow">{{agendaEventTitle2100}}</div>\n				<div class="myRow2">{{agendaLocation2100}}</div>\n				<div [ngClass]="agendaStatusStyle2100">{{agendaStatus2100}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22100}}" *ngIf="agendaEventShowC22100" (click)="nav(agendaEventIDC22100)">\n				<div class="myRow">{{agendaEventTitleC22100}}</div>\n				<div class="myRow2">{{agendaLocationC22100}}</div>\n				<div [ngClass]="agendaStatusStyleC22100">{{agendaStatusC22100}}</div>\n			</ion-col>\n		</ion-row>\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				9:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2130}}" *ngIf="agendaEventShowW2130" (click)="nav(agendaEventIDW2130)">\n				<div class="myRow">{{agendaEventTitleW2130}}</div>\n				<div class="myRow2">{{agendaLocationW2130}}</div>\n				<div [ngClass]="agendaStatusStyleW2130">{{agendaStatusW2130}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2130}}" *ngIf="agendaEventShow2130" (click)="nav(agendaEventID2130)">\n				<div class="myRow">{{agendaEventTitle2130}}</div>\n				<div class="myRow2">{{agendaLocation2130}}</div>\n				<div [ngClass]="agendaStatusStyle2130">{{agendaStatus2130}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22130}}" *ngIf="agendaEventShowC22130" (click)="nav(agendaEventIDC22130)">\n				<div class="myRow">{{agendaEventTitleC22130}}</div>\n				<div class="myRow2">{{agendaLocationC22130}}</div>\n				<div [ngClass]="agendaStatusStyleC2130">{{agendaStatusC22130}}</div>\n			</ion-col>\n		</ion-row>	\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2200}}" *ngIf="agendaEventShowW2200" (click)="nav(agendaEventIDW2200)">\n				<div class="myRow">{{agendaEventTitleW2200}}</div>\n				<div class="myRow2">{{agendaLocationW2200}}</div>\n				<div [ngClass]="agendaStatusStyleW2200">{{agendaStatusW2200}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2200}}" *ngIf="agendaEventShow2200" (click)="nav(agendaEventID2200)">\n				<div class="myRow">{{agendaEventTitle2200}}</div>\n				<div class="myRow2">{{agendaLocation2200}}</div>\n				<div [ngClass]="agendaStatusStyle2200">{{agendaStatus2200}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22200}}" *ngIf="agendaEventShowC22200" (click)="nav(agendaEventIDC22200)">\n				<div class="myRow">{{agendaEventTitleC22200}}</div>\n				<div class="myRow2">{{agendaLocationC22200}}</div>\n				<div [ngClass]="agendaStatusStyleC22200">{{agendaStatusC22200}}</div>\n			</ion-col>\n		</ion-row>\n\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				10:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2230}}" *ngIf="agendaEventShowW2230" (click)="nav(agendaEventIDW2230)">\n				<div class="myRow">{{agendaEventTitleW2230}}</div>\n				<div class="myRow2">{{agendaLocationW2230}}</div>\n				<div [ngClass]="agendaStatusStyleW2230">{{agendaStatusW2230}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2230}}" *ngIf="agendaEventShow2230" (click)="nav(agendaEventID2230)">\n				<div class="myRow">{{agendaEventTitle2230}}</div>\n				<div class="myRow2">{{agendaLocation2230}}</div>\n				<div [ngClass]="agendaStatusStyle2230">{{agendaStatus2230}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22230}}" *ngIf="agendaEventShowC22230" (click)="nav(agendaEventIDC22230)">\n				<div class="myRow">{{agendaEventTitleC22230}}</div>\n				<div class="myRow2">{{agendaLocationC22230}}</div>\n				<div [ngClass]="agendaStatusStyleC22230">{{agendaStatusC22230}}</div>\n			</ion-col>\n		</ion-row>	\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:00\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2300}}" *ngIf="agendaEventShowW2300" (click)="nav(agendaEventIDW2300)">\n				<div class="myRow">{{agendaEventTitleW2300}}</div>\n				<div class="myRow2">{{agendaLocationW2300}}</div>\n				<div [ngClass]="agendaStatusStyleW2300">{{agendaStatusW2300}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2300}}" *ngIf="agendaEventShow2300" (click)="nav(agendaEventID2300)">\n				<div class="myRow">{{agendaEventTitle2300}}</div>\n				<div class="myRow2">{{agendaLocation2300}}</div>\n				<div [ngClass]="agendaStatusStyle2300">{{agendaStatus2300}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22300}}" *ngIf="agendaEventShowC22300" (click)="nav(agendaEventIDC22300)">\n				<div class="myRow">{{agendaEventTitleC22300}}</div>\n				<div class="myRow2">{{agendaLocationC22300}}</div>\n				<div [ngClass]="agendaStatusStyleC22300">{{agendaStatusC22300}}</div>\n			</ion-col>\n		</ion-row>													\n\n\n		<ion-row class="MyGridCellMargin">\n			<ion-col col-2>\n				11:30\n			</ion-col>\n\n			<ion-col col-10 class="{{agendaEventClassW2330}}" *ngIf="agendaEventShowW2330" (click)="nav(agendaEventIDW2330)">\n				<div class="myRow">{{agendaEventTitleW2330}}</div>\n				<div class="myRow2">{{agendaLocationW2330}}</div>\n				<div [ngClass]="agendaStatusStyleW2330">{{agendaStatusW2330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClass2330}}" *ngIf="agendaEventShow2330" (click)="nav(agendaEventID2330)">\n				<div class="myRow">{{agendaEventTitle2330}}</div>\n				<div class="myRow2">{{agendaLocationC22330}}</div>\n				<div [ngClass]="agendaStatusStyle2330">{{agendaStatus2330}}</div>\n			</ion-col>\n\n			<ion-col col-5 class="{{agendaEventClassC22330}}" *ngIf="agendaEventShowC22330" (click)="nav(agendaEventIDC22330)">\n				<div class="myRow">{{agendaEventTitleC22330}}</div>\n				<div class="myRow2">{{agendaLocationC22330}}</div>\n				<div [ngClass]="agendaStatusStyleC22330">{{agendaStatusC22330}}</div>\n			</ion-col>\n		</ion-row>	\n\n	</ion-grid>\n\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/myagenda/myagenda.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], MyAgenda);
 
@@ -8725,258 +9223,284 @@ MyAgenda = __decorate([
 
 /***/ }),
 
-/***/ 533:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ 564:
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(28);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__angular_common_http__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_http__ = __webpack_require__(384);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_sqlite__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__app_component__ = __webpack_require__(857);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ionic_native_onesignal__ = __webpack_require__(517);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_ionic_img_viewer__ = __webpack_require__(858);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ionic_native_camera__ = __webpack_require__(525);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ionic_native_splash_screen__ = __webpack_require__(516);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_ionic_text_avatar__ = __webpack_require__(865);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16_ionic_image_loader__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts__ = __webpack_require__(527);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17_ng2_charts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17_ng2_charts__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ng2_file_upload__ = __webpack_require__(867);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18_ng2_file_upload___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18_ng2_file_upload__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__ionic_native_keyboard__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_synchronization_synchronization__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pipes_relative_time__ = __webpack_require__(870);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__services_post_service__ = __webpack_require__(885);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__services_user_service__ = __webpack_require__(887);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__services_chat_service__ = __webpack_require__(383);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__pages_home_home__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__pages_conferencecity_conferencecity__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__pages_social_social__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_30__pages_more_more__ = __webpack_require__(474);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_31__pages_slider_slider__ = __webpack_require__(528);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_32__pages_help_help__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_33__pages_speakers_speakers__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_34__pages_program_program__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_35__pages_map_map__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_36__pages_login_login__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_37__pages_exhibitors_exhibitors__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_38__pages_notes_notes__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_39__pages_database_database__ = __webpack_require__(475);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_40__pages_evaluationconference_evaluationconference__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_41__pages_myagenda_myagenda__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_42__pages_myagendafull_myagendafull__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_43__pages_educationdetails_educationdetails__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_44__pages_activity_activity__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_45__pages_profile_profile__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_46__pages_notifications_notifications__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_47__pages_attendees_attendees__ = __webpack_require__(189);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_48__pages_networking_networking__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_49__pages_attendeebookmarks_attendeebookmarks__ = __webpack_require__(518);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_50__pages_conversation_conversation__ = __webpack_require__(524);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
+var map = {
+	"./af": 246,
+	"./af.js": 246,
+	"./ar": 247,
+	"./ar-dz": 248,
+	"./ar-dz.js": 248,
+	"./ar-kw": 249,
+	"./ar-kw.js": 249,
+	"./ar-ly": 250,
+	"./ar-ly.js": 250,
+	"./ar-ma": 251,
+	"./ar-ma.js": 251,
+	"./ar-sa": 252,
+	"./ar-sa.js": 252,
+	"./ar-tn": 253,
+	"./ar-tn.js": 253,
+	"./ar.js": 247,
+	"./az": 254,
+	"./az.js": 254,
+	"./be": 255,
+	"./be.js": 255,
+	"./bg": 256,
+	"./bg.js": 256,
+	"./bm": 257,
+	"./bm.js": 257,
+	"./bn": 258,
+	"./bn.js": 258,
+	"./bo": 259,
+	"./bo.js": 259,
+	"./br": 260,
+	"./br.js": 260,
+	"./bs": 261,
+	"./bs.js": 261,
+	"./ca": 262,
+	"./ca.js": 262,
+	"./cs": 263,
+	"./cs.js": 263,
+	"./cv": 264,
+	"./cv.js": 264,
+	"./cy": 265,
+	"./cy.js": 265,
+	"./da": 266,
+	"./da.js": 266,
+	"./de": 267,
+	"./de-at": 268,
+	"./de-at.js": 268,
+	"./de-ch": 269,
+	"./de-ch.js": 269,
+	"./de.js": 267,
+	"./dv": 270,
+	"./dv.js": 270,
+	"./el": 271,
+	"./el.js": 271,
+	"./en-SG": 272,
+	"./en-SG.js": 272,
+	"./en-au": 273,
+	"./en-au.js": 273,
+	"./en-ca": 274,
+	"./en-ca.js": 274,
+	"./en-gb": 275,
+	"./en-gb.js": 275,
+	"./en-ie": 276,
+	"./en-ie.js": 276,
+	"./en-il": 277,
+	"./en-il.js": 277,
+	"./en-nz": 278,
+	"./en-nz.js": 278,
+	"./eo": 279,
+	"./eo.js": 279,
+	"./es": 280,
+	"./es-do": 281,
+	"./es-do.js": 281,
+	"./es-us": 282,
+	"./es-us.js": 282,
+	"./es.js": 280,
+	"./et": 283,
+	"./et.js": 283,
+	"./eu": 284,
+	"./eu.js": 284,
+	"./fa": 285,
+	"./fa.js": 285,
+	"./fi": 286,
+	"./fi.js": 286,
+	"./fo": 287,
+	"./fo.js": 287,
+	"./fr": 288,
+	"./fr-ca": 289,
+	"./fr-ca.js": 289,
+	"./fr-ch": 290,
+	"./fr-ch.js": 290,
+	"./fr.js": 288,
+	"./fy": 291,
+	"./fy.js": 291,
+	"./ga": 292,
+	"./ga.js": 292,
+	"./gd": 293,
+	"./gd.js": 293,
+	"./gl": 294,
+	"./gl.js": 294,
+	"./gom-latn": 295,
+	"./gom-latn.js": 295,
+	"./gu": 296,
+	"./gu.js": 296,
+	"./he": 297,
+	"./he.js": 297,
+	"./hi": 298,
+	"./hi.js": 298,
+	"./hr": 299,
+	"./hr.js": 299,
+	"./hu": 300,
+	"./hu.js": 300,
+	"./hy-am": 301,
+	"./hy-am.js": 301,
+	"./id": 302,
+	"./id.js": 302,
+	"./is": 303,
+	"./is.js": 303,
+	"./it": 304,
+	"./it-ch": 305,
+	"./it-ch.js": 305,
+	"./it.js": 304,
+	"./ja": 306,
+	"./ja.js": 306,
+	"./jv": 307,
+	"./jv.js": 307,
+	"./ka": 308,
+	"./ka.js": 308,
+	"./kk": 309,
+	"./kk.js": 309,
+	"./km": 310,
+	"./km.js": 310,
+	"./kn": 311,
+	"./kn.js": 311,
+	"./ko": 312,
+	"./ko.js": 312,
+	"./ku": 313,
+	"./ku.js": 313,
+	"./ky": 314,
+	"./ky.js": 314,
+	"./lb": 315,
+	"./lb.js": 315,
+	"./lo": 316,
+	"./lo.js": 316,
+	"./lt": 317,
+	"./lt.js": 317,
+	"./lv": 318,
+	"./lv.js": 318,
+	"./me": 319,
+	"./me.js": 319,
+	"./mi": 320,
+	"./mi.js": 320,
+	"./mk": 321,
+	"./mk.js": 321,
+	"./ml": 322,
+	"./ml.js": 322,
+	"./mn": 323,
+	"./mn.js": 323,
+	"./mr": 324,
+	"./mr.js": 324,
+	"./ms": 325,
+	"./ms-my": 326,
+	"./ms-my.js": 326,
+	"./ms.js": 325,
+	"./mt": 327,
+	"./mt.js": 327,
+	"./my": 328,
+	"./my.js": 328,
+	"./nb": 329,
+	"./nb.js": 329,
+	"./ne": 330,
+	"./ne.js": 330,
+	"./nl": 331,
+	"./nl-be": 332,
+	"./nl-be.js": 332,
+	"./nl.js": 331,
+	"./nn": 333,
+	"./nn.js": 333,
+	"./pa-in": 334,
+	"./pa-in.js": 334,
+	"./pl": 335,
+	"./pl.js": 335,
+	"./pt": 336,
+	"./pt-br": 337,
+	"./pt-br.js": 337,
+	"./pt.js": 336,
+	"./ro": 338,
+	"./ro.js": 338,
+	"./ru": 339,
+	"./ru.js": 339,
+	"./sd": 340,
+	"./sd.js": 340,
+	"./se": 341,
+	"./se.js": 341,
+	"./si": 342,
+	"./si.js": 342,
+	"./sk": 343,
+	"./sk.js": 343,
+	"./sl": 344,
+	"./sl.js": 344,
+	"./sq": 345,
+	"./sq.js": 345,
+	"./sr": 346,
+	"./sr-cyrl": 347,
+	"./sr-cyrl.js": 347,
+	"./sr.js": 346,
+	"./ss": 348,
+	"./ss.js": 348,
+	"./sv": 349,
+	"./sv.js": 349,
+	"./sw": 350,
+	"./sw.js": 350,
+	"./ta": 351,
+	"./ta.js": 351,
+	"./te": 352,
+	"./te.js": 352,
+	"./tet": 353,
+	"./tet.js": 353,
+	"./tg": 354,
+	"./tg.js": 354,
+	"./th": 355,
+	"./th.js": 355,
+	"./tl-ph": 356,
+	"./tl-ph.js": 356,
+	"./tlh": 357,
+	"./tlh.js": 357,
+	"./tr": 358,
+	"./tr.js": 358,
+	"./tzl": 359,
+	"./tzl.js": 359,
+	"./tzm": 360,
+	"./tzm-latn": 361,
+	"./tzm-latn.js": 361,
+	"./tzm.js": 360,
+	"./ug-cn": 362,
+	"./ug-cn.js": 362,
+	"./uk": 363,
+	"./uk.js": 363,
+	"./ur": 364,
+	"./ur.js": 364,
+	"./uz": 365,
+	"./uz-latn": 366,
+	"./uz-latn.js": 366,
+	"./uz.js": 365,
+	"./vi": 367,
+	"./vi.js": 367,
+	"./x-pseudo": 368,
+	"./x-pseudo.js": 368,
+	"./yo": 369,
+	"./yo.js": 369,
+	"./zh-cn": 370,
+	"./zh-cn.js": 370,
+	"./zh-hk": 371,
+	"./zh-hk.js": 371,
+	"./zh-tw": 372,
+	"./zh-tw.js": 372
 };
-// Components, functions, plugins
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//import { IonAlphaScrollModule } from 'ionic2-alpha-scroll';
-
-//import { ProgressBarComponent } from '../components/progress-bar/progress-bar';
-// Providers
-
-
-
-
-// Services
-
-
-//import { NotificationService } from '../services/notification-service';
-
-// Pages
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Temporary Support Pages
-//import { FloorplanMappingPage } from '../pages/floorplanmapping/floorplanmapping';
-let AppModule = class AppModule {
+function webpackContext(req) {
+	return __webpack_require__(webpackContextResolve(req));
 };
-AppModule = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_2__angular_core__["NgModule"])({
-        declarations: [
-            __WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */],
-            __WEBPACK_IMPORTED_MODULE_27__pages_home_home__["a" /* HomePage */],
-            __WEBPACK_IMPORTED_MODULE_29__pages_social_social__["a" /* SocialPage */],
-            __WEBPACK_IMPORTED_MODULE_30__pages_more_more__["a" /* MorePage */],
-            __WEBPACK_IMPORTED_MODULE_31__pages_slider_slider__["a" /* SliderPage */],
-            __WEBPACK_IMPORTED_MODULE_32__pages_help_help__["a" /* HelpPage */],
-            __WEBPACK_IMPORTED_MODULE_33__pages_speakers_speakers__["a" /* SpeakersPage */],
-            __WEBPACK_IMPORTED_MODULE_34__pages_program_program__["a" /* ProgramPage */],
-            __WEBPACK_IMPORTED_MODULE_35__pages_map_map__["a" /* MapPage */],
-            __WEBPACK_IMPORTED_MODULE_36__pages_login_login__["a" /* LoginPage */],
-            __WEBPACK_IMPORTED_MODULE_28__pages_conferencecity_conferencecity__["a" /* ConferenceCityPage */],
-            __WEBPACK_IMPORTED_MODULE_37__pages_exhibitors_exhibitors__["a" /* ExhibitorsPage */],
-            __WEBPACK_IMPORTED_MODULE_38__pages_notes_notes__["a" /* NotesPage */],
-            __WEBPACK_IMPORTED_MODULE_39__pages_database_database__["a" /* DatabasePage */],
-            __WEBPACK_IMPORTED_MODULE_43__pages_educationdetails_educationdetails__["a" /* EducationDetailsPage */],
-            __WEBPACK_IMPORTED_MODULE_40__pages_evaluationconference_evaluationconference__["a" /* EvaluationConference */],
-            //FloorplanMappingPage,
-            __WEBPACK_IMPORTED_MODULE_41__pages_myagenda_myagenda__["a" /* MyAgenda */],
-            __WEBPACK_IMPORTED_MODULE_42__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */],
-            __WEBPACK_IMPORTED_MODULE_50__pages_conversation_conversation__["a" /* ConversationPage */],
-            __WEBPACK_IMPORTED_MODULE_46__pages_notifications_notifications__["a" /* NotificationsPage */],
-            __WEBPACK_IMPORTED_MODULE_47__pages_attendees_attendees__["a" /* AttendeesPage */],
-            __WEBPACK_IMPORTED_MODULE_49__pages_attendeebookmarks_attendeebookmarks__["a" /* AttendeeBookmarksPage */],
-            __WEBPACK_IMPORTED_MODULE_48__pages_networking_networking__["a" /* NetworkingPage */],
-            __WEBPACK_IMPORTED_MODULE_23__pipes_relative_time__["a" /* RelativeTime */],
-            __WEBPACK_IMPORTED_MODULE_15_ionic_text_avatar__["a" /* IonTextAvatar */],
-            __WEBPACK_IMPORTED_MODULE_45__pages_profile_profile__["a" /* ProfilePage */],
-            //ProgressBarComponent,
-            __WEBPACK_IMPORTED_MODULE_44__pages_activity_activity__["a" /* ActivityPage */]
-        ],
-        imports: [
-            __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
-            __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* HttpModule */],
-            __WEBPACK_IMPORTED_MODULE_17_ng2_charts__["ChartsModule"],
-            __WEBPACK_IMPORTED_MODULE_18_ng2_file_upload__["FileUploadModule"],
-            __WEBPACK_IMPORTED_MODULE_12_ionic_img_viewer__["a" /* IonicImageViewerModule */],
-            //IonAlphaScrollModule,
-            __WEBPACK_IMPORTED_MODULE_6__angular_common_http__["b" /* HttpClientModule */],
-            __WEBPACK_IMPORTED_MODULE_4__ionic_storage__["a" /* IonicStorageModule */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_16_ionic_image_loader__["b" /* IonicImageLoader */].forRoot(),
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["o" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */], { tabsPlacement: 'bottom' }, {
-                links: [
-                    { loadChildren: 'main.module#MainPageModule', name: 'MainPage', segment: 'main', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/activityfeedcomment/activityfeedcomment.module#ActivityFeedCommentPageModule', name: 'ActivityFeedCommentPage', segment: 'activityfeedcomment', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/activityfeedleaderboard/activityfeedleaderboard.module#ActivityFeedLeaderboardPageModule', name: 'ActivityFeedLeaderboardPage', segment: 'activityfeedleaderboard', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/cetracking/cetracking.module#CetrackingPageModule', name: 'CetrackingPage', segment: 'cetracking', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/conversations/conversations.module#ConversationsPageModule', name: 'ConversationsPage', segment: 'conversations', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/evaluationlecture/evaluationlecture.module#EvaluationLectureModule', name: 'EvaluationLecture', segment: 'evaluationlecture', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/notesdetails/notesdetails.module#NotesDetailsPageModule', name: 'NotesDetailsPage', segment: 'notesdetails', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/notifications/notifications.module#NotificationsPageModule', name: 'NotificationsPage', segment: 'notifications', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/profileimage/profileimage.module#ProfileImagePageModule', name: 'ProfileImagePage', segment: 'profileimage', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/profilepasswordchange/profilepasswordchange.module#ProfilePasswordChangePageModule', name: 'ProfilePasswordChangePage', segment: 'profilepasswordchange', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/profilesocialmediaentry/profilesocialmediaentry.module#ProfileSocialMediaEntryPageModule', name: 'ProfileSocialMediaEntryPage', segment: 'profilesocialmediaentry', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/searchbytopic/searchbytopic.module#SearchByTopicPageModule', name: 'SearchByTopicPage', segment: 'searchbytopic', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/slider/slider.module#SliderPageModule', name: 'SliderPage', segment: 'slider', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/speakerdetails/speakerdetails.module#SpeakerDetailsPageModule', name: 'SpeakerDetailsPage', segment: 'speakerdetails', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/activityfeeddetails/activityfeeddetails.module#ActivityFeedDetailsPageModule', name: 'ActivityFeedDetailsPage', segment: 'activityfeeddetails', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/activityfeedposting/activityfeedposting.module#ActivityFeedPostingPageModule', name: 'ActivityFeedPostingPage', segment: 'activityfeedposting', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/attendeesprofile/attendeesprofile.module#AttendeesProfilePageModule', name: 'AttendeesProfilePage', segment: 'attendeesprofile', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/evaluationworkshop/evaluationworkshop.module#EvaluationWorkshopModule', name: 'EvaluationWorkshop', segment: 'evaluationworkshop', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/exhibitordetails/exhibitordetails.module#ExhibitorDetailsPageModule', name: 'ExhibitorDetailsPage', segment: 'exhibitordetails', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/myagendapersonal/myagendapersonal.module#MyAgendaPersonalModule', name: 'MyAgendaPersonal', segment: 'myagendapersonal', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/listinglevel1/listinglevel1.module#ListingLevel1Module', name: 'ListingLevel1', segment: 'listinglevel1', priority: 'low', defaultHistory: [] },
-                    { loadChildren: '../pages/searchresults/searchresults.module#SearchResultsPageModule', name: 'SearchResultsPage', segment: 'searchresults', priority: 'low', defaultHistory: [] }
-                ]
-            })
-        ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["m" /* IonicApp */]],
-        entryComponents: [
-            __WEBPACK_IMPORTED_MODULE_10__app_component__["a" /* MyApp */],
-            __WEBPACK_IMPORTED_MODULE_27__pages_home_home__["a" /* HomePage */],
-            __WEBPACK_IMPORTED_MODULE_31__pages_slider_slider__["a" /* SliderPage */],
-            __WEBPACK_IMPORTED_MODULE_29__pages_social_social__["a" /* SocialPage */],
-            __WEBPACK_IMPORTED_MODULE_30__pages_more_more__["a" /* MorePage */],
-            __WEBPACK_IMPORTED_MODULE_32__pages_help_help__["a" /* HelpPage */],
-            __WEBPACK_IMPORTED_MODULE_33__pages_speakers_speakers__["a" /* SpeakersPage */],
-            __WEBPACK_IMPORTED_MODULE_34__pages_program_program__["a" /* ProgramPage */],
-            __WEBPACK_IMPORTED_MODULE_35__pages_map_map__["a" /* MapPage */],
-            __WEBPACK_IMPORTED_MODULE_36__pages_login_login__["a" /* LoginPage */],
-            __WEBPACK_IMPORTED_MODULE_28__pages_conferencecity_conferencecity__["a" /* ConferenceCityPage */],
-            __WEBPACK_IMPORTED_MODULE_39__pages_database_database__["a" /* DatabasePage */],
-            __WEBPACK_IMPORTED_MODULE_43__pages_educationdetails_educationdetails__["a" /* EducationDetailsPage */],
-            __WEBPACK_IMPORTED_MODULE_37__pages_exhibitors_exhibitors__["a" /* ExhibitorsPage */],
-            __WEBPACK_IMPORTED_MODULE_38__pages_notes_notes__["a" /* NotesPage */],
-            __WEBPACK_IMPORTED_MODULE_40__pages_evaluationconference_evaluationconference__["a" /* EvaluationConference */],
-            //FloorplanMappingPage,
-            __WEBPACK_IMPORTED_MODULE_41__pages_myagenda_myagenda__["a" /* MyAgenda */],
-            __WEBPACK_IMPORTED_MODULE_42__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */],
-            __WEBPACK_IMPORTED_MODULE_50__pages_conversation_conversation__["a" /* ConversationPage */],
-            __WEBPACK_IMPORTED_MODULE_46__pages_notifications_notifications__["a" /* NotificationsPage */],
-            __WEBPACK_IMPORTED_MODULE_47__pages_attendees_attendees__["a" /* AttendeesPage */],
-            __WEBPACK_IMPORTED_MODULE_49__pages_attendeebookmarks_attendeebookmarks__["a" /* AttendeeBookmarksPage */],
-            __WEBPACK_IMPORTED_MODULE_48__pages_networking_networking__["a" /* NetworkingPage */],
-            __WEBPACK_IMPORTED_MODULE_45__pages_profile_profile__["a" /* ProfilePage */],
-            __WEBPACK_IMPORTED_MODULE_44__pages_activity_activity__["a" /* ActivityPage */]
-        ],
-        providers: [
-            __WEBPACK_IMPORTED_MODULE_13__ionic_native_camera__["a" /* Camera */],
-            __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__["a" /* StatusBar */],
-            __WEBPACK_IMPORTED_MODULE_11__ionic_native_onesignal__["a" /* OneSignal */],
-            __WEBPACK_IMPORTED_MODULE_14__ionic_native_splash_screen__["a" /* SplashScreen */],
-            __WEBPACK_IMPORTED_MODULE_7__ionic_native_http__["a" /* HTTP */],
-            __WEBPACK_IMPORTED_MODULE_19__ionic_native_keyboard__["a" /* Keyboard */],
-            __WEBPACK_IMPORTED_MODULE_21__providers_localstorage_localstorage__["a" /* Localstorage */],
-            { provide: __WEBPACK_IMPORTED_MODULE_2__angular_core__["ErrorHandler"], useClass: __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["n" /* IonicErrorHandler */] },
-            //[{ provide: ErrorHandler, useClass: MyErrorHandler }],
-            __WEBPACK_IMPORTED_MODULE_20__providers_database_database__["a" /* Database */],
-            __WEBPACK_IMPORTED_MODULE_9__ionic_native_sqlite__["a" /* SQLite */],
-            __WEBPACK_IMPORTED_MODULE_24__services_post_service__["a" /* PostService */],
-            __WEBPACK_IMPORTED_MODULE_25__services_user_service__["a" /* UserService */],
-            __WEBPACK_IMPORTED_MODULE_26__services_chat_service__["a" /* ChatService */],
-            __WEBPACK_IMPORTED_MODULE_22__providers_synchronization_synchronization__["a" /* Synchronization */]
-        ]
-    })
-], AppModule);
-
-//# sourceMappingURL=app.module.js.map
+function webpackContextResolve(req) {
+	var id = map[req];
+	if(!(id + 1)) // check for number or string
+		throw new Error("Cannot find module '" + req + "'.");
+	return id;
+};
+webpackContext.keys = function webpackContextKeys() {
+	return Object.keys(map);
+};
+webpackContext.resolve = webpackContextResolve;
+module.exports = webpackContext;
+webpackContext.id = 564;
 
 /***/ }),
 
-/***/ 56:
+/***/ 57:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8984,14 +9508,14 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_leaflet__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_leaflet__ = __webpack_require__(186);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_leaflet__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__myagenda_myagenda__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__login_login__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__myagenda_myagenda__ = __webpack_require__(54);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9025,10 +9549,12 @@ let EducationDetailsPage = class EducationDetailsPage {
         this.loadingCtrl = loadingCtrl;
         this.localstorage = localstorage;
         // Control Buttons
-        // Disabled per Lisa Bollenbach 2018-04-19
-        this.btnAgendaManagement = false;
+        this.btnAgendaManagement = true;
         this.btnNotes = true;
         this.btnPrint = true;
+        this.btnBookmarkManagement = true;
+        this.BookmarkButtonColor = '#ffffff';
+        this.BookmarkButtonTextColor = '#F15D22';
         // SubSection Control
         this.SpeakerHostShow = true;
         this.CorporateSupporterShow = true;
@@ -9178,6 +9704,19 @@ let EducationDetailsPage = class EducationDetailsPage {
                 this.localstorage.setLocalValue("EventName", data[0].session_title);
                 this.localstorage.setLocalValue("EventDate", data[0].session_start_time.substring(0, 10));
                 console.log("Educational Details: Set local values for agenda management");
+                // Values for Bookmark Management
+                this.localstorage.setLocalValue("BookmarkID", data[0].session_id);
+                this.localstorage.setLocalValue("BookmarkType", "Sessions");
+                if (data[0].Bookmarked != "0") {
+                    this.visBookmarkAddRemoveButton = "Remove";
+                    this.BookmarkButtonColor = '#F15D22';
+                    this.BookmarkButtonTextColor = '#ffffff';
+                }
+                else {
+                    this.visBookmarkAddRemoveButton = "Bookmark";
+                    this.BookmarkButtonColor = '#ffffff';
+                    this.BookmarkButtonTextColor = '#F15D22';
+                }
                 if (data[0].ce_credits_type == "") {
                     this.AbstractDisplay = false;
                 }
@@ -9562,6 +10101,80 @@ let EducationDetailsPage = class EducationDetailsPage {
         }
     }
     ;
+    BookmarkManagement() {
+        console.log("Begin BookmarkManagement process...");
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        var BookmarkType = this.localstorage.getLocalValue("BookmarkType");
+        var BookmarkID = this.localstorage.getLocalValue("BookmarkID");
+        var flags = '';
+        // Starting variables
+        console.log("AttendeeID: " + AttendeeID);
+        console.log("BookmarkType: " + BookmarkType);
+        console.log("BookmarkID: " + BookmarkID);
+        this.cd.markForCheck();
+        var LastUpdateDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        if (this.visBookmarkAddRemoveButton == "Bookmark") {
+            // ------------------------
+            // Add item to Bookmarks List
+            // ------------------------
+            flags = 'cb|0|' + BookmarkType + '|' + BookmarkID;
+            console.log("flags: " + flags);
+            this.databaseprovider.getBookmarksData(flags, AttendeeID).then(data => {
+                console.log("getBookmarksData: " + JSON.stringify(data));
+                if (data['length'] > 0) {
+                    console.log("Return status: " + data[0].Status);
+                    if (data[0].Status == "Saved") {
+                        this.visBookmarkAddRemoveButton = "Remove";
+                        this.BookmarkButtonColor = '#F15D22';
+                        this.BookmarkButtonTextColor = '#ffffff';
+                        this.cd.markForCheck();
+                    }
+                    else {
+                        console.log("Return query: " + data[0].Query);
+                        let alert = this.alertCtrl.create({
+                            title: 'Bookmarks',
+                            subTitle: 'Unable to add the item to your bookmark list at this time. Please try again shortly.',
+                            buttons: ['OK']
+                        });
+                        alert.present();
+                    }
+                }
+            }).catch(function () {
+                console.log("Promise Rejected");
+            });
+        }
+        else {
+            // -----------------------
+            // Remove Item from Bookmarks List
+            // -----------------------
+            flags = 'rb|0|' + BookmarkType + '|' + BookmarkID;
+            console.log("flags: " + flags);
+            this.databaseprovider.getBookmarksData(flags, AttendeeID).then(data => {
+                console.log("getBookmarksData: " + JSON.stringify(data));
+                if (data['length'] > 0) {
+                    console.log("Return status: " + data[0].Status);
+                    if (data[0].Status == "Saved") {
+                        this.visBookmarkAddRemoveButton = "Bookmark";
+                        this.BookmarkButtonColor = '#ffffff';
+                        this.BookmarkButtonTextColor = '#F15D22';
+                        this.cd.markForCheck();
+                    }
+                    else {
+                        console.log("Return query: " + data[0].Query);
+                        let alert = this.alertCtrl.create({
+                            title: 'Bookmarks',
+                            subTitle: 'Unable to remove the item from your bookmark list at this time. Please try again shortly.',
+                            buttons: ['OK']
+                        });
+                        alert.present();
+                    }
+                }
+            }).catch(function () {
+                console.log("Promise Rejected");
+            });
+        }
+    }
+    ;
 };
 __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('map'),
@@ -9569,298 +10182,21 @@ __decorate([
 ], EducationDetailsPage.prototype, "mapContainer", void 0);
 EducationDetailsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-educationdetails',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/educationdetails/educationdetails.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon color="secondary" name="menu"></ion-icon>\n    </button>\n    <ion-title>Education Details</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="page-speakers">\n\n	<div style="margin-top:10px!important; margin-left:20px; margin-right:20px">\n		<h3>{{EventName}}</h3>\n		<p>{{EventSubName}}</p>\n		<p>{{DisplayEventTimeDateLocation}}</p>\n		<p>{{SpeakerDisplayName}}</p>\n		<p>{{EventTypeName}}</p>\n		<p [ngClass]="SessionStatusStyle">{{SessionStatus}}</p>\n	</div>\n	<div class="button-bar" style="margin:10px!important">\n\n		<button ion-button outline color="secondary" *ngIf="btnAgendaManagement" (click)="AgendaManagement()" [style.background-color]="AgendaButtonColor" [style.color]="AgendaButtonTextColor">\n			<div>\n				<ion-icon color="secondary" name="calendar"></ion-icon>\n				<label>{{visAgendaAddRemoveButton}}</label>\n			</div>\n		</button>\n		\n		<button ion-button outline color=secondary  *ngIf="btnNotes" (click)="navToNotes(EventID)">\n			<div>\n				<ion-icon name="create"></ion-icon>\n				<label></label>\n			</div>\n		</button>\n<!--Print function not wanted by AACD\n		<button ion-button outline color=secondary *ngIf="btnPrint" (click)="printWindow()">\n			<div>\n				<ion-icon name="print"></ion-icon>\n				<label></label>\n			</div>\n		</button>\n-->\n	</div>\n\n	<ion-card *ngIf="SpeakerHostShow">\n		<ion-card-header class="cardHeader">\n			Speaker Host / Emcee\n		</ion-card-header>\n		  \n		<ion-card-content class="myMarginTopBottom">\n				{{SpeakerHostEmcee}}\n		</ion-card-content>\n		  \n	</ion-card>\n\n	<ion-card *ngIf="CorporateSupporterShow">\n		<ion-card-header class="cardHeader">\n			Corporate Supporter\n		</ion-card-header>\n		  \n		<ion-card-content class="myMarginTopBottom">\n				{{EventCorporateSupporter}}\n\n		</ion-card-content>\n		  \n	</ion-card>\n\n	<ion-card *ngIf="AuthorsDisplay">\n		<ion-card-header class="cardHeader">\n			Speakers\n		</ion-card-header>\n\n		<ion-card-content>\n\n			<ion-list id="author-list3">\n				<ion-item (click)="SpeakerDetails(speaker.SpeakerID)" *ngFor="let speaker of SpeakerList" id="speakersessions-list-item19">\n				\n					<ion-avatar item-start>\n						<img src="{{speaker.speakerAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n					</ion-avatar>\n					<!--<ion-icon item-right  name=bookmarks></ion-icon>-->\n					<ion-icon item-right name="{{speaker.navigationArrow}}"></ion-icon>\n					<h2>{{speaker.DisplayNameLastFirst}}</h2>\n					{{speaker.DisplayCredentials}}\n				</ion-item>\n			</ion-list>\n		</ion-card-content>\n\n	</ion-card>\n	\n\n\n\n\n	<ion-card *ngIf="AbstractDisplay">\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Abstract\n\n		</ion-card-header>\n\n		<ion-card-content [innerHTML]="sessionAbstract" class="myMarginTopBottom">\n				{{EventDetails}}\n		</ion-card-content>\n\n	</ion-card>\n\n	<ion-card *ngIf="DescriptionDisplay">\n\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Description\n		</ion-card-header>\n\n		<ion-card-content [innerHTML]="sessionAbstract" class="myMarginTopBottom">\n				{{EventDetails}}\n		</ion-card-content>\n\n	</ion-card>\n\n	<ion-card *ngIf="SubEventsDisplay">\n\n		<ion-card-header class="cardHeader" style="color:#fff">\n				SubEvents\n		</ion-card-header>\n\n		<ion-card-content>\n\n			<ion-list id="session-list3">\n				<ion-item (click)="EventDetails(session.EventID)" *ngFor="let session of sessions" id="speakersessions-list-item20" style="float: left; padding-right: 10px;">\n						<ion-icon name="{{session.eventTypeIcon}}"></ion-icon>\n	\n						<p class="myLabelBold">\n							{{session.DisplayEventName}}\n						</p>\n						<p>\n							{{session.DisplayEventTimeDateLocation}}\n						</p>\n		\n				\n						<ion-icon style="float: right" name="{{session.navigationArrow}}"></ion-icon>\n				\n				</ion-item>\n			</ion-list>\n		</ion-card-content>\n\n	</ion-card>\n\n\n\n	<ion-card *ngIf="RecordingShow">\n\n		<ion-card-header class="cardHeader">\n			Session Recording\n		</ion-card-header>\n		  \n		<ion-card-content>\n			<ion-icon item-left name="mic" style="padding-right: 14px;"></ion-icon>\n			This session is being recorded.\n		</ion-card-content>\n		  \n	</ion-card>\n\n	<ion-card *ngIf="HandoutShow">\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Handout\n		</ion-card-header>\n		<ion-card-content class="list" (click)="openPDF(HandoutURL)">\n				<ion-icon item-left name="cloud-download" style="padding-right: 10px;"></ion-icon>\n				{{HandoutFn}}\n		</ion-card-content>\n	</ion-card>\n\n	<ion-card *ngIf="OtherInformationDisplay">\n		<ion-card-header class="cardHeader">\n			Other Information\n		</ion-card-header>\n		<ion-card-content class="myMarginTopBottom">\n				<ion-row *ngIf=DisplayRow1>\n					<ion-col col-5>\n							<ion-label *ngIf=DisplaySubject><b>Subject</b><br/>{{vSubjectCode}}</ion-label>\n					</ion-col>\n					<ion-col col-7>\n							<ion-label *ngIf=DisplayCECredits><b>CE Credits</b><br/>{{vCECredits}}</ion-label>\n					</ion-col>\n				</ion-row>\n				<ion-row *ngIf=DisplayRow2>\n					<ion-col col-5>\n							<ion-label *ngIf=DisplayType><b>Type</b><br/>{{vSessionType}}</ion-label>\n					</ion-col>\n					<ion-col col-7>\n							<ion-label *ngIf=DisplayCECreditsType><b>CE Credits Type</b><br/>{{vCECreditsType}}</ion-label>\n					</ion-col>\n				</ion-row>\n				<ion-row *ngIf=DisplayRow3>\n					<ion-col>\n							<ion-label><b>Level</b><br/>{{vSessionLevel}}</ion-label>\n					</ion-col>\n				</ion-row>\n		</ion-card-content>\n	</ion-card>\n	\n\n	<ion-card *ngIf="MeetingLocationDisplay">\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Locator\n		</ion-card-header>\n		<ion-card-content class="myMarginTopBottom">\n				<div #map id="map1" style="width:100%; height:400px;"></div>\n		</ion-card-content>\n</ion-card>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/educationdetails/educationdetails.html"*/,
+        selector: 'page-educationdetails',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/educationdetails/educationdetails.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon color="secondary" name="menu"></ion-icon>\n    </button>\n    <ion-title>Education Details</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content class="page-speakers">\n\n	<div style="margin-top:10px!important; margin-left:20px; margin-right:20px">\n		<h3>{{EventName}}</h3>\n		<p>{{EventSubName}}</p>\n		<p>{{DisplayEventTimeDateLocation}}</p>\n		<p>{{SpeakerDisplayName}}</p>\n		<p>{{EventTypeName}}</p>\n		<p [ngClass]="SessionStatusStyle">{{SessionStatus}}</p>\n	</div>\n	<div class="button-bar" style="margin:10px!important">\n\n		<button ion-button outline color="secondary" *ngIf="btnAgendaManagement" (click)="AgendaManagement()" [style.background-color]="AgendaButtonColor" [style.color]="AgendaButtonTextColor">\n			<div>\n				<ion-icon color="secondary" name="calendar"></ion-icon>\n				<label>{{visAgendaAddRemoveButton}}</label>\n			</div>\n		</button>\n		\n		<button ion-button outline color=secondary  *ngIf="btnNotes" (click)="navToNotes(EventID)">\n			<div>\n				<ion-icon name="create"></ion-icon>\n				<label></label>\n			</div>\n		</button>\n		<button ion-button outline color=secondary *ngIf="btnPrint" (click)="printWindow()">\n			<div>\n				<ion-icon name="print"></ion-icon>\n				<label></label>\n			</div>\n		</button>\n		<button ion-button outline color=danger *ngIf="btnBookmarkManagement" (click)="BookmarkManagement()" [style.background-color]="BookmarkButtonColor" [style.color]="BookmarkButtonTextColor">\n			<div>\n				<ion-icon name=""></ion-icon>\n				<label>{{visBookmarkAddRemoveButton}}</label>\n			</div>\n		</button>\n	</div>\n\n	<ion-card *ngIf="SpeakerHostShow">\n		<ion-card-header class="cardHeader">\n			Speaker Host / Emcee\n		</ion-card-header>\n		  \n		<ion-card-content class="myMarginTopBottom">\n				{{SpeakerHostEmcee}}\n		</ion-card-content>\n		  \n	</ion-card>\n\n	<ion-card *ngIf="CorporateSupporterShow">\n		<ion-card-header class="cardHeader">\n			Corporate Supporter\n		</ion-card-header>\n		  \n		<ion-card-content class="myMarginTopBottom">\n				{{EventCorporateSupporter}}\n\n		</ion-card-content>\n		  \n	</ion-card>\n\n	<ion-card *ngIf="AuthorsDisplay">\n		<ion-card-header class="cardHeader">\n			Speakers\n		</ion-card-header>\n\n		<ion-card-content>\n\n			<ion-list id="author-list3">\n				<ion-item (click)="SpeakerDetails(speaker.SpeakerID)" *ngFor="let speaker of SpeakerList" id="speakersessions-list-item19">\n				\n					<ion-avatar item-start>\n						<img src="{{speaker.speakerAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n					</ion-avatar>\n					<!--<ion-icon item-right  name=bookmarks></ion-icon>-->\n					<ion-icon item-right name="{{speaker.navigationArrow}}"></ion-icon>\n					<h2>{{speaker.DisplayNameLastFirst}}</h2>\n					{{speaker.DisplayCredentials}}\n				</ion-item>\n			</ion-list>\n		</ion-card-content>\n\n	</ion-card>\n	\n\n\n\n\n	<ion-card *ngIf="AbstractDisplay">\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Abstract\n\n		</ion-card-header>\n\n		<ion-card-content [innerHTML]="sessionAbstract" class="myMarginTopBottom">\n				{{EventDetails}}\n		</ion-card-content>\n\n	</ion-card>\n\n	<ion-card *ngIf="DescriptionDisplay">\n\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Description\n		</ion-card-header>\n\n		<ion-card-content [innerHTML]="sessionAbstract" class="myMarginTopBottom">\n				{{EventDetails}}\n		</ion-card-content>\n\n	</ion-card>\n\n	<ion-card *ngIf="SubEventsDisplay">\n\n		<ion-card-header class="cardHeader" style="color:#fff">\n				SubEvents\n		</ion-card-header>\n\n		<ion-card-content>\n\n			<ion-list id="session-list3">\n				<ion-item (click)="EventDetails(session.EventID)" *ngFor="let session of sessions" id="speakersessions-list-item20" style="float: left; padding-right: 10px;">\n						<ion-icon name="{{session.eventTypeIcon}}"></ion-icon>\n	\n						<p class="myLabelBold">\n							{{session.DisplayEventName}}\n						</p>\n						<p>\n							{{session.DisplayEventTimeDateLocation}}\n						</p>\n		\n				\n						<ion-icon style="float: right" name="{{session.navigationArrow}}"></ion-icon>\n				\n				</ion-item>\n			</ion-list>\n		</ion-card-content>\n\n	</ion-card>\n\n\n\n	<ion-card *ngIf="RecordingShow">\n\n		<ion-card-header class="cardHeader">\n			Session Recording\n		</ion-card-header>\n		  \n		<ion-card-content>\n			<ion-icon item-left name="mic" style="padding-right: 14px;"></ion-icon>\n			This session is being recorded.\n		</ion-card-content>\n		  \n	</ion-card>\n\n	<ion-card *ngIf="HandoutShow">\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Handout\n		</ion-card-header>\n		<ion-card-content class="list" (click)="openPDF(HandoutURL)">\n				<ion-icon item-left name="cloud-download" style="padding-right: 10px;"></ion-icon>\n				{{HandoutFn}}\n		</ion-card-content>\n	</ion-card>\n\n	<ion-card *ngIf="OtherInformationDisplay">\n		<ion-card-header class="cardHeader">\n			Other Information\n		</ion-card-header>\n		<ion-card-content class="myMarginTopBottom">\n				<ion-row *ngIf=DisplayRow1>\n					<ion-col col-5>\n							<ion-label *ngIf=DisplaySubject><b>Subject</b><br/>{{vSubjectCode}}</ion-label>\n					</ion-col>\n					<ion-col col-7>\n							<ion-label *ngIf=DisplayCECredits><b>CE Credits</b><br/>{{vCECredits}}</ion-label>\n					</ion-col>\n				</ion-row>\n				<ion-row *ngIf=DisplayRow2>\n					<ion-col col-5>\n							<ion-label *ngIf=DisplayType><b>Type</b><br/>{{vSessionType}}</ion-label>\n					</ion-col>\n					<ion-col col-7>\n							<ion-label *ngIf=DisplayCECreditsType><b>CE Credits Type</b><br/>{{vCECreditsType}}</ion-label>\n					</ion-col>\n				</ion-row>\n				<ion-row *ngIf=DisplayRow3>\n					<ion-col>\n							<ion-label><b>Level</b><br/>{{vSessionLevel}}</ion-label>\n					</ion-col>\n				</ion-row>\n		</ion-card-content>\n	</ion-card>\n	\n\n	<ion-card *ngIf="MeetingLocationDisplay">\n		<ion-card-header class="cardHeader" style="color:#fff">\n				Locator\n		</ion-card-header>\n		<ion-card-content class="myMarginTopBottom">\n				<div #map id="map1" style="width:100%; height:400px;"></div>\n		</ion-card-content>\n</ion-card>\n\n\n\n</ion-content>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/educationdetails/educationdetails.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], EducationDetailsPage);
 
 //# sourceMappingURL=educationdetails.js.map
-
-/***/ }),
-
-/***/ 563:
-/***/ (function(module, exports, __webpack_require__) {
-
-var map = {
-	"./af": 250,
-	"./af.js": 250,
-	"./ar": 251,
-	"./ar-dz": 252,
-	"./ar-dz.js": 252,
-	"./ar-kw": 253,
-	"./ar-kw.js": 253,
-	"./ar-ly": 254,
-	"./ar-ly.js": 254,
-	"./ar-ma": 255,
-	"./ar-ma.js": 255,
-	"./ar-sa": 256,
-	"./ar-sa.js": 256,
-	"./ar-tn": 257,
-	"./ar-tn.js": 257,
-	"./ar.js": 251,
-	"./az": 258,
-	"./az.js": 258,
-	"./be": 259,
-	"./be.js": 259,
-	"./bg": 260,
-	"./bg.js": 260,
-	"./bm": 261,
-	"./bm.js": 261,
-	"./bn": 262,
-	"./bn.js": 262,
-	"./bo": 263,
-	"./bo.js": 263,
-	"./br": 264,
-	"./br.js": 264,
-	"./bs": 265,
-	"./bs.js": 265,
-	"./ca": 266,
-	"./ca.js": 266,
-	"./cs": 267,
-	"./cs.js": 267,
-	"./cv": 268,
-	"./cv.js": 268,
-	"./cy": 269,
-	"./cy.js": 269,
-	"./da": 270,
-	"./da.js": 270,
-	"./de": 271,
-	"./de-at": 272,
-	"./de-at.js": 272,
-	"./de-ch": 273,
-	"./de-ch.js": 273,
-	"./de.js": 271,
-	"./dv": 274,
-	"./dv.js": 274,
-	"./el": 275,
-	"./el.js": 275,
-	"./en-SG": 276,
-	"./en-SG.js": 276,
-	"./en-au": 277,
-	"./en-au.js": 277,
-	"./en-ca": 278,
-	"./en-ca.js": 278,
-	"./en-gb": 279,
-	"./en-gb.js": 279,
-	"./en-ie": 280,
-	"./en-ie.js": 280,
-	"./en-il": 281,
-	"./en-il.js": 281,
-	"./en-nz": 282,
-	"./en-nz.js": 282,
-	"./eo": 283,
-	"./eo.js": 283,
-	"./es": 284,
-	"./es-do": 285,
-	"./es-do.js": 285,
-	"./es-us": 286,
-	"./es-us.js": 286,
-	"./es.js": 284,
-	"./et": 287,
-	"./et.js": 287,
-	"./eu": 288,
-	"./eu.js": 288,
-	"./fa": 289,
-	"./fa.js": 289,
-	"./fi": 290,
-	"./fi.js": 290,
-	"./fo": 291,
-	"./fo.js": 291,
-	"./fr": 292,
-	"./fr-ca": 293,
-	"./fr-ca.js": 293,
-	"./fr-ch": 294,
-	"./fr-ch.js": 294,
-	"./fr.js": 292,
-	"./fy": 295,
-	"./fy.js": 295,
-	"./ga": 296,
-	"./ga.js": 296,
-	"./gd": 297,
-	"./gd.js": 297,
-	"./gl": 298,
-	"./gl.js": 298,
-	"./gom-latn": 299,
-	"./gom-latn.js": 299,
-	"./gu": 300,
-	"./gu.js": 300,
-	"./he": 301,
-	"./he.js": 301,
-	"./hi": 302,
-	"./hi.js": 302,
-	"./hr": 303,
-	"./hr.js": 303,
-	"./hu": 304,
-	"./hu.js": 304,
-	"./hy-am": 305,
-	"./hy-am.js": 305,
-	"./id": 306,
-	"./id.js": 306,
-	"./is": 307,
-	"./is.js": 307,
-	"./it": 308,
-	"./it-ch": 309,
-	"./it-ch.js": 309,
-	"./it.js": 308,
-	"./ja": 310,
-	"./ja.js": 310,
-	"./jv": 311,
-	"./jv.js": 311,
-	"./ka": 312,
-	"./ka.js": 312,
-	"./kk": 313,
-	"./kk.js": 313,
-	"./km": 314,
-	"./km.js": 314,
-	"./kn": 315,
-	"./kn.js": 315,
-	"./ko": 316,
-	"./ko.js": 316,
-	"./ku": 317,
-	"./ku.js": 317,
-	"./ky": 318,
-	"./ky.js": 318,
-	"./lb": 319,
-	"./lb.js": 319,
-	"./lo": 320,
-	"./lo.js": 320,
-	"./lt": 321,
-	"./lt.js": 321,
-	"./lv": 322,
-	"./lv.js": 322,
-	"./me": 323,
-	"./me.js": 323,
-	"./mi": 324,
-	"./mi.js": 324,
-	"./mk": 325,
-	"./mk.js": 325,
-	"./ml": 326,
-	"./ml.js": 326,
-	"./mn": 327,
-	"./mn.js": 327,
-	"./mr": 328,
-	"./mr.js": 328,
-	"./ms": 329,
-	"./ms-my": 330,
-	"./ms-my.js": 330,
-	"./ms.js": 329,
-	"./mt": 331,
-	"./mt.js": 331,
-	"./my": 332,
-	"./my.js": 332,
-	"./nb": 333,
-	"./nb.js": 333,
-	"./ne": 334,
-	"./ne.js": 334,
-	"./nl": 335,
-	"./nl-be": 336,
-	"./nl-be.js": 336,
-	"./nl.js": 335,
-	"./nn": 337,
-	"./nn.js": 337,
-	"./pa-in": 338,
-	"./pa-in.js": 338,
-	"./pl": 339,
-	"./pl.js": 339,
-	"./pt": 340,
-	"./pt-br": 341,
-	"./pt-br.js": 341,
-	"./pt.js": 340,
-	"./ro": 342,
-	"./ro.js": 342,
-	"./ru": 343,
-	"./ru.js": 343,
-	"./sd": 344,
-	"./sd.js": 344,
-	"./se": 345,
-	"./se.js": 345,
-	"./si": 346,
-	"./si.js": 346,
-	"./sk": 347,
-	"./sk.js": 347,
-	"./sl": 348,
-	"./sl.js": 348,
-	"./sq": 349,
-	"./sq.js": 349,
-	"./sr": 350,
-	"./sr-cyrl": 351,
-	"./sr-cyrl.js": 351,
-	"./sr.js": 350,
-	"./ss": 352,
-	"./ss.js": 352,
-	"./sv": 353,
-	"./sv.js": 353,
-	"./sw": 354,
-	"./sw.js": 354,
-	"./ta": 355,
-	"./ta.js": 355,
-	"./te": 356,
-	"./te.js": 356,
-	"./tet": 357,
-	"./tet.js": 357,
-	"./tg": 358,
-	"./tg.js": 358,
-	"./th": 359,
-	"./th.js": 359,
-	"./tl-ph": 360,
-	"./tl-ph.js": 360,
-	"./tlh": 361,
-	"./tlh.js": 361,
-	"./tr": 362,
-	"./tr.js": 362,
-	"./tzl": 363,
-	"./tzl.js": 363,
-	"./tzm": 364,
-	"./tzm-latn": 365,
-	"./tzm-latn.js": 365,
-	"./tzm.js": 364,
-	"./ug-cn": 366,
-	"./ug-cn.js": 366,
-	"./uk": 367,
-	"./uk.js": 367,
-	"./ur": 368,
-	"./ur.js": 368,
-	"./uz": 369,
-	"./uz-latn": 370,
-	"./uz-latn.js": 370,
-	"./uz.js": 369,
-	"./vi": 371,
-	"./vi.js": 371,
-	"./x-pseudo": 372,
-	"./x-pseudo.js": 372,
-	"./yo": 373,
-	"./yo.js": 373,
-	"./zh-cn": 374,
-	"./zh-cn.js": 374,
-	"./zh-hk": 375,
-	"./zh-hk.js": 375,
-	"./zh-tw": 376,
-	"./zh-tw.js": 376
-};
-function webpackContext(req) {
-	return __webpack_require__(webpackContextResolve(req));
-};
-function webpackContextResolve(req) {
-	var id = map[req];
-	if(!(id + 1)) // check for number or string
-		throw new Error("Cannot find module '" + req + "'.");
-	return id;
-};
-webpackContext.keys = function webpackContextKeys() {
-	return Object.keys(map);
-};
-webpackContext.resolve = webpackContextResolve;
-module.exports = webpackContext;
-webpackContext.id = 563;
 
 /***/ }),
 
@@ -9871,31 +10207,32 @@ webpackContext.id = 563;
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_synchronization_synchronization__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Rx__ = __webpack_require__(566);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Rx__ = __webpack_require__(567);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_rxjs_Rx___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_rxjs_Rx__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ionic_native_sqlite__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__more_more__ = __webpack_require__(474);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__help_help__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__program_program__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__conferencecity_conferencecity__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__social_social__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__speakers_speakers__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__map_map__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__exhibitors_exhibitors__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__more_more__ = __webpack_require__(469);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__help_help__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__program_program__ = __webpack_require__(471);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__conferencecity_conferencecity__ = __webpack_require__(472);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__social_social__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__speakers_speakers__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__map_map__ = __webpack_require__(473);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__exhibitors_exhibitors__ = __webpack_require__(474);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__notes_notes__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__myagenda_myagenda__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__login_login__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__networking_networking__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__activity_activity__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__profile_profile__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__educationdetails_educationdetails__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__myagenda_myagenda__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__login_login__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__networking_networking__ = __webpack_require__(475);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__activity_activity__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__profile_profile__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__cetracking_cetracking__ = __webpack_require__(529);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__educationdetails_educationdetails__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9918,6 +10255,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 // Preload Pages
+
 
 
 
@@ -9957,6 +10295,7 @@ let HomePage = class HomePage {
         this.mapPage = __WEBPACK_IMPORTED_MODULE_16__map_map__["a" /* MapPage */];
         this.exhibitorsPage = __WEBPACK_IMPORTED_MODULE_17__exhibitors_exhibitors__["a" /* ExhibitorsPage */];
         this.notesPage = __WEBPACK_IMPORTED_MODULE_18__notes_notes__["a" /* NotesPage */];
+        this.cetrackingPage = __WEBPACK_IMPORTED_MODULE_24__cetracking_cetracking__["a" /* CetrackingPage */];
         this.myAgendaPage = __WEBPACK_IMPORTED_MODULE_19__myagenda_myagenda__["a" /* MyAgenda */];
         this.loginPage = __WEBPACK_IMPORTED_MODULE_20__login_login__["a" /* LoginPage */];
         // Setup Menu Style variables
@@ -10137,8 +10476,8 @@ let HomePage = class HomePage {
             this.localstorage.setLocalValue("LoginNameInitials", '');
             // Temporary hard coding when not logged in
             this.localstorage.setLocalValue("AgendaDays", "4");
-            this.localstorage.setLocalValue("AgendaDates", "2019-04-24|2019-04-25|2019-04-26|2019-04-27|");
-            this.localstorage.setLocalValue("AgendaDayButtonLabels", "4/24|4/25|4/26|4/27|");
+            this.localstorage.setLocalValue("AgendaDates", "2019-04-24|2019-04-25|2019-04-26|");
+            this.localstorage.setLocalValue("AgendaDayButtonLabels", "4/24|4/25|4/26|");
         }
         this.upcomingAgendaItems = [];
         this.cd.markForCheck();
@@ -10273,7 +10612,7 @@ let HomePage = class HomePage {
             if (AutoSync != '0') {
                 var LastDirectChatCheck = this.localstorage.getLocalValue('LastDirectChatCheck');
                 if (LastDirectChatCheck == '' || LastDirectChatCheck === null) {
-                    LastDirectChatCheck = '2019-03-24T00:00:01Z';
+                    LastDirectChatCheck = '2019-06-11T00:00:01Z';
                 }
                 if (AutoSync == '' || AutoSync == null) {
                     console.log('Home: First AutoSync');
@@ -10300,7 +10639,7 @@ let HomePage = class HomePage {
             if (this.DevicePlatform != "Browser") {
                 // Reset AutoSync and then disbale this section of code by setting 
                 // the localstorage value to 1
-                this.localstorage.setLocalValue('LastSync', '2019-03-24T00:00:01Z');
+                this.localstorage.setLocalValue('LastSync', '2019-06-11T00:00:01Z');
                 this.localstorage.setLocalValue('AutoSyncReset', '1');
             }
         }
@@ -10368,7 +10707,7 @@ let HomePage = class HomePage {
             // Previously successful sync time
             var LastDirectChatCheck = this.localstorage.getLocalValue('LastDirectChatCheck');
             if (LastDirectChatCheck == '' || LastDirectChatCheck === null) {
-                LastDirectChatCheck = '2019-03-24T00:00:01Z';
+                LastDirectChatCheck = '2019-06-11T00:00:01Z';
             }
             // Current sync time in UTC
             var ThisDirectChatCheck2 = new Date().toUTCString();
@@ -10395,7 +10734,7 @@ let HomePage = class HomePage {
                     }
                 }
                 // Update LastSync date for next run
-                this.localstorage.setLocalValue('LastDirectChatCheck', ThisDirectChatCheck);
+                //this.localstorage.setLocalValue('LastDirectChatCheck', ThisDirectChatCheck);
             }).catch(function () {
                 console.log("Home: Direct Chat Monitoring Promise Rejected");
             });
@@ -10418,7 +10757,7 @@ let HomePage = class HomePage {
             // Previously successful sync time
             var LastSync3 = this.localstorage.getLocalValue('LastSync');
             if (LastSync3 == '' || LastSync3 === null) {
-                LastSync3 = '2019-03-24T00:00:01Z';
+                LastSync3 = '2019-06-11T00:00:01Z';
             }
             var LastSync2 = new Date(LastSync3).toUTCString();
             var LastSync = dateFormat(LastSync2, "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'");
@@ -10455,7 +10794,7 @@ let HomePage = class HomePage {
         // Previously successful sync time
         var LastSync3 = this.localstorage.getLocalValue('LastSync');
         if (LastSync3 == '' || LastSync3 === null) {
-            LastSync3 = '2019-03-24T00:00:01Z';
+            LastSync3 = '2019-06-11T00:00:01Z';
         }
         var LastSync2 = new Date(LastSync3).toUTCString();
         var LastSync = dateFormat(LastSync2, "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'");
@@ -10564,7 +10903,7 @@ let HomePage = class HomePage {
                 // Set EventID to LocalStorage
                 this.localstorage.setLocalValue('EventID', storeEventID);
                 // Navigate to Education Details page
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_24__educationdetails_educationdetails__["a" /* EducationDetailsPage */], { EventID: storeEventID }, { animate: true, direction: 'forward' });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_25__educationdetails_educationdetails__["a" /* EducationDetailsPage */], { EventID: storeEventID }, { animate: true, direction: 'forward' });
             }
         }
     }
@@ -10572,20 +10911,20 @@ let HomePage = class HomePage {
 };
 HomePage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-home',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/home/home.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button icon-only menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n\n		<ion-title>\n			Demo Event Planner\n		</ion-title>\n\n		<ion-buttons end>\n	\n			<button style="background:transparent!important">\n				<ion-avatar>\n					<ion-text-avatar class="avatar" color="secondary" style="z-index: 10;" (click)="AvatarNavigation()">{{AttendeeInitials}}\n						<ion-icon end name="{{LogInOutIcon}}" color="light" style="z-index: 1000;">\n						</ion-icon>\n					</ion-text-avatar>\n				</ion-avatar>\n			</button>\n\n		</ion-buttons>\n\n\n		<!--\n		<ion-buttons end>\n			<button ion-button icon-only color="light" (click)="NavigateToLoginPage()">\n				{{LoggedInUser}} <ion-icon name="{{LogInOutIcon}}"></ion-icon>\n			</button>\n		</ion-buttons>\n		-->\n	</ion-navbar>\n</ion-header>\n\n\n\n<!-- <ion-content style="background:url(assets/img/bgBlue.jpg)no-repeat center;background-size:cover;"> -->\n<ion-content class="{{MenuBackground}}" >\n\n	<!-- Disabled 2018-03-11 Due to being redundant with Social Media menu option on home page\n	<ion-fab top right edge>\n		<button ion-fab mini><ion-icon name="add"></ion-icon></button>\n		<ion-fab-list>\n			<button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>\n			<button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>\n			<button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>\n			<button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>\n		</ion-fab-list>\n	</ion-fab>\n	-->\n	\n	<img src="assets/img/header1.png">\n\n	<div id="MenuVertical" *ngIf="DisplayMenuVertical">\n\n\n			<ion-list no-lines class="bgCityscape">\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'MyAgenda\')">\n				<p class="myFontSize26">My Agenda</p>\n				<ion-icon name="calendar" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="programPage">\n				<p class="myFontSize26">Program</p>\n				<ion-icon name="document" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="speakersPage">\n				<p class="myFontSize26">Speakers</p>\n				<ion-icon name="mic" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="exhibitorsPage">\n				<p class="myFontSize26">Exhibitors</p>\n				<ion-icon name="people" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n				<p class="myFontSize26">CE Tracking</p>\n				<ion-icon name="school" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" onclick="window.open(\'https://www.charityauctionstoday.com/auctions/give-back-a-smile-silent-auction-2019-5583\', \'_system\', \'location=yes\'); return false;">\n				<p class="myFontSize26">GBAS Silent Auction</p>\n				<ion-icon name="happy" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'Networking\')">\n				<p class="myFontSize26">Networking</p>\n				<ion-icon name="contacts" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="mapPage">\n				<p class="myFontSize26">Maps</p>\n				<ion-icon name="map" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="conferenceCityPage">\n				<p class="myFontSize26">San Diego</p>\n				<ion-icon name="navigate" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="socialPage">\n				<p class="myFontSize26">AACD Social Media</p>\n				<ion-icon name="text" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="helpPage">\n				<p class="myFontSize26">Help</p>\n				<ion-icon name="help-circle" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'Notes\')">\n				<p class="myFontSize26">Notes</p>\n				<ion-icon name="create" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="morePage">\n				<p class="myFontSize26">More</p>\n				<ion-icon name="more" item-left></ion-icon>\n			</button>\n		</ion-list>\n\n\n\n\n\n	</div>\n\n	<div id="MenuGrid" *ngIf="DisplayMenuGrid">\n\n		<div class="row" style="padding-top:20px; padding-bottom:0; margin-top:20px; margin-bottom:0">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img (click)="NavigateToAuthenticatedPage(\'MyAgenda\')" src="assets/img/calendar2.png" width="50%" height="auto" style="display: block; margin-left:auto; margin-right:auto; margin-top:0">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold"  class=""><span style="">YourAgenda</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="programPage" src="assets/img/schedule.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto; margin-top:0">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Program</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="speakersPage" src="assets/img/educator1.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="home-markdown6" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Educators</span></p>\n            </div>\n          </div>\n\n        <div class="row" style="padding-top:10px; padding-bottom:0; margin-top:10px; margin-bottom:0">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0;">\n                <img (click)="NavigateToAuthenticatedPage(\'CETracking\')" src="assets/img/ce.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#ffffff;text-align:center;font-weight:bold" class=""><span style="">CE Tracker</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n\n              <img [navPush]="programPage" src="assets/img/book.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#ffffff;text-align:center;font-weight:bold" class=""><span style="">Course Locations</span></p>\n            </div>\n\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img src="assets/img/gift.png" href="#" onclick="window.open(\'https://aacd.ejoinme.org/MyEvents/GiveBackaSmileSilentAuction2017/tabid/811205/Default.aspx\', \'_system\', \'location=yes\'); return false;" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">GBAS Auction</span></p>\n            </div>\n          </div>\n\n        <div class="row" style="padding-top:10px; padding-bottom:0; margin-top:10px; margin-bottom:0">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="exhibitorsPage" src="assets/img/exhibitors1.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Exhibitors</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img src="assets/img/person1.png" href="#" onclick="window.open(\'https://www.aacd.com/index.php?module=login\', \'_system\', \'location=yes\'); return false;" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="home-markdown3" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Your AACD</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="mapPage" src="assets/img/map.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto; padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <p id="home-markdown6"  style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Maps</span></p>\n            </div>\n        </div>\n	</div>\n\n	<div id="MenuDashboard" *ngIf="DisplayMenuDashboard">\n\n        <div class="row" style="width:100%; padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n			<ion-list no-lines>\n				<ion-item class="steel" (click)="NavigateToAuthenticatedPage(\'MyAgenda\')">\n					Upcoming Agenda Items\n					<ion-icon name="calendar" item-left></ion-icon>\n				</ion-item>\n				<ion-item style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);color: white; padding-bottom:-30px; margin-bottom:-30px;" (click)="EventDetails(upcomingAgenda.visEventID)" *ngFor="let upcomingAgenda of upcomingAgendaItems" id="upcomingAgenda-list-item19" >\n					<div>\n						<div class="row">\n							<div class="col">\n								<div style="float: left; padding-right: 10px;">\n									<ion-icon name="{{upcomingAgenda.eventTypeIcon}}"></ion-icon>\n								</div>\n								<div>\n									<p class="myLabelBold" style="color: white;">\n										{{upcomingAgenda.EventName}}\n									</p>\n									<p style="color: white;">\n										{{upcomingAgenda.visEventTimeframe}}\n										<br/>\n										{{upcomingAgenda.EventLocation}}\n									</p>\n								</div>\n								<div style="float: right; color: white;">\n									<ion-icon name="{{upcomingAgenda.navigationArrow}}"></ion-icon>\n								</div>\n							</div>\n						</div>\n					</div>\n				</ion-item>\n				<ion-item class="steel" (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n					CE Credits Completed\n					<ion-icon name="school" item-left></ion-icon>\n				</ion-item>\n				<ion-item style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);color: white;" (click)="NavigateToAuthenticatedPage(\'CETracking\')" id="cetrackervalue-list" >\n					<div>\n						<div class="row">\n							<div class="col">\n								<div>\n									<p class="myLabelBold" style="color: white;font-size:1.8em">\n										{{creditsTypeL}}L / {{creditsTypeP}}P\n									</p>\n								</div>\n							</div>\n						</div>\n					</div>\n				</ion-item>\n				<ion-item class="steel">\n					Announcements\n					<ion-icon name="bookmarks" item-left></ion-icon>\n				</ion-item>\n				<ion-item style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);color: white;" id="announcement-list" >\n					<div>\n						<div class="row">\n							<div class="col">\n								<div style="float: left; padding-right: 10px;">\n									<ion-icon name="bookmark"></ion-icon>\n								</div>\n								<div>\n									<p class="myLabelBold" style="color: white;">\n										12:30pm<br/>\n										Head over now to the Exhibit Hall to see Dr. Phil Smith\n									</p>\n								</div>\n							</div>\n						</div>\n					</div>\n				</ion-item>\n			</ion-list>\n        </div>\n\n        <div class="row" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0; position: fixed; bottom:0%;">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="programPage" src="assets/img/schedule.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto; margin-top:0">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Program</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="exhibitorsPage" src="assets/img/exhibitors1.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Exhibitors</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0;">\n                <img (click)="NavigateToAuthenticatedPage(\'CETracking\')" src="assets/img/ce.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#ffffff;text-align:center;font-weight:bold" class=""><span style="">CE Tracker</span></p>\n            </div>\n\n		</div>\n\n	</div>\n\n\n</ion-content>\n\n<ion-footer>\n		\n	<button ion-button block color="secondary" style="margin:0" (click)="NavigateToAuthenticatedPage(\'ActivityFeed\')">Activity Feed</button>\n\n</ion-footer>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/home/home.html"*/,
+        selector: 'page-home',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/home/home.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button icon-only menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n\n		<ion-title>\n         Demo Event Planner\n		</ion-title>\n\n		<ion-buttons end>\n	\n			<button style="background:transparent!important">\n				<ion-avatar>\n					<ion-text-avatar class="avatar" color="secondary" style="z-index: 10;" (click)="AvatarNavigation()">{{AttendeeInitials}}\n						<ion-icon end name="{{LogInOutIcon}}" color="light" style="z-index: 1000;">\n						</ion-icon>\n					</ion-text-avatar>\n				</ion-avatar>\n			</button>\n\n		</ion-buttons>\n\n\n		<!--\n		<ion-buttons end>\n			<button ion-button icon-only color="light" (click)="NavigateToLoginPage()">\n				{{LoggedInUser}} <ion-icon name="{{LogInOutIcon}}"></ion-icon>\n			</button>\n		</ion-buttons>\n		-->\n	</ion-navbar>\n</ion-header>\n\n\n\n<!-- <ion-content style="background:url(assets/img/bgBlue.jpg)no-repeat center;background-size:cover;"> -->\n<ion-content class="{{MenuBackground}}" >\n\n	<!-- Disabled 2018-03-11 Due to being redundant with Social Media menu option on home page\n	<ion-fab top right edge>\n		<button ion-fab mini><ion-icon name="add"></ion-icon></button>\n		<ion-fab-list>\n			<button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>\n			<button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>\n			<button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>\n			<button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>\n		</ion-fab-list>\n	</ion-fab>\n	-->\n	\n	<img src="assets/img/apsheader2.png">\n\n	<div id="MenuVertical" *ngIf="DisplayMenuVertical">\n\n\n			<ion-list no-lines class="bgCityscape">\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'MyAgenda\')">\n				<p class="myFontSize26">My Agenda</p>\n				<ion-icon name="calendar" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="programPage">\n				<p class="myFontSize26">Program</p>\n				<ion-icon name="document" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="speakersPage">\n				<p class="myFontSize26">Speakers</p>\n				<ion-icon name="mic" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="exhibitorsPage">\n				<p class="myFontSize26">Exhibitors</p>\n				<ion-icon name="people" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n				<p class="myFontSize26">CE Tracking</p>\n				<ion-icon name="school" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'Networking\')">\n				<p class="myFontSize26">Networking</p>\n				<ion-icon name="contacts" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="mapPage">\n				<p class="myFontSize26">Maps</p>\n				<ion-icon name="map" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="conferenceCityPage">\n				<p class="myFontSize26">San Diego</p>\n				<ion-icon name="navigate" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="socialPage">\n				<p class="myFontSize26">Social Media</p>\n				<ion-icon name="text" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="helpPage">\n				<p class="myFontSize26">Help</p>\n				<ion-icon name="help-circle" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" (click)="NavigateToAuthenticatedPage(\'Notes\')">\n				<p class="myFontSize26">Notes</p>\n				<ion-icon name="create" item-left></ion-icon>\n			</button>\n\n			<button ion-item class="opacity" [navPush]="morePage">\n				<p class="myFontSize26">More</p>\n				<ion-icon name="more" item-left></ion-icon>\n			</button>\n		</ion-list>\n\n\n\n\n\n	</div>\n\n	<div id="MenuGrid" *ngIf="DisplayMenuGrid">\n\n		<div class="row" style="padding-top:20px; padding-bottom:0; margin-top:20px; margin-bottom:0">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img (click)="NavigateToAuthenticatedPage(\'MyAgenda\')" src="assets/img/calendar2.png" width="50%" height="auto" style="display: block; margin-left:auto; margin-right:auto; margin-top:0">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold"  class=""><span style="">YourAgenda</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="programPage" src="assets/img/schedule.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto; margin-top:0">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Program</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="speakersPage" src="assets/img/educator1.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="home-markdown6" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Educators</span></p>\n            </div>\n          </div>\n\n        <div class="row" style="padding-top:10px; padding-bottom:0; margin-top:10px; margin-bottom:0">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0;">\n                <img (click)="NavigateToAuthenticatedPage(\'CETracking\')" src="assets/img/ce.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#ffffff;text-align:center;font-weight:bold" class=""><span style="">CE Tracker</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n\n              <img [navPush]="programPage" src="assets/img/book.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#ffffff;text-align:center;font-weight:bold" class=""><span style="">Course Locations</span></p>\n            </div>\n\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img src="assets/img/gift.png" href="#" onclick="window.open(\'https://aacd.ejoinme.org/MyEvents/GiveBackaSmileSilentAuction2017/tabid/811205/Default.aspx\', \'_system\', \'location=yes\'); return false;" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">GBAS Auction</span></p>\n            </div>\n          </div>\n\n        <div class="row" style="padding-top:10px; padding-bottom:0; margin-top:10px; margin-bottom:0">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="exhibitorsPage" src="assets/img/exhibitors1.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Exhibitors</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img src="assets/img/person1.png" href="#" onclick="window.open(\'https://www.aacd.com/index.php?module=login\', \'_system\', \'location=yes\'); return false;" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="home-markdown3" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Your AACD</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="mapPage" src="assets/img/map.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto; padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <p id="home-markdown6"  style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Maps</span></p>\n            </div>\n        </div>\n	</div>\n\n	<div id="MenuDashboard" *ngIf="DisplayMenuDashboard">\n\n        <div class="row" style="width:100%; padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n			<ion-list no-lines>\n				<ion-item class="steel" (click)="NavigateToAuthenticatedPage(\'MyAgenda\')">\n					Upcoming Agenda Items\n					<ion-icon name="calendar" item-left></ion-icon>\n				</ion-item>\n				<ion-item style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);color: white; padding-bottom:-30px; margin-bottom:-30px;" (click)="EventDetails(upcomingAgenda.visEventID)" *ngFor="let upcomingAgenda of upcomingAgendaItems" id="upcomingAgenda-list-item19" >\n					<div>\n						<div class="row">\n							<div class="col">\n								<div style="float: left; padding-right: 10px;">\n									<ion-icon name="{{upcomingAgenda.eventTypeIcon}}"></ion-icon>\n								</div>\n								<div>\n									<p class="myLabelBold" style="color: white;">\n										{{upcomingAgenda.EventName}}\n									</p>\n									<p style="color: white;">\n										{{upcomingAgenda.visEventTimeframe}}\n										<br/>\n										{{upcomingAgenda.EventLocation}}\n									</p>\n								</div>\n								<div style="float: right; color: white;">\n									<ion-icon name="{{upcomingAgenda.navigationArrow}}"></ion-icon>\n								</div>\n							</div>\n						</div>\n					</div>\n				</ion-item>\n				<ion-item class="steel" (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n					CE Credits Completed\n					<ion-icon name="school" item-left></ion-icon>\n				</ion-item>\n				<ion-item style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);color: white;" (click)="NavigateToAuthenticatedPage(\'CETracking\')" id="cetrackervalue-list" >\n					<div>\n						<div class="row">\n							<div class="col">\n								<div>\n									<p class="myLabelBold" style="color: white;font-size:1.8em">\n										{{creditsTypeL}}L / {{creditsTypeP}}P\n									</p>\n								</div>\n							</div>\n						</div>\n					</div>\n				</ion-item>\n				<ion-item class="steel">\n					Announcements\n					<ion-icon name="bookmarks" item-left></ion-icon>\n				</ion-item>\n				<ion-item style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);color: white;" id="announcement-list" >\n					<div>\n						<div class="row">\n							<div class="col">\n								<div style="float: left; padding-right: 10px;">\n									<ion-icon name="bookmark"></ion-icon>\n								</div>\n								<div>\n									<p class="myLabelBold" style="color: white;">\n										12:30pm<br/>\n										Head over now to the Exhibit Hall to see Dr. Phil Smith\n									</p>\n								</div>\n							</div>\n						</div>\n					</div>\n				</ion-item>\n			</ion-list>\n        </div>\n\n        <div class="row" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0; position: fixed; bottom:0%;">\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="programPage" src="assets/img/schedule.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto; margin-top:0">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Program</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0">\n                <img [navPush]="exhibitorsPage" src="assets/img/exhibitors1.png" width="50%" height="auto" style="display: block; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#FFFFFF;text-align:center;font-weight:bold" class=""><span style="">Exhibitors</span></p>\n            </div>\n\n            <div class="col" style="padding-top:0; padding-bottom:0; margin-top:0; margin-bottom:0;">\n                <img (click)="NavigateToAuthenticatedPage(\'CETracking\')" src="assets/img/ce.png" width="50%" height="auto" style="display: block; margin-top:0; margin-left: auto; margin-right: auto;">\n                <p id="" style="color:#ffffff;text-align:center;font-weight:bold" class=""><span style="">CE Tracker</span></p>\n            </div>\n\n		</div>\n\n	</div>\n\n\n</ion-content>\n\n<ion-footer>\n		<ion-toolbar color="secondary">\n			<ion-buttons>\n\n\n\n			  <button ion-button icon-start full color="#fff"\n				    (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n				<ion-icon name="school"></ion-icon>\n				CE Tracker\n			  </button>\n\n			  <button ion-button icon-start color="#fff" [navPush]="programPage">\n				<ion-icon name="list"></ion-icon>\n			    Program\n			  </button>\n\n			  <button ion-button icon-start color="#fff" [navPush]="exhibitorsPage">\n				<ion-icon name="people"></ion-icon>\n				Exhibitors\n			  </button>\n			 \n				  <button ion-button icon-start color="#fff" style="margin:0" \n				  (click)="NavigateToAuthenticatedPage(\'Networking\')">\n				  <ion-icon name="chatboxes"></ion-icon>\n				  Networking\n				</button>\n	\n			</ion-buttons>\n		  </ion-toolbar>\n	  </ion-footer>\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/home/home.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["y" /* ToastController */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ToastController"],
         __WEBPACK_IMPORTED_MODULE_3__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_8__ionic_native_status_bar__["a" /* StatusBar */],
         __WEBPACK_IMPORTED_MODULE_6__providers_synchronization_synchronization__["a" /* Synchronization */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["x" /* Platform */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"],
         __WEBPACK_IMPORTED_MODULE_9__ionic_native_sqlite__["a" /* SQLite */],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], HomePage);
@@ -10602,10 +10941,10 @@ HomePage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10992,15 +11331,15 @@ let NotesPage = class NotesPage {
 };
 NotesPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-notes',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/notes/notes.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Notes</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<!-- Search input -->\n	<ion-grid style="margin-top:-15px">\n		<ion-row>\n			<ion-col col-9>	\n\n				<ion-item class="item-input; shadow">\n					<ion-icon name="search" item-left></ion-icon>\n					<ion-input name="srchBarEntry" id="srchBarEntry" \n					type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n				</ion-item>\n			</ion-col>\n			<ion-col col-3>\n				<button ion-button block class="buttonPadding" style="background:#2196f3" (tap)="GetSearchResults()">\n					Submit\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	<ion-list id="Notes-list3">\n\n		<!-- Day 1 note items -->\n		<ion-card *ngIf=Day1Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day1Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day1item.EventID)" *ngFor="let day1item of day1Items" id="notes-list-item19">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day1item.CourseName}}\n					</p>\n					<p>\n						{{day1item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day1item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n		<!-- Day 2 note items -->\n		<ion-card *ngIf=Day2Show>\n\n			<ion-card-header  class="mutedBlue">\n				{{Day2Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day2item.EventID)" *ngFor="let day2item of day2Items" id="notes-list-item19">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day2item.CourseName}}\n					</p>\n					<p>\n						{{day2item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day2item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n\n		<!-- Day 3 note items -->\n		<ion-card *ngIf=Day3Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day3Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day3item.EventID)" *ngFor="let day3item of day3Items" id="notes-list-item19">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day3item.CourseName}}\n					</p>\n					<p>\n						{{day3item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day3item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n\n		<!-- Day 4 note items -->\n		<ion-card *ngIf=Day4Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day4Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day4item.EventID)" *ngFor="let day4item of day4Items" id="notes-list-item21">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day4item.CourseName}}\n					</p>\n					<p>\n						{{day4item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day4item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n		<!-- Day 5 note items -->\n		<ion-card *ngIf=Day5Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day5Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day5item.EventID)" *ngFor="let day5item of day5Items" id="notes-list-item22">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day5item.CourseName}}\n					</p>\n					<p>\n						{{day5item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day5item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n	</ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/notes/notes.html"*/,
+        selector: 'page-notes',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/notes/notes.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Notes</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<!-- Search input -->\n	<ion-grid style="margin-top:-15px">\n		<ion-row>\n			<ion-col col-9>	\n\n				<ion-item class="item-input; shadow">\n					<ion-icon name="search" item-left></ion-icon>\n					<ion-input name="srchBarEntry" id="srchBarEntry" \n					type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n				</ion-item>\n			</ion-col>\n			<ion-col col-3>\n				<button ion-button block class="buttonPadding" style="background:#cc5d1d" (tap)="GetSearchResults()">\n					Submit\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	<ion-list id="Notes-list3">\n\n		<!-- Day 1 note items -->\n		<ion-card *ngIf=Day1Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day1Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day1item.EventID)" *ngFor="let day1item of day1Items" id="notes-list-item19">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day1item.CourseName}}\n					</p>\n					<p>\n						{{day1item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day1item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n		<!-- Day 2 note items -->\n		<ion-card *ngIf=Day2Show>\n\n			<ion-card-header  class="mutedBlue">\n				{{Day2Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day2item.EventID)" *ngFor="let day2item of day2Items" id="notes-list-item19">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day2item.CourseName}}\n					</p>\n					<p>\n						{{day2item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day2item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n\n		<!-- Day 3 note items -->\n		<ion-card *ngIf=Day3Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day3Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day3item.EventID)" *ngFor="let day3item of day3Items" id="notes-list-item19">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day3item.CourseName}}\n					</p>\n					<p>\n						{{day3item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day3item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n\n		<!-- Day 4 note items -->\n		<ion-card *ngIf=Day4Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day4Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day4item.EventID)" *ngFor="let day4item of day4Items" id="notes-list-item21">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day4item.CourseName}}\n					</p>\n					<p>\n						{{day4item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day4item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n		<!-- Day 5 note items -->\n		<ion-card *ngIf=Day5Show>\n\n			<ion-card-header class="mutedBlue">\n				{{Day5Label}}\n			</ion-card-header>\n\n			<ion-card-content>\n				<ion-item class="item-icon-left item-icon-right" (tap)="NoteDetails(day5item.EventID)" *ngFor="let day5item of day5Items" id="notes-list-item22">\n					<i class="icon {{notesIcon}}"></i>\n					<p>\n						{{day5item.CourseName}}\n					</p>\n					<p>\n						{{day5item.visEventTimeframe}}\n					</p>\n					<p>\n						{{day5item.NoteBeginning}}\n					</p>\n					<i class="icon {{navigationRightArrow}}"></i>\n				</ion-item>\n			</ion-card-content>\n\n		</ion-card>\n\n	</ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/notes/notes.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], NotesPage);
 
@@ -11016,11 +11355,11 @@ NotesPage = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__educationdetails_educationdetails__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__educationdetails_educationdetails__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11625,15 +11964,15 @@ let MyAgendaFull = class MyAgendaFull {
 };
 MyAgendaFull = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-myagendafull',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/myagendafull/myagendafull.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Full Agenda</ion-title>\n	</ion-navbar>\n</ion-header>\n\n\n<ion-content>\n\n	<!--Segment Menu Bar-->\n\n		<ion-segment style="padding:0; margin:0" [(ngModel)]="agenda">\n			<ion-segment-button value="myagenda" style="background:#004c94; color:#fff">\n				My Agenda\n			</ion-segment-button>\n			<ion-segment-button value="fullagenda" style="background:#004c94; color:#fff">\n				Full Agenda\n			</ion-segment-button>\n		</ion-segment>\n\n\n	<!--My Agenda Contents-->\n	<div style="padding:0!important" [ngSwitch]="agenda">\n		<ion-list style="padding:0!important;margin:0!important" *ngSwitchCase="\'myagenda\'" id="agendafull-list3">\n			<ion-item>\n\n				<!-- Tuesday agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Wednesday, April 24</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaTue.visEventID)" *ngFor="let agendaTue of agendaTueItems" id="fullagenda-list-item19" >\n							<ion-icon style="color:#283593" item-left name="{{agendaTue.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaTue.EventName}}</h2>\n							<p>{{agendaTue.visEventTimeframe}}</p>\n							<p>{{agendaTue.EventLocation}}</p>\n							<p [ngClass]="agendaTue.SessionStatusStyle">{{agendaTue.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Wednesday agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Thursday, April 25</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaWed.visEventID)" *ngFor="let agendaWed of agendaWedItems" id="fullagenda-list-item19" >\n							<ion-icon style="color:#283593" item-left name="{{agendaWed.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaWed.EventName}}</h2>\n							<p>{{agendaWed.visEventTimeframe}}</p>\n							<p>{{agendaWed.EventLocation}}</p>\n							<p [ngClass]="agendaWed.SessionStatusStyle">{{agendaWed.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n\n				<!-- Thursday agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Friday, April 26</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaThu.visEventID)" *ngFor="let agendaThu of agendaThuItems" id="fullagenda-list-item20">\n							<ion-icon style="color:#283593" item-left name="{{agendaThu.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaThu.EventName}}</h2>\n							<p>{{agendaThu.visEventTimeframe}}</p>\n							<p>{{agendaThu.EventLocation}}</p>\n							<p [ngClass]="agendaThu.SessionStatusStyle">{{agendaThu.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n\n				<!-- Friday agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Saturday, April 27</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaFri.visEventID)" *ngFor="let agendaFri of agendaFriItems" id="fullagenda-list-item21">\n							<ion-icon style="color:#283593" item-left name="{{agendaFri.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaFri.EventName}}</h2>\n							<p>{{agendaFri.visEventTimeframe}}</p>\n							<p>{{agendaFri.EventLocation}}</p>\n							<p [ngClass]="agendaFri.SessionStatusStyle">{{agendaFri.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n			</ion-item>\n		</ion-list>\n	</div>\n\n\n	<!-- Full Agenda Contents -->\n	<div style="padding:0!important;margin:0!important" [ngSwitch]="agenda">\n		<ion-list style="padding:0!important;margin:0!important" *ngSwitchCase="\'fullagenda\'" id="agendafull-list3">\n\n			<ion-item>\n\n				<!-- Day 1 agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Wednesday, April 24</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay1.visEventID)" *ngFor="let fullagendaDay1 of fullagendaDay1Items" id="fullagendaDay1-list-item19" >\n							<ion-icon style="color:#283593" item-left name="{{fullagendaDay1.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay1.EventName}}</h2>\n							<p>{{fullagendaDay1.visEventTimeframe}}</p>\n							<p>{{fullagendaDay1.EventLocation}}</p>\n							<p>{{fullagendaDay1.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay1.SessionStatusStyle">{{fullagendaDay1.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Day 2 agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Thursday, April 25</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay2.visEventID)" *ngFor="let fullagendaDay2 of fullagendaDay2Items" id="fullagendaDay2-list-item19" >\n							<ion-icon style="color:#283593" item-left name="{{fullagendaDay2.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay2.EventName}}</h2>\n							<p>{{fullagendaDay2.visEventTimeframe}}</p>\n							<p>{{fullagendaDay2.EventLocation}}</p>\n							<p>{{fullagendaDay2.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay2.SessionStatusStyle">{{fullagendaDay2.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Day 3 agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Friday, April 26</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay3.visEventID)" *ngFor="let fullagendaDay3 of fullagendaDay3Items" id="fullagendaDay2-list-item19" >\n							<ion-icon style="color:#283593" item-left name="{{fullagendaDay3.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay3.EventName}}</h2>\n							<p>{{fullagendaDay3.visEventTimeframe}}</p>\n							<p>{{fullagendaDay3.EventLocation}}</p>\n							<p>{{fullagendaDay3.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay3.SessionStatusStyle">{{fullagendaDay3.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Day 4 agenda items -->\n				<ion-card style="padding:0!important;margin:0!important">\n					<ion-card-header style="background:#283593; color:#fff">\n						<h2 style="color:#fff">Saturday, April 27</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay4.visEventID)" *ngFor="let fullagendaDay4 of fullagendaDay4Items" id="fullagendaDay2-list-item19" >\n							<ion-icon style="color:#283593" item-left name="{{fullagendaDay4.eventTypeIcon}}"></ion-icon>\n							<ion-icon item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay4.EventName}}</h2>\n							<p>{{fullagendaDay4.visEventTimeframe}}</p>\n							<p>{{fullagendaDay4.EventLocation}}</p>\n							<p>{{fullagendaDay4.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay4.SessionStatusStyle">{{fullagendaDay4.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n			</ion-item>\n		</ion-list>\n	</div>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/myagendafull/myagendafull.html"*/,
+        selector: 'page-myagendafull',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/myagendafull/myagendafull.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Full Agenda</ion-title>\n	</ion-navbar>\n\n		<!--Segment Menu Bar-->\n\n		<ion-segment style="padding:0; margin:0" [(ngModel)]="agenda">\n				<ion-segment-button value="myagenda" style="background:#cc5d1d; color:#fff">\n					My Agenda\n				</ion-segment-button>\n				<ion-segment-button value="fullagenda" style="background:#283747; color:#fff">\n					Full Agenda\n				</ion-segment-button>\n			</ion-segment>\n</ion-header>\n\n\n<ion-content>\n\n\n\n\n	<!--My Agenda Contents-->\n	<div [ngSwitch]="agenda">\n		<ion-list *ngSwitchCase="\'myagenda\'" id="agendafull-list3">\n				<ion-item>\n\n				<!-- Tuesday agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Wednesday, April 24</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaTue.visEventID)" *ngFor="let agendaTue of agendaTueItems" id="fullagenda-list-item19" >\n							<ion-icon style="color:#cc5d1d" item-left name="{{agendaTue.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaTue.EventName}}</h2>\n							<p>{{agendaTue.visEventTimeframe}}</p>\n							<p>{{agendaTue.EventLocation}}</p>\n							<p [ngClass]="agendaTue.SessionStatusStyle">{{agendaTue.SessionStatus}}</p>\n							\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Wednesday agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Thursday, April 25</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaWed.visEventID)" *ngFor="let agendaWed of agendaWedItems" id="fullagenda-list-item19" >\n							<ion-icon style="color:#cc5d1d" item-left name="{{agendaWed.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaWed.EventName}}</h2>\n							<p>{{agendaWed.visEventTimeframe}}</p>\n							<p>{{agendaWed.EventLocation}}</p>\n							<p [ngClass]="agendaWed.SessionStatusStyle">{{agendaWed.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n\n				<!-- Thursday agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Friday, April 26</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaThu.visEventID)" *ngFor="let agendaThu of agendaThuItems" id="fullagenda-list-item20">\n							<ion-icon style="color:#cc5d1d" item-left name="{{agendaThu.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaThu.EventName}}</h2>\n							<p>{{agendaThu.visEventTimeframe}}</p>\n							<p>{{agendaThu.EventLocation}}</p>\n							<p [ngClass]="agendaThu.SessionStatusStyle">{{agendaThu.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n\n				<!-- Friday agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Saturday, April 27</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="EventDetails(agendaFri.visEventID)" *ngFor="let agendaFri of agendaFriItems" id="fullagenda-list-item21">\n							<ion-icon style="color:#cc5d1d" item-left name="{{agendaFri.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{agendaFri.EventName}}</h2>\n							<p>{{agendaFri.visEventTimeframe}}</p>\n							<p>{{agendaFri.EventLocation}}</p>\n							<p [ngClass]="agendaFri.SessionStatusStyle">{{agendaFri.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n			</ion-item>\n		</ion-list>\n	</div>\n\n\n	<!-- Full Agenda Contents -->\n	<div [ngSwitch]="agenda">\n		<ion-list *ngSwitchCase="\'fullagenda\'" id="agendafull-list3">\n\n			<ion-item>\n\n				<!-- Day 1 agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Wednesday, April 24</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay1.visEventID)" *ngFor="let fullagendaDay1 of fullagendaDay1Items" id="fullagendaDay1-list-item19" >\n							<ion-icon style="color:#cc5d1d" item-left name="{{fullagendaDay1.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay1.EventName}}</h2>\n							<p>{{fullagendaDay1.visEventTimeframe}}</p>\n							<p>{{fullagendaDay1.EventLocation}}</p>\n							<p>{{fullagendaDay1.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay1.SessionStatusStyle">{{fullagendaDay1.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Day 2 agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Thursday, April 25</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay2.visEventID)" *ngFor="let fullagendaDay2 of fullagendaDay2Items" id="fullagendaDay2-list-item19" >\n							<ion-icon style="color:#cc5d1d" item-left name="{{fullagendaDay2.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay2.EventName}}</h2>\n							<p>{{fullagendaDay2.visEventTimeframe}}</p>\n							<p>{{fullagendaDay2.EventLocation}}</p>\n							<p>{{fullagendaDay2.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay2.SessionStatusStyle">{{fullagendaDay2.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Day 3 agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Friday, April 26</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay3.visEventID)" *ngFor="let fullagendaDay3 of fullagendaDay3Items" id="fullagendaDay2-list-item19" >\n							<ion-icon style="color:#cc5d1d" item-left name="{{fullagendaDay3.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay3.EventName}}</h2>\n							<p>{{fullagendaDay3.visEventTimeframe}}</p>\n							<p>{{fullagendaDay3.EventLocation}}</p>\n							<p>{{fullagendaDay3.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay3.SessionStatusStyle">{{fullagendaDay3.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n				<!-- Day 4 agenda items -->\n				<ion-card>\n					<ion-card-header style="background:#283747; color:#fff">\n						<h2 style="color:#fff">Saturday, April 27</h2>\n					</ion-card-header>\n					<ion-card-content>\n						<ion-item text-wrap (click)="SessionDetails(fullagendaDay4.visEventID)" *ngFor="let fullagendaDay4 of fullagendaDay4Items" id="fullagendaDay2-list-item19" >\n							<ion-icon style="color:#cc5d1d" item-left name="{{fullagendaDay4.eventTypeIcon}}"></ion-icon>\n							<ion-icon style="color:#cc5d1d" item-right name="arrow-dropright"></ion-icon>\n							<h2>{{fullagendaDay4.EventName}}</h2>\n							<p>{{fullagendaDay4.visEventTimeframe}}</p>\n							<p>{{fullagendaDay4.EventLocation}}</p>\n							<p>{{fullagendaDay4.visCourseID}}</p>\n							<p [ngClass]="fullagendaDay4.SessionStatusStyle">{{fullagendaDay4.SessionStatus}}</p>\n						</ion-item>\n					</ion-card-content>\n				</ion-card>\n\n			</ion-item>\n		</ion-list>\n	</div>\n\n</ion-content>\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/myagendafull/myagendafull.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], MyAgendaFull);
 
@@ -11641,7 +11980,7 @@ MyAgendaFull = __decorate([
 
 /***/ }),
 
-/***/ 857:
+/***/ 859:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11649,28 +11988,20 @@ MyAgendaFull = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__ = __webpack_require__(516);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_onesignal__ = __webpack_require__(517);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_keyboard__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ionic_native_keyboard__ = __webpack_require__(142);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(67);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_conferencecity_conferencecity__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_help_help__ = __webpack_require__(100);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_speakers_speakers__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_program_program__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_map_map__ = __webpack_require__(160);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_login_login__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_exhibitors_exhibitors__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_notes_notes__ = __webpack_require__(75);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_myagenda_myagenda__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_myagendafull_myagendafull__ = __webpack_require__(76);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_evaluationconference_evaluationconference__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_educationdetails_educationdetails__ = __webpack_require__(56);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__pages_networking_networking__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_attendeebookmarks_attendeebookmarks__ = __webpack_require__(518);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__pages_social_social__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_notes_notes__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_myagenda_myagenda__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_myagendafull_myagendafull__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__pages_evaluationconference_evaluationconference__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_educationdetails_educationdetails__ = __webpack_require__(57);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_attendeebookmarks_attendeebookmarks__ = __webpack_require__(518);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11692,14 +12023,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 // Pages
-
-
-
-
-
-
-
-
 
 
 
@@ -11735,22 +12058,22 @@ let MyApp = class MyApp {
         // used for an example of ngFor and navigation
         this.pages = [
             { title: 'Home', icon: 'home', component: __WEBPACK_IMPORTED_MODULE_9__pages_home_home__["a" /* HomePage */], naventry: 'Home' },
-            { title: 'My Agenda', icon: 'calendar', component: __WEBPACK_IMPORTED_MODULE_18__pages_myagenda_myagenda__["a" /* MyAgenda */], naventry: 'MyAgenda' },
-            { title: 'Full Agenda', icon: 'calendar', component: __WEBPACK_IMPORTED_MODULE_19__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */], naventry: 'MyAgendaFull' },
-            { title: 'Program', icon: 'document', component: __WEBPACK_IMPORTED_MODULE_13__pages_program_program__["a" /* ProgramPage */], naventry: 'Program' },
-            { title: 'Speakers', icon: 'mic', component: __WEBPACK_IMPORTED_MODULE_12__pages_speakers_speakers__["a" /* SpeakersPage */], naventry: 'Speakers' },
-            { title: 'Exhibitors', icon: 'people', component: __WEBPACK_IMPORTED_MODULE_16__pages_exhibitors_exhibitors__["a" /* ExhibitorsPage */], naventry: 'Exhibitors' },
-            { title: 'CE Tracking', icon: 'school', component: 'CetrackingPage', naventry: 'CETracking' },
-            { title: 'GBAS Silent Auction', icon: 'happy', component: 'GBASAuction', naventry: 'GBASAuction' },
-            { title: 'Networking', icon: 'contacts', component: __WEBPACK_IMPORTED_MODULE_22__pages_networking_networking__["a" /* NetworkingPage */], naventry: 'Networking' },
-            { title: 'Maps', icon: 'map', component: __WEBPACK_IMPORTED_MODULE_14__pages_map_map__["a" /* MapPage */], naventry: 'Map' },
-            { title: 'San Diego', icon: 'navigate', component: __WEBPACK_IMPORTED_MODULE_10__pages_conferencecity_conferencecity__["a" /* ConferenceCityPage */], naventry: 'SanDiego' },
-            { title: 'AACD Social Media', icon: 'text', component: __WEBPACK_IMPORTED_MODULE_24__pages_social_social__["a" /* SocialPage */], naventry: 'SocialMedia' },
-            { title: 'Help', icon: 'help-circle', component: __WEBPACK_IMPORTED_MODULE_11__pages_help_help__["a" /* HelpPage */], naventry: 'Help' },
-            { title: 'Notes', icon: 'create', component: __WEBPACK_IMPORTED_MODULE_17__pages_notes_notes__["a" /* NotesPage */], naventry: 'Notes' },
-            { title: 'Bookmarks', icon: 'bookmark', component: __WEBPACK_IMPORTED_MODULE_23__pages_attendeebookmarks_attendeebookmarks__["a" /* AttendeeBookmarksPage */], naventry: 'Bookmarks' },
-            { title: 'Event Survey', icon: 'bookmarks', component: __WEBPACK_IMPORTED_MODULE_20__pages_evaluationconference_evaluationconference__["a" /* EvaluationConference */], naventry: 'EventSurvey' },
-            { title: 'Sign In / Out', icon: 'log-in', component: __WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], naventry: 'Login' }
+            // { title: 'My Agenda', icon: 'calendar', component: MyAgenda, naventry: 'MyAgenda' },
+            { title: 'Full Agenda', icon: 'calendar', component: __WEBPACK_IMPORTED_MODULE_13__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */], naventry: 'MyAgendaFull' },
+            // { title: 'Program', icon: 'document', component: ProgramPage, naventry: 'Program' },
+            //{ title: 'Speakers', icon: 'mic', component: SpeakersPage, naventry: 'Speakers' },
+            // { title: 'Exhibitors', icon: 'people', component: ExhibitorsPage, naventry: 'Exhibitors' },
+            //{ title: 'CE Tracking', icon: 'school', component: 'CetrackingPage', naventry: 'CETracking' },
+            //{ title: 'GBAS Silent Auction', icon: 'happy', component: 'GBASAuction', naventry: 'GBASAuction' },
+            //{ title: 'Networking', icon: 'contacts', component: NetworkingPage, naventry: 'Networking' },
+            //  { title: 'Maps', icon: 'map', component: MapPage, naventry: 'Map' },
+            // { title: 'San Diego', icon: 'navigate', component: ConferenceCityPage, naventry: 'SanDiego' },
+            //  { title: 'AACD Social Media', icon: 'text', component: SocialPage, naventry: 'SocialMedia' },
+            // { title: 'Help', icon: 'help-circle', component: HelpPage, naventry: 'Help' },
+            // { title: 'Notes', icon: 'create', component: NotesPage, naventry: 'Notes' },
+            { title: 'Bookmarks', icon: 'bookmark', component: __WEBPACK_IMPORTED_MODULE_16__pages_attendeebookmarks_attendeebookmarks__["a" /* AttendeeBookmarksPage */], naventry: 'Bookmarks' },
+            { title: 'Event Survey', icon: 'bookmarks', component: __WEBPACK_IMPORTED_MODULE_14__pages_evaluationconference_evaluationconference__["a" /* EvaluationConference */], naventry: 'EventSurvey' },
+            { title: 'Sign In / Out', icon: 'log-in', component: __WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], naventry: 'Login' }
             //{ title: 'Floor Plan', icon: 'map', component: FloorplanMappingPage, naventry: 'FloorplanMapping' },
         ];
         this.activePage = this.pages[0];
@@ -11888,7 +12211,7 @@ let MyApp = class MyApp {
             // Here you can do any higher level native things you might need.
             //Set status bar appearance
             this.statusBar.overlaysWebView(false);
-            this.statusBar.backgroundColorByHexString('#283593');
+            this.statusBar.backgroundColorByHexString('#283747');
             this.statusBar.styleLightContent();
             //Open side menu at page loading
             this.menuCtrl.open();
@@ -11971,17 +12294,17 @@ let MyApp = class MyApp {
             this.localstorage.setLocalValue('ForwardingPage', '');
             switch (PageID) {
                 case "MyAgenda":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_18__pages_myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_12__pages_myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "MyAgendaFull":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_19__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_13__pages_myagendafull_myagendafull__["a" /* MyAgendaFull */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "CETracking":
                     this.menuCtrl.close();
                     this.navCtrl.push('CetrackingPage', {}, { animate: true, direction: 'forward' });
                     break;
                 case "Notes":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_17__pages_notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__pages_notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' });
                     break;
             }
         }
@@ -11989,7 +12312,7 @@ let MyApp = class MyApp {
             this.localstorage.setLocalValue('LoginWarning', '1');
             this.localstorage.setLocalValue('ForwardingPage', PageID);
             this.menuCtrl.close();
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
         }
     }
     EventDetails(EventID) {
@@ -12015,7 +12338,7 @@ let MyApp = class MyApp {
                 this.localstorage.setLocalValue('EventID', storeEventID);
                 // Navigate to Education Details page
                 this.menuCtrl.close();
-                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_21__pages_educationdetails_educationdetails__["a" /* EducationDetailsPage */], { EventID: storeEventID }, { animate: true, direction: 'forward' });
+                this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_educationdetails_educationdetails__["a" /* EducationDetailsPage */], { EventID: storeEventID }, { animate: true, direction: 'forward' });
             }
         }
     }
@@ -12028,13 +12351,13 @@ let MyApp = class MyApp {
             this.localstorage.setLocalValue('ForwardingPage', '');
             switch (page.naventry) {
                 case "MyAgenda":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_18__pages_myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_12__pages_myagenda_myagenda__["a" /* MyAgenda */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "CETracking":
                     this.navCtrl.push('CetrackingPage', {}, { animate: true, direction: 'forward' });
                     break;
                 case "Notes":
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_17__pages_notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_11__pages_notes_notes__["a" /* NotesPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "GBASAuction":
                     window.open('https://www.charityauctionstoday.com/auctions/give-back-a-smile-silent-auction-2019-5583', '_system');
@@ -12050,35 +12373,35 @@ let MyApp = class MyApp {
             switch (page.naventry) {
                 case "MyAgenda":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "MyAgendaFull":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "CETracking":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "Notes":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "EventSurvey":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "Profile":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "Networking":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "Bookmarks":
                     this.localstorage.setLocalValue('LoginWarning', '1');
-                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_15__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
+                    this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_10__pages_login_login__["a" /* LoginPage */], {}, { animate: true, direction: 'forward' });
                     break;
                 case "GBASAuction":
                     window.open('https://www.charityauctionstoday.com/auctions/give-back-a-smile-silent-auction-2019-5583', '_system');
@@ -12104,22 +12427,22 @@ let MyApp = class MyApp {
     }
 };
 __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["t" /* Nav */]),
-    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["t" /* Nav */])
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Nav"]),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Nav"])
 ], MyApp.prototype, "navCtrl", void 0);
 MyApp = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/app/app.html"*/'<ion-split-pane>\n\n	<ion-menu [content]="content" side="left" id="menu1">\n		<ion-header>\n			<ion-toolbar color=primary>\n				<ion-title>Menu</ion-title>\n				<ion-buttons end>\n					<button end ion-button menuClose icon-only color="light">\n						<ion-icon name="close"></ion-icon>\n					</button>\n				</ion-buttons>\n			</ion-toolbar>\n		</ion-header>\n\n		<ion-content>\n	\n			<img src="assets/600x300.gif" onclick="window.open (\'http://events.clearthunder.com/ORLANDO2020\', \'_system\', \'location=yes\'); return false;">\n			\n			<ion-list>\n				<ion-item tappable style="background:linear-gradient(to bottom right, #283593 0%, #283593 100%); color:#fff" \n					(click)="NavigateToAuthenticatedPage(\'MyAgenda\')">\n					Upcoming Agenda Items\n					<ion-icon name="calendar" item-left></ion-icon>\n				</ion-item>\n\n\n				<ion-item tappable style="color:#444" (click)="EventDetails(upcomingAgenda.visEventID)" \n					*ngFor="let upcomingAgenda of upcomingAgendaItems" id="upcomingAgenda-list-item19">\n					<ion-icon item-start color="secondary" name="{{upcomingAgenda.eventTypeIcon}}"></ion-icon>\n					<p style="color: #444; font-weight:bold">\n					{{upcomingAgenda.EventName}}</p>		\n					<p style="color:#444">\n					{{upcomingAgenda.visEventTimeframe}}\n					</p>\n					<p>{{upcomingAgenda.EventLocation}}</p>\n				</ion-item>\n			\n				<ion-item style="background:linear-gradient(to bottom right, #283593 0%, #283593 100%); color:#fff" (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n					CE Credits Completed\n					<ion-icon name="school" item-left></ion-icon>\n				</ion-item>\n				<ion-item tappable style="border-color: rgba(0, 0, 0, 0);background-color: rgba(0, 0, 0, 0);\n					color: rgb(116, 33, 33);" (click)="NavigateToAuthenticatedPage(\'CETracking\')" id="cetrackervalue-list" >\n	\n					<p style="color: #444; font-size:1.2em">\n						{{creditsTypeL}}L / {{creditsTypeP}}P\n					</p>\n				</ion-item>\n\n\n				<ion-item tappable style="background:rgb(245, 245, 245); color:#444" \n					menuClose ion-item *ngFor="let p of pages" [class.activeHighlight]="checkActive(p)" (click)="openPage(p)">\n					<ion-icon color="secondary" name="{{p.icon}}" item-left></ion-icon>\n					{{p.title}}\n				</ion-item>\n			\n			</ion-list>\n\n		</ion-content>\n		\n	</ion-menu>\n\n	<ion-nav [root]="rootPage" main #content swipeBackEnabled="false"></ion-nav>\n\n</ion-split-pane>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/app/app.html"*/,
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/app/app.html"*/'<ion-split-pane>\n\n	<ion-menu [content]="content" side="left" id="menu1">\n		<ion-header>\n			<ion-toolbar color=primary>\n				<ion-title>Menu</ion-title>\n				<ion-buttons end>\n					<button end ion-button menuClose icon-only color="light">\n						<ion-icon name="close"></ion-icon>\n					</button>\n				</ion-buttons>\n			</ion-toolbar>\n		</ion-header>\n\n\n\n\n<!--\n	<ion-content style="background-image: url(\'assets/img/tex.jpg\'); background-size: cover"> \n		-->\n\n<ion-content style="background:#283747">\n\n	<!--	<img src="assets/img/air.gif"> -->\n\n\n\n\n					<ion-list>\n						<ion-item tappable style="background:transparent; color:#fff"\n							(click)="NavigateToAuthenticatedPage(\'MyAgenda\')">\n							Upcoming Agenda Items\n							<ion-icon name="calendar" item-left></ion-icon>\n						</ion-item>\n		\n		\n		\n		\n						<ion-item tappable style="background:transparent; color:#fff" (click)="EventDetails(upcomingAgenda.visEventID)" \n							*ngFor="let upcomingAgenda of upcomingAgendaItems" id="upcomingAgenda-list-item19">\n							<ion-icon item-start color="white" name="{{upcomingAgenda.eventTypeIcon}}"></ion-icon>\n							<p style="color: #fff; font-weight:bold">\n							{{upcomingAgenda.EventName}}</p>		\n							<p style="color:#fff">\n							{{upcomingAgenda.visEventTimeframe}}\n							</p>\n							<p>{{upcomingAgenda.EventLocation}}</p>\n						</ion-item>\n					\n						<ion-item style="background:transparent; color:#fff" (click)="NavigateToAuthenticatedPage(\'CETracking\')">\n							CE Credits Completed\n							<ion-icon name="school" item-left></ion-icon>\n						</ion-item>\n						<ion-item style="background:transparent; color:#fff" (click)="NavigateToAuthenticatedPage(\'CETracking\')" id="cetrackervalue-list" >\n			\n							<p style="color: #fff; font-size:1.2em">\n								{{creditsTypeL}}L / {{creditsTypeP}}P\n							</p>\n						</ion-item>\n		\n		\n						<ion-item tappable style="background:transparent; color:#fff"\n							menuClose ion-item *ngFor="let p of pages" [class.activeHighlight]="checkActive(p)" (click)="openPage(p)">\n							<ion-icon color="white" name="{{p.icon}}" item-left></ion-icon>\n							{{p.title}}\n						</ion-item>\n					\n					</ion-list>\n\n\n		</ion-content>\n		  \n\n	</ion-menu>\n\n\n	<ion-nav [root]="rootPage" main #content swipeBackEnabled="false"></ion-nav>\n\n</ion-split-pane>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/app/app.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["x" /* Platform */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_8__ionic_native_keyboard__["a" /* Keyboard */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_4__ionic_native_splash_screen__["a" /* SplashScreen */],
         __WEBPACK_IMPORTED_MODULE_7__ionic_native_onesignal__["a" /* OneSignal */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["r" /* MenuController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["MenuController"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_3__ionic_native_status_bar__["a" /* StatusBar */],
         __WEBPACK_IMPORTED_MODULE_5__providers_database_database__["a" /* Database */],
@@ -12130,13 +12453,13 @@ MyApp = __decorate([
 
 /***/ }),
 
-/***/ 870:
+/***/ 877:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RelativeTime; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns_distance_in_words_to_now__ = __webpack_require__(871);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns_distance_in_words_to_now__ = __webpack_require__(878);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_date_fns_distance_in_words_to_now___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_date_fns_distance_in_words_to_now__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -12164,13 +12487,13 @@ RelativeTime = __decorate([
 
 /***/ }),
 
-/***/ 885:
+/***/ 892:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PostService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mock_posts__ = __webpack_require__(886);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mock_posts__ = __webpack_require__(893);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12210,7 +12533,7 @@ PostService = __decorate([
 
 /***/ }),
 
-/***/ 886:
+/***/ 893:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12314,13 +12637,13 @@ let POSTS = [
 
 /***/ }),
 
-/***/ 887:
+/***/ 894:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return UserService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mock_users__ = __webpack_require__(888);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__mock_users__ = __webpack_require__(895);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12360,7 +12683,7 @@ UserService = __decorate([
 
 /***/ }),
 
-/***/ 888:
+/***/ 895:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12428,9 +12751,9 @@ let USERS = [
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_sqlite__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__(140);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -13457,10 +13780,10 @@ let Synchronization = class Synchronization {
 };
 Synchronization = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Injectable"])(),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["x" /* Platform */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Platform"],
         __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
         __WEBPACK_IMPORTED_MODULE_4__ionic_native_sqlite__["a" /* SQLite */],
         __WEBPACK_IMPORTED_MODULE_3__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], Synchronization);
@@ -13469,5 +13792,5 @@ Synchronization = __decorate([
 
 /***/ })
 
-},[526]);
+},[527]);
 //# sourceMappingURL=main.js.map

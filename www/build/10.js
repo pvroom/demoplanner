@@ -1,6 +1,6 @@
 webpackJsonp([10],{
 
-/***/ 907:
+/***/ 916:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__exhibitordetails__ = __webpack_require__(928);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__exhibitordetails__ = __webpack_require__(935);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,7 +29,7 @@ ExhibitorDetailsPageModule = __decorate([
         declarations: [__WEBPACK_IMPORTED_MODULE_3__exhibitordetails__["a" /* ExhibitorDetailsPage */]],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__exhibitordetails__["a" /* ExhibitorDetailsPage */])
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_3__exhibitordetails__["a" /* ExhibitorDetailsPage */])
         ],
         exports: [__WEBPACK_IMPORTED_MODULE_3__exhibitordetails__["a" /* ExhibitorDetailsPage */]]
     })
@@ -39,7 +39,7 @@ ExhibitorDetailsPageModule = __decorate([
 
 /***/ }),
 
-/***/ 928:
+/***/ 935:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47,11 +47,11 @@ ExhibitorDetailsPageModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_leaflet__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_leaflet__ = __webpack_require__(186);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_leaflet___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_leaflet__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -71,14 +71,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 let ExhibitorDetailsPage = class ExhibitorDetailsPage {
-    constructor(navCtrl, navParams, storage, databaseprovider, cd, loadingCtrl, localstorage) {
+    constructor(navCtrl, navParams, storage, databaseprovider, cd, loadingCtrl, alertCtrl, localstorage) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.storage = storage;
         this.databaseprovider = databaseprovider;
         this.cd = cd;
         this.loadingCtrl = loadingCtrl;
+        this.alertCtrl = alertCtrl;
         this.localstorage = localstorage;
+        this.btnBookmarkManagement = true;
+        this.BookmarkButtonColor = '#ffffff';
+        this.BookmarkButtonTextColor = '#F15D22';
         // Sopcial Media Icons
         this.visSocialMediaFacebookVisible = false;
         this.visSocialMediaTwitterVisible = false;
@@ -105,6 +109,7 @@ let ExhibitorDetailsPage = class ExhibitorDetailsPage {
         var DisplayName = "";
         var DisplayCityState = "";
         var DevicePlatform = this.localstorage.getLocalValue('DevicePlatform');
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
         // Get the data
         this.databaseprovider.getExhibitorData(flags).then(data => {
             console.log("getExhibitorData: " + JSON.stringify(data));
@@ -123,7 +128,7 @@ let ExhibitorDetailsPage = class ExhibitorDetailsPage {
                 this.ExhibitorZipPostalCode = data[0].ZipPostalCode;
                 this.ExhibitorBoothNumber = "Booth: " + data[0].BoothNumber;
                 console.log('ExhibitorDetails: Line 112');
-                this.ExhibitorCompanyLogoFilename = "https://aacdmobile.convergence-us.com/AdminGateway/2019/images/ExhibitorLogos/" + data[0].imageFilename;
+                this.ExhibitorCompanyLogoFilename = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/ExhibitorLogos/" + data[0].imageFilename;
                 console.log('ExhibitorDetails: Line 115');
                 this.btnEmail = "primary";
                 this.btnWebsite = "primary";
@@ -174,6 +179,19 @@ let ExhibitorDetailsPage = class ExhibitorDetailsPage {
                 }
                 else {
                     this.ExhibitorPrimaryOnsiteContactPhone = "";
+                }
+                // Values for Bookmark Management
+                this.localstorage.setLocalValue("BookmarkID", data[0].ExhibitorID);
+                this.localstorage.setLocalValue("BookmarkType", "Exhibitors");
+                if (data[0].Bookmarked != "0") {
+                    this.visBookmarkAddRemoveButton = "Remove";
+                    this.BookmarkButtonColor = '#F15D22';
+                    this.BookmarkButtonTextColor = '#ffffff';
+                }
+                else {
+                    this.visBookmarkAddRemoveButton = "Bookmark";
+                    this.BookmarkButtonColor = '#ffffff';
+                    this.BookmarkButtonTextColor = '#F15D22';
                 }
                 // Company Details
                 console.log('Company Details');
@@ -301,6 +319,16 @@ let ExhibitorDetailsPage = class ExhibitorDetailsPage {
         }).catch(function () {
             console.log("Promise Rejected");
         });
+        // -------------------
+        // Get Attendee Status
+        // -------------------
+        console.log('Attendee Button Management, AttendeeID: ' + AttendeeID);
+        if (AttendeeID == '0') {
+            this.btnBookmarkManagement = false;
+        }
+        else {
+            this.btnBookmarkManagement = true;
+        }
     }
     navToWebsite(WebsiteURL) {
         if (WebsiteURL === undefined) {
@@ -351,18 +379,99 @@ let ExhibitorDetailsPage = class ExhibitorDetailsPage {
             }
         }
     }
+    BookmarkManagement() {
+        console.log("Begin BookmarkManagement process...");
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        var BookmarkType = this.localstorage.getLocalValue("BookmarkType");
+        var BookmarkID = this.localstorage.getLocalValue("BookmarkID");
+        var flags = '';
+        // Starting variables
+        console.log("AttendeeID: " + AttendeeID);
+        console.log("BookmarkType: " + BookmarkType);
+        console.log("BookmarkID: " + BookmarkID);
+        this.cd.markForCheck();
+        // Get last update performed by this app
+        var LastUpdateDate = this.localstorage.getLocalValue("LastUpdateDate");
+        if (LastUpdateDate == null) {
+            // If never, then set variable and localStorage item to NA
+            LastUpdateDate = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+            this.localstorage.setLocalValue("LastUpdateDate", LastUpdateDate);
+        }
+        if (this.visBookmarkAddRemoveButton == "Bookmark") {
+            // ------------------------
+            // Add item to Bookmarks List
+            // ------------------------
+            flags = 'cb|0|' + BookmarkType + '|' + BookmarkID;
+            console.log("flags: " + flags);
+            this.databaseprovider.getBookmarksData(flags, AttendeeID).then(data => {
+                console.log("getBookmarksData: " + JSON.stringify(data));
+                if (data['length'] > 0) {
+                    console.log("Return status: " + data[0].Status);
+                    if (data[0].Status == "Saved") {
+                        this.visBookmarkAddRemoveButton = "Remove";
+                        this.BookmarkButtonColor = '#F15D22';
+                        this.BookmarkButtonTextColor = '#ffffff';
+                        this.cd.markForCheck();
+                    }
+                    else {
+                        console.log("Return query: " + data[0].Query);
+                        let alert = this.alertCtrl.create({
+                            title: 'Bookmarks',
+                            subTitle: 'Unable to add the item to your bookmark list at this time. Please try again shortly.',
+                            buttons: ['OK']
+                        });
+                        alert.present();
+                    }
+                }
+            }).catch(function () {
+                console.log("Promise Rejected");
+            });
+        }
+        else {
+            // -----------------------
+            // Remove Item from Bookmarks List
+            // -----------------------
+            flags = 'rb|0|' + BookmarkType + '|' + BookmarkID;
+            console.log("flags: " + flags);
+            this.databaseprovider.getBookmarksData(flags, AttendeeID).then(data => {
+                console.log("getBookmarksData: " + JSON.stringify(data));
+                if (data['length'] > 0) {
+                    console.log("Return status: " + data[0].Status);
+                    if (data[0].Status == "Saved") {
+                        this.visBookmarkAddRemoveButton = "Bookmark";
+                        this.BookmarkButtonColor = '#ffffff';
+                        this.BookmarkButtonTextColor = '#F15D22';
+                        this.cd.markForCheck();
+                    }
+                    else {
+                        console.log("Return query: " + data[0].Query);
+                        let alert = this.alertCtrl.create({
+                            title: 'Bookmarks',
+                            subTitle: 'Unable to remove the item from your bookmark list at this time. Please try again shortly.',
+                            buttons: ['OK']
+                        });
+                        alert.present();
+                    }
+                }
+            }).catch(function () {
+                console.log("Promise Rejected");
+            });
+        }
+    }
+    ;
 };
 ExhibitorDetailsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-exhibitordetails',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/exhibitordetails/exhibitordetails.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Exhibitor Details</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n\n\n\n\n\n      <ion-grid>\n        <ion-row>\n          <ion-col><img [src]="ExhibitorCompanyLogoFilename" onerror="this.src=\'assets/img/a_00_3920t.png\'"\n            width="50%" height=""\n            src="assets/img/a_00_3920t.png"\n            class="img-default img-responsive"\n            alt="Image error"></img>\n        </ion-col>\n    </ion-row>\n    \n        <ion-row>\n          <ion-col>\n            <p class="marginTB0 myLabelBold myFontSize22">{{ExhibitorCompanyName}}</p>\n            <p class="marginTB0 myFontSize18">{{ExhibitorAddressLine1}}</p>\n            <p class="marginTB0 myFontSize18">{{ExhibitorDisplayCityState}}</p>\n            <p class="marginTB0 myFontSize18">{{ExhibitorBoothNumber}}</p>\n        </ion-col>\n        </ion-row>\n    </ion-grid>\n\n\n\n\n\n    <ion-card>\n        <ion-card-header style="background:#283593;color:#fff">\n            Contact\n        </ion-card-header>\n\n        <ion-list>\n            <ion-item *ngIf=visPrimaryContact>\n                <ion-icon color="secondary" name="person" item-start></ion-icon>\n                {{ExhibitorPrimaryOnsiteContactName}}\n            </ion-item>\n\n            <button ion-item>\n                <ion-icon color="secondary" name="mail" item-start></ion-icon>\n                {{ExhibitorPrimaryOnsiteContactEmailDisplay}}\n            </button>\n\n            <button ion-item>\n                <ion-icon color="secondary" name="call" item-start></ion-icon>\n                {{ExhibitorPrimaryOnsiteContactPhone}}\n            </button>\n        </ion-list>\n    </ion-card>\n\n    <ion-card>\n        <ion-card-header style="background:#283593;color:#fff">\n            Description\n        </ion-card-header>\n        <ion-card-content>\n            <div [innerHTML]="exDetails" class="myMarginTopBottom">\n                {{ExhibitorCompanyDescription}}\n            </div>\n        </ion-card-content>\n    </ion-card>\n\n    <ion-card *ngIf="visSocialMediaHeader">\n        <ion-card-header style="background:#283593;color:#fff">\n            Social Media\n        </ion-card-header>\n        <ion-card-content padding>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaFacebookVisible" (click)="navToWebsite(ExhibitorSocialMediaFacebook)">\n                <ion-icon name="logo-facebook" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaTwitterVisible" (click)="navToWebsite(ExhibitorSocialMediaTwitter)">\n                <ion-icon name="logo-twitter" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaLinkedInVisible" (click)="navToWebsite(ExhibitorSocialMediaLinkedIn)">\n                <ion-icon name="logo-linkedin" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaYouTubeVisible" (click)="navToWebsite(ExhibitorSocialMediaYouTube)">\n                <ion-icon name="logo-youtube" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaRSSVisible" (click)="navToWebsite(ExhibitorSocialMediaRSS)">\n                <ion-icon name="logo-rss" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaGooglePlusVisible" (click)="navToWebsite(ExhibitorSocialMediaGooglePlus)">\n                <ion-icon name="logo-googleplus" style="font-size:2em;"></ion-icon>\n            </button>\n        </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n        <ion-card-header style="background:#283593; color:#fff">\n                Locator\n            </ion-card-header>\n        <ion-card-content>\n        <div id="map2" style="width:100%; height:300px;"></div>\n        <!-- <div class="map-container">\n            <div id="mapId" style="width: 100%; height: 100%">\n            </div>\n        </div> -->\n        </ion-card-content>\n    </ion-card>\n\n	\n		\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/exhibitordetails/exhibitordetails.html"*/,
+        selector: 'page-exhibitordetails',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/exhibitordetails/exhibitordetails.html"*/'<ion-header>\n\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Exhibitor Details</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n\n      <ion-grid>\n        <ion-row>\n          <ion-col><img [src]="ExhibitorCompanyLogoFilename" \n			onerror="this.src=\'assets/img/a_00_3920t.png\'" \n            width="50%" \n			height="" \n            src="assets/img/a_00_3920t.png" \n            class="img-default img-responsive" \n            alt="Image error" />\n        </ion-col>\n    </ion-row>\n    \n        <ion-row>\n          <ion-col>\n            <p class="marginTB0 myLabelBold myFontSize22">{{ExhibitorCompanyName}}</p>\n            <p class="marginTB0 myFontSize18">{{ExhibitorAddressLine1}}</p>\n            <p class="marginTB0 myFontSize18">{{ExhibitorDisplayCityState}}</p>\n            <p class="marginTB0 myFontSize18">{{ExhibitorBoothNumber}}</p>\n        </ion-col>\n        </ion-row>\n    </ion-grid>\n\n	<ion-card-header class="button-bar">\n		<button ion-button outline *ngIf="btnBookmarkManagement" (click)="BookmarkManagement()" [style.background-color]="BookmarkButtonColor" [style.color]="BookmarkButtonTextColor" [style.border-color]="BookmarkButtonTextColor">\n			<div>\n				<ion-icon name="bookmark"></ion-icon>\n				<label>{{visBookmarkAddRemoveButton}}</label>\n			</div>\n		</button>\n	</ion-card-header>\n\n    <ion-card>\n        <ion-card-header style="background:#283747;color:#fff">\n            Contact\n        </ion-card-header>\n\n        <ion-list>\n            <ion-item *ngIf=visPrimaryContact>\n                <ion-icon color="secondary" name="person" item-start></ion-icon>\n                {{ExhibitorPrimaryOnsiteContactName}}\n            </ion-item>\n\n            <button ion-item>\n                <ion-icon color="secondary" name="mail" item-start></ion-icon>\n                {{ExhibitorPrimaryOnsiteContactEmailDisplay}}\n            </button>\n\n            <button ion-item>\n                <ion-icon color="secondary" name="call" item-start></ion-icon>\n                {{ExhibitorPrimaryOnsiteContactPhone}}\n            </button>\n        </ion-list>\n    </ion-card>\n\n    <ion-card>\n        <ion-card-header style="background:#283747;color:#fff">\n            Description\n        </ion-card-header>\n        <ion-card-content>\n            <div [innerHTML]="exDetails" class="myMarginTopBottom">\n                {{ExhibitorCompanyDescription}}\n            </div>\n        </ion-card-content>\n    </ion-card>\n\n    <ion-card *ngIf="visSocialMediaHeader">\n        <ion-card-header style="background:#283747;color:#fff">\n            Social Media\n        </ion-card-header>\n        <ion-card-content padding>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaFacebookVisible" (click)="navToWebsite(ExhibitorSocialMediaFacebook)">\n                <ion-icon name="logo-facebook" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaTwitterVisible" (click)="navToWebsite(ExhibitorSocialMediaTwitter)">\n                <ion-icon name="logo-twitter" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaLinkedInVisible" (click)="navToWebsite(ExhibitorSocialMediaLinkedIn)">\n                <ion-icon name="logo-linkedin" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaYouTubeVisible" (click)="navToWebsite(ExhibitorSocialMediaYouTube)">\n                <ion-icon name="logo-youtube" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaRSSVisible" (click)="navToWebsite(ExhibitorSocialMediaRSS)">\n                <ion-icon name="logo-rss" style="font-size:2em;"></ion-icon>\n            </button>\n            <button ion-button color="secondary" outline *ngIf="visSocialMediaGooglePlusVisible" (click)="navToWebsite(ExhibitorSocialMediaGooglePlus)">\n                <ion-icon name="logo-googleplus" style="font-size:2em;"></ion-icon>\n            </button>\n        </ion-card-content>\n    </ion-card>\n\n    <ion-card>\n        <ion-card-header style="background:#283747; color:#fff">\n                Locator\n            </ion-card-header>\n        <ion-card-content>\n        <div id="map2" style="width:100%; height:300px;"></div>\n        <!-- <div class="map-container">\n            <div id="mapId" style="width: 100%; height: 100%">\n            </div>\n        </div> -->\n        </ion-card-content>\n    </ion-card>\n\n	\n		\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/exhibitordetails/exhibitordetails.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], ExhibitorDetailsPage);
 

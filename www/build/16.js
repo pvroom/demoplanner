@@ -1,58 +1,58 @@
 webpackJsonp([16],{
 
-/***/ 904:
+/***/ 909:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActivityFeedPostingPageModule", function() { return ActivityFeedPostingPageModule; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__activityfeedposting__ = __webpack_require__(925);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ActivityFeedDetailsPageModule", function() { return ActivityFeedDetailsPageModule; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__activityfeeddetails__ = __webpack_require__(929);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+// Components, functions, plugins
 
 
 
-let ActivityFeedPostingPageModule = class ActivityFeedPostingPageModule {
+// Pages
+
+let ActivityFeedDetailsPageModule = class ActivityFeedDetailsPageModule {
 };
-ActivityFeedPostingPageModule = __decorate([
-    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["NgModule"])({
-        declarations: [
-            __WEBPACK_IMPORTED_MODULE_2__activityfeedposting__["a" /* ActivityFeedPostingPage */],
-        ],
+ActivityFeedDetailsPageModule = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["NgModule"])({
+        declarations: [__WEBPACK_IMPORTED_MODULE_3__activityfeeddetails__["a" /* ActivityFeedDetailsPage */]],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__activityfeedposting__["a" /* ActivityFeedPostingPage */]),
+            __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_3__activityfeeddetails__["a" /* ActivityFeedDetailsPage */])
         ],
-        exports: [
-            __WEBPACK_IMPORTED_MODULE_2__activityfeedposting__["a" /* ActivityFeedPostingPage */]
-        ]
+        exports: [__WEBPACK_IMPORTED_MODULE_3__activityfeeddetails__["a" /* ActivityFeedDetailsPage */]]
     })
-], ActivityFeedPostingPageModule);
+], ActivityFeedDetailsPageModule);
 
-//# sourceMappingURL=activityfeedposting.module.js.map
+//# sourceMappingURL=activityfeeddetails.module.js.map
 
 /***/ }),
 
-/***/ 925:
+/***/ 929:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActivityFeedPostingPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ActivityFeedDetailsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(23);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(525);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_moment__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -70,249 +70,300 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
-
-
-let ActivityFeedPostingPage = class ActivityFeedPostingPage {
-    constructor(navCtrl, navParams, storage, databaseprovider, cd, alertCtrl, view, http, loadingCtrl, camera, _DomSanitizer, localstorage) {
+let ActivityFeedDetailsPage = class ActivityFeedDetailsPage {
+    constructor(navCtrl, navParams, storage, databaseprovider, cd, alertCtrl, events, loadingCtrl, modal, localstorage) {
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.storage = storage;
         this.databaseprovider = databaseprovider;
         this.cd = cd;
         this.alertCtrl = alertCtrl;
-        this.view = view;
-        this.http = http;
+        this.events = events;
         this.loadingCtrl = loadingCtrl;
-        this.camera = camera;
-        this._DomSanitizer = _DomSanitizer;
+        this.modal = modal;
         this.localstorage = localstorage;
+        this.afComments = [];
+        this.showEmojiPicker = false;
+        this.CommentEntry = '';
     }
-    addCameraImage() {
-        const options = {
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            correctOrientation: true,
-            mediaType: this.camera.MediaType.PICTURE
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad ActivityFeedDetailsPage');
+    }
+    AddComment(fab) {
+        const AddCommentModalOptions = {
+            enableBackdropDismiss: false
         };
-        this.camera.getPicture(options).then((imageData) => {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64:
-            console.log('Camera image');
-            /*
-            if (this.platform.is('ios')) {
-                this.base64Image = normalizeURL(imageData);
-                // IF problem only occur in ios and normalizeURL
-                //not work for you then you can also use
-                //this.base64Image= imageData.replace(/^file:\/\//, '');
-            } else {
-                this.base64Image= "data:image/jpeg;base64," + imageData;
-            }, error => {
-                console.log('ERROR -> ' + JSON.stringify(error));
+        const AddCommentModal = this.modal.create('ActivityFeedCommentPage', {}, AddCommentModalOptions);
+        AddCommentModal.present();
+        AddCommentModal.onDidDismiss((data) => {
+            // If saved, then re-run ngOnInit to refresh the listing
+            if (data == "Save") {
+                this.ngOnInit();
+            }
+        });
+        fab.close();
+    }
+    onFocus() {
+        this.showEmojiPicker = false;
+        this.content.resize();
+        // Disabled scrollToBottom per Peter Vroom (2019-02-06)
+        // "I don’t think you do a lot of social media. ☺ Most recent 
+        // comments always go at the top. Most commenters aren’t interested 
+        // in seeing what everyone else wrote and don’t have the time."
+        //this.scrollToBottom();
+    }
+    scrollToBottom() {
+        setTimeout(() => {
+            if (this.content.scrollToBottom !== null) {
+                if (this.content.scrollToBottom) {
+                    this.content.scrollToBottom();
+                }
+            }
+        }, 400);
+    }
+    SaveComment() {
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        var ActivityFeedID = this.localstorage.getLocalValue('ActivityFeedID');
+        var UserComment = this.CommentEntry || '';
+        var flags = 'ad|' + ActivityFeedID + '|' + UserComment;
+        if (UserComment != '') {
+            this.databaseprovider.getActivityFeedData(flags, AttendeeID).then(data => {
+                console.log("getActivityFeedData: " + JSON.stringify(data));
+                if (data['length'] > 0) {
+                    this.CommentEntry = '';
+                    // Reload comments
+                    console.log("Return status: " + data[0].Status);
+                    this.ReloadComments();
+                }
+            }).catch(function () {
+                console.log("Activity Feed Promise Rejected");
             });
-            */
-            this.ActivityFeedAttachment = 'data:image/jpeg;base64,' + imageData;
-            //this.ActivityFeedAttachment = base64Image;
-            this.localstorage.setLocalValue('ActivityFeedPostedImage', 'Y');
-            this.cd.markForCheck();
-        }, (err) => {
-            // Handle error
-            console.log('Camera error');
-            console.log('Camera error: ' + JSON.stringify(err));
-        });
-    }
-    addGalleryImage() {
-        const options = {
-            destinationType: this.camera.DestinationType.DATA_URL,
-            encodingType: this.camera.EncodingType.JPEG,
-            mediaType: this.camera.MediaType.PICTURE,
-            correctOrientation: true,
-            allowEdit: true,
-            sourceType: this.camera.PictureSourceType.PHOTOLIBRARY
-        };
-        this.camera.getPicture(options).then((imageData) => {
-            // imageData is either a base64 encoded string or a file URI
-            // If it's base64:
-            console.log('Camera image');
-            //if (this.platform.is('ios')) {
-            //	imageData = _DomSanitizer.bypassSecurityTrustUrl(imageData);
-            //}
-            this.ActivityFeedAttachment = 'data:image/jpeg;base64,' + imageData;
-            //this.ActivityFeedAttachment = base64Image;
-            this.localstorage.setLocalValue('ActivityFeedPostedImage', 'Y');
-            this.cd.markForCheck();
-        }, (err) => {
-            // Handle error
-            console.log('Camera error');
-            console.log('Camera error: ' + JSON.stringify(err));
-        });
-    }
-    ionViewDidEnter() {
-        this.ActivityFeedAttachment = '';
-        this.localstorage.setLocalValue('ActivityFeedPostedImage', 'N');
-        var CurrentDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '').replace(/:/g, '').replace(/-/g, '').replace(' ', '');
-        console.log('CurrentDateTime: ' + CurrentDateTime);
-        var DevicePlatform = this.localstorage.getLocalValue('DevicePlatform');
-        // Disable access to camera and gallery buttons when running in a browser
-        // until the ability to pull an image via the browser can be implemented
-        if (DevicePlatform == 'Browser') {
-            console.log('Browser button settings');
-            this.deviceButtons = false;
-            this.browserButtons = true;
         }
         else {
-            console.log('Device button settings');
-            this.deviceButtons = true;
-            this.browserButtons = false;
+            let alert = this.alertCtrl.create({
+                title: 'Posting Error',
+                subTitle: 'You cannot submit a posting with a blank comment.',
+                buttons: ['OK']
+            });
+            alert.present();
         }
+    }
+    timeDifference(laterdate, earlierdate) {
+        console.log('Moment timeDifference output: ' + __WEBPACK_IMPORTED_MODULE_6_moment__(earlierdate).fromNow());
+        return __WEBPACK_IMPORTED_MODULE_6_moment__(earlierdate).fromNow();
+    }
+    ngOnInit() {
+        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
+        if (AttendeeID == '' || AttendeeID == null) {
+            AttendeeID = '0';
+        }
+        // Load initial data set here
+        //let loading = this.loadingCtrl.create({
+        //	spinner: 'crescent',
+        //	content: 'Please wait...'
+        //});
+        //loading.present();
+        // Blank and show loading info
         this.cd.markForCheck();
-    }
-    closeModal(UserAction) {
-        var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
-        if (UserAction == "Save") {
-            var UserComment = this.CommentEntry || '';
-            if (UserComment != '') {
-                var afpImage = this.localstorage.getLocalValue('ActivityFeedPostedImage');
-                // Load initial data set here
-                let loading = this.loadingCtrl.create({
-                    spinner: 'crescent',
-                    content: 'Saving your posting and image...'
-                });
-                loading.present();
-                var CurrentDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-                var PostedDateTime = CurrentDateTime;
-                CurrentDateTime = CurrentDateTime.replace(/T/, ' ').replace(/\..+/, '').replace(/:/g, '').replace(/-/g, '').replace(' ', '');
-                var NewFilename = AttendeeID + '-' + CurrentDateTime;
-                console.log('New filename: ' + NewFilename);
-                //console.log('CommentEntry: ' + UserComment);
-                //console.log('Image: ' + this.ActivityFeedAttachment);
-                let url = 'https://demoplanner.convergence-us.com/AdminGateway/2019/image_uploader.php';
-                let postData = new FormData();
-                postData.append('file', this.ActivityFeedAttachment);
-                postData.append('location', 'ActivityFeedAttachments');
-                postData.append('filename', NewFilename);
-                postData.append('Comment', UserComment);
-                postData.append('afpImage', afpImage);
-                postData.append('AttendeeID', AttendeeID);
-                let data = this.http.post(url, postData);
-                data.subscribe((Postingresult) => {
-                    console.log("Image uploaded: " + JSON.stringify(Postingresult));
-                    console.log('afID: ' + Postingresult.afID);
-                    loading.dismiss();
-                    this.view.dismiss(UserAction);
-                    //var flags = 'ad|' + result.afID + '|' + UserComment + '|0|' + NewFilename + '.jpg|' + PostedDateTime;
-                    //this.localstorage.setLocalValue('ActivityFeedFlags', flags);
-                    //this.databaseprovider.getActivityFeedData(flags, AttendeeID).then(data3 => {
-                    //	console.log("getActivityFeedData: " + JSON.stringify(data3));
-                    //	if (data3['length']>0) {
-                    //		console.log("Return status: " + data3[0].Status);
-                    //		loading.dismiss();
-                    //		this.view.dismiss(UserAction);
-                    //	}
-                    //}).catch(function () {
-                    //	console.log("Activity Feed Promise Rejected");
-                    //	loading.dismiss();
-                    //});
-                });
+        // Temporary use variables
+        var ActivityFeedID = this.localstorage.getLocalValue('ActivityFeedID');
+        this.ActivityFeedID = ActivityFeedID;
+        var flags = "dt|" + ActivityFeedID + "|Alpha|";
+        // -------------------------
+        // Get Activity Feed Details
+        // -------------------------
+        var PrimarySpeakerName = "";
+        var SQLDate;
+        var DisplayDateTime;
+        var dbEventDateTime;
+        var courseID = "";
+        var UpdatedEventDescription;
+        var UpdatedEventDescription2;
+        var HandoutPDFName = "";
+        this.afComments = [];
+        var afWebLink;
+        console.log('Activity Feed Details, flags: ' + flags);
+        // Get Activity Feed detail record
+        this.databaseprovider.getActivityFeedData(flags, AttendeeID).then(data => {
+            console.log("getActivityFeedData: " + JSON.stringify(data));
+            if (data['length'] > 0) {
+                // Original posting details
+                var imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Attendees/" + data[0].Poster + ".jpg";
+                var imageAttachment = data[0].afImageAttachment;
+                if (imageAttachment != "") {
+                    imageAttachment = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/ActivityFeedAttachments/" + imageAttachment;
+                }
+                var DisplayName = data[0].PosterFirst + " " + data[0].PosterLast;
+                dbEventDateTime = data[0].Posted.substring(0, 19);
+                dbEventDateTime = dbEventDateTime.replace(/-/g, '/');
+                dbEventDateTime = dbEventDateTime.replace(/T/g, ' ');
+                SQLDate = new Date(dbEventDateTime);
+                DisplayDateTime = dateFormat(SQLDate, "mm/dd h:MMtt");
+                var CurrentDateTime2 = new Date().toUTCString();
+                var CurrentDateTime = dateFormat(CurrentDateTime2, "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'");
+                dbEventDateTime = data[0].afDateTime.substring(0, 19);
+                dbEventDateTime = dbEventDateTime.replace(' ', 'T');
+                dbEventDateTime = dbEventDateTime + 'Z';
+                var PostedDate2 = new Date(dbEventDateTime);
+                var PostedDate = dateFormat(PostedDate2, "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'");
+                var TimeDifference = this.timeDifference(CurrentDateTime, PostedDate);
+                this.ActivityFeedCommentAvatar = imageAvatar;
+                this.ActivityFeedCommentBy = DisplayName;
+                this.ActivityFeedCommentPosted = DisplayDateTime;
+                this.ActivityFeedComment = data[0].afMessage;
+                this.ActivityFeedLikesCounter = data[0].afLikesCounter;
+                this.ActivityFeedCommentsCounter = data[0].CommentsCount;
+                this.ActivityFeedCommentPostedDuration = TimeDifference;
+                this.ActivityFeedAttachment = imageAttachment;
+                afWebLink = false;
+                if (data[0].LinkedURL != "" && data[0].LinkedURL !== null) {
+                    afWebLink = true;
+                }
+                this.ActivityFeedLinkedURL = data[0].LinkedURL;
+                this.showActivityFeedLinkedURL = afWebLink;
+                this.ActivityFeedAttendeeID = data[0].Poster;
+                this.localstorage.setLocalValue('ActivityFeedIDCCount', data[0].CommentsCount);
+                console.log('Initial post set');
+                if (data[0].CommentsCount > 0) {
+                    // Commenter details
+                    for (var i = 0; i < data['length']; i++) {
+                        var imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Attendees/" + data[i].Commenter + ".jpg";
+                        DisplayName = data[i].CommenterFirst + " " + data[i].CommenterLast;
+                        dbEventDateTime = data[i].CommentPosted.substring(0, 19);
+                        dbEventDateTime = dbEventDateTime.replace(/-/g, '/');
+                        dbEventDateTime = dbEventDateTime.replace(/T/g, ' ');
+                        SQLDate = new Date(dbEventDateTime);
+                        DisplayDateTime = dateFormat(SQLDate, "mm/dd h:MMtt");
+                        var postComment = '';
+                        if (data[i].DeletedYN == 'Y') {
+                            postComment = '[Deleted]';
+                        }
+                        else {
+                            postComment = data[i].afcComment;
+                        }
+                        // Show the current record
+                        this.afComments.push({
+                            afID: data[i].afID,
+                            ActivityFeedCommentAvatar: imageAvatar,
+                            ActivityFeedCommentBy: DisplayName,
+                            ActivityFeedCommentByID: data[i].Commenter,
+                            ActivityFeedCommentPosted: DisplayDateTime,
+                            ActivityFeedComment: postComment
+                        });
+                    }
+                }
             }
-            else {
-                let alert = this.alertCtrl.create({
-                    title: 'Posting Error',
-                    subTitle: 'You cannot submit a posting with a blank comment.',
-                    buttons: ['OK']
-                });
-                alert.present();
-            }
-        }
-        if (UserAction == "Cancel") {
-            this.view.dismiss(UserAction);
-        }
+            this.cd.markForCheck();
+            //loading.dismiss();
+        }).catch(function () {
+            console.log("Activity Feed Promise Rejected");
+            //loading.dismiss();
+        });
     }
-    closePage(UserAction) {
+    ReloadComments() {
+        // Blank and show loading info
+        this.cd.markForCheck();
+        // Temporary use variables
         var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
-        if (UserAction == "Save") {
-            var afpImage = this.localstorage.getLocalValue('ActivityFeedPostedImage');
-            // Load initial data set here
-            let loading = this.loadingCtrl.create({
-                spinner: 'crescent',
-                content: 'Saving your posting and image...'
-            });
-            loading.present();
-            var CurrentDateTime = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-            var PostedDateTime = CurrentDateTime;
-            CurrentDateTime = CurrentDateTime.replace(/T/, ' ').replace(/\..+/, '').replace(/:/g, '').replace(/-/g, '').replace(' ', '');
-            var NewFilename = AttendeeID + '-' + CurrentDateTime;
-            console.log('New filename: ' + NewFilename);
-            var UserComment = this.CommentEntry || '';
-            //console.log('CommentEntry: ' + UserComment);
-            //console.log('Image: ' + this.ActivityFeedAttachment);
-            let url = 'https://demoplanner.convergence-us.com/AdminGateway/2019/image_uploader.php';
-            let postData = new FormData();
-            postData.append('file', this.ActivityFeedAttachment);
-            postData.append('location', 'ActivityFeedAttachments');
-            postData.append('filename', NewFilename);
-            postData.append('Comment', UserComment);
-            postData.append('afpImage', afpImage);
-            postData.append('AttendeeID', AttendeeID);
-            let data = this.http.post(url, postData);
-            console.log('Activity Feed Posting: Uploading image to URL: ' + url);
-            data.subscribe((result) => {
-                console.log("Image uploaded: " + JSON.stringify(result));
-                console.log('afID: ' + result.afID);
-                loading.dismiss();
-                //this.navCtrl.setRoot(ActivityPage);
-                this.navCtrl.pop();
-                //var flags = 'ad|' + result.afID + '|' + UserComment + '|0|' + NewFilename + '.jpg|' + PostedDateTime;
-                //this.localstorage.setLocalValue('ActivityFeedFlags', flags);
-                //this.databaseprovider.getActivityFeedData(flags, AttendeeID).then(data3 => {
-                //	console.log("getActivityFeedData: " + JSON.stringify(data3));
-                //	if (data3['length']>0) {
-                //		console.log("Return status: " + data3[0].Status);
-                //		loading.dismiss();
-                //		this.view.dismiss(UserAction);
-                //	}
-                //}).catch(function () {
-                //	console.log("Activity Feed Promise Rejected");
-                //	loading.dismiss();
-                //});
-            }, err => {
-                loading.dismiss();
-                let alert = this.alertCtrl.create({
-                    title: 'Image Upload Error',
-                    subTitle: 'Problem receiving feedback from server - check log.',
-                    buttons: ['OK']
-                });
-                alert.present();
-                console.log(err.status);
-                console.log("Image uploader error: ", JSON.stringify(err));
-            });
-        }
-        if (UserAction == "Cancel") {
-            //this.navCtrl.setRoot(ActivityPage);
-            this.navCtrl.pop();
+        var ActivityFeedID = this.localstorage.getLocalValue('ActivityFeedID');
+        this.ActivityFeedID = ActivityFeedID;
+        var flags = "dt|" + ActivityFeedID + "|Alpha|";
+        var SQLDate;
+        var DisplayDateTime;
+        var dbEventDateTime;
+        var DisplayName;
+        var imageAvatar;
+        console.log('Activity Feed Details, flags: ' + flags);
+        // Get Activity Feed detail record
+        this.databaseprovider.getActivityFeedData(flags, AttendeeID).then(data => {
+            console.log("getActivityFeedData: " + JSON.stringify(data));
+            if (data['length'] > 0) {
+                this.ActivityFeedLikesCounter = data[0].afLikesCounter;
+                this.ActivityFeedCommentsCounter = data[0].CommentsCount;
+                if (data[0].CommentsCount > 0) {
+                    this.afComments = [];
+                    // Commenter details
+                    for (var i = 0; i < data['length']; i++) {
+                        imageAvatar = "https://demoplanner.convergence-us.com/AdminGateway/2019/images/Attendees/" + data[i].Commenter + ".jpg";
+                        DisplayName = data[i].CommenterFirst + " " + data[i].CommenterLast;
+                        dbEventDateTime = data[i].CommentPosted.substring(0, 19);
+                        dbEventDateTime = dbEventDateTime.replace(/-/g, '/');
+                        dbEventDateTime = dbEventDateTime.replace(/T/g, ' ');
+                        SQLDate = new Date(dbEventDateTime);
+                        DisplayDateTime = dateFormat(SQLDate, "mm/dd h:MMtt");
+                        // Show the current record
+                        this.afComments.push({
+                            afID: data[i].afID,
+                            ActivityFeedCommentAvatar: imageAvatar,
+                            ActivityFeedCommentBy: DisplayName,
+                            ActivityFeedCommentPosted: DisplayDateTime,
+                            ActivityFeedComment: data[i].afcComment
+                        });
+                    }
+                    this.cd.markForCheck();
+                }
+            }
+        }).catch(function () {
+            console.log("Activity Feed Comment Reload Promise Rejected");
+        });
+    }
+    UpdateLikes() {
+        console.log('Likes button tapped');
+        var flags = "lu|" + this.ActivityFeedID;
+        // Get the data
+        this.databaseprovider.getActivityFeedData(flags, "0").then(data => {
+            console.log(JSON.stringify(data));
+            if (data['length'] > 0) {
+                if (data[0].Status = "Saved") {
+                    this.ActivityFeedLikesCounter = data[0].NewLikes;
+                    this.cd.markForCheck();
+                }
+            }
+        }).catch(function () {
+            console.log("UpdateLikes Promise Rejected");
+        });
+    }
+    AttendeeDetails(oAttendeeID) {
+        console.log('oAttendeeID: ' + oAttendeeID);
+        this.localstorage.setLocalValue("oAttendeeID", oAttendeeID);
+        this.navCtrl.push('AttendeesProfilePage', { oAttendeeID: oAttendeeID }, { animate: true, direction: 'forward' });
+    }
+    navToWeb(wURL) {
+        if (wURL != "") {
+            if ((wURL.substring(0, 7).toLowerCase() != "http://") && (wURL.substring(0, 8).toLowerCase() != "https://")) {
+                wURL = "http://" + wURL;
+            }
+            console.log('Attendee Profile Details: Navigating to: ' + wURL);
+            window.open(wURL, '_system');
         }
     }
 };
-ActivityFeedPostingPage = __decorate([
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])(__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Content"]),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Content"])
+], ActivityFeedDetailsPage.prototype, "content", void 0);
+__decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('chat_input'),
+    __metadata("design:type", __WEBPACK_IMPORTED_MODULE_0__angular_core__["ElementRef"])
+], ActivityFeedDetailsPage.prototype, "messageInput", void 0);
+ActivityFeedDetailsPage = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-activityfeedposting',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/activityfeedposting/activityfeedposting.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<ion-title>Add a Posting</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n		<!-- Posting picture attachment -->\n		<img class="center" [src]="_DomSanitizer.bypassSecurityTrustUrl(ActivityFeedAttachment)" onerror="this.src=\'assets/img/missing-image.png\'">\n\n\n\n		<!-- Button controls -->\n		<ion-grid *ngIf=deviceButtons>\n			<ion-row>\n				<ion-col col-3 >\n					<button color="secondary" ion-button (click)="closeModal(\'Cancel\')">\n						Cancel\n					</button>\n				</ion-col>\n				<ion-col col-3 >\n					<button color="secondary" ion-button (click)="addGalleryImage()">\n						Gallery\n					</button>\n				</ion-col>\n				<ion-col col-3 >\n					<button color="secondary" ion-button (click)="addCameraImage()">\n						Camera\n					</button>\n				</ion-col>\n				<ion-col col-3 >\n					<button ion-button (click)="closeModal(\'Save\')">\n						Save\n					</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n\n		<ion-grid *ngIf=browserButtons>\n			<ion-row>\n				<ion-col col-3 >\n					<button ion-button color="secondary" (click)="closeModal(\'Cancel\')">\n						Cancel\n					</button>\n				</ion-col>\n				<ion-col col-6 >\n					<p style="text-align:center;">Please use the mobile app to upload an image</p>\n				</ion-col>\n				<ion-col col-3 >\n					<button ion-button color="secondary" (click)="closeModal(\'Save\')">\n						Save\n					</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n		\n</ion-content>\n\n\n		<!-- Comment -->\n\n<ion-footer>\n		<ion-toolbar>\n		<ion-textarea autocomplete="true" autocorrect="on"\n			(input)=\'CommentEntry = $event.target.value\' \n			name="CommentEntry" \n			[value]="CommentEntry" \n			placeholder="Enter a comment..."\n			style="height:150px;"></ion-textarea>\n		</ion-toolbar>\n	</ion-footer>'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/activityfeedposting/activityfeedposting.html"*/,
+        selector: 'page-activityfeeddetails',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/activityfeeddetails/activityfeeddetails.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Attendee Posting</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n<ion-content class="page-activityfeeddetails">\n\n\n\n	<!-- Initial posting by attendee -->\n	<ion-card>\n\n		<!-- Attendee avatar and name -->\n		<ion-item>\n			<ion-avatar item-start (click)="AttendeeDetails(ActivityFeedAttendeeID)">\n				<img src="{{ActivityFeedCommentAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n			</ion-avatar>\n			<div (click)="AttendeeDetails(ActivityFeedAttendeeID)">\n			<h2>{{ActivityFeedCommentBy}}</h2>\n			<p>{{ActivityFeedCommentPosted}}</p>\n			</div>\n		</ion-item>\n\n		<!-- Posting picture attachment -->\n		<img src="{{ActivityFeedAttachment}}">\n\n		<!-- Attendee\'s comment -->\n		<ion-card-content>\n			<p>{{ActivityFeedComment}}</p>\n		</ion-card-content>\n\n		<!-- Linked URL (Only for promoted postings entered via the Admin Gateway) -->\n		<ion-list>\n			<button ion-item *ngIf=showActivityFeedLinkedURL (click)="navToWeb(ActivityFeedLinkedURL)">\n				<ion-icon name="globe" item-start></ion-icon>\n				{{ActivityFeedLinkedURL}}\n			</button>\n		</ion-list>\n\n	</ion-card>\n\n\n\n\n	<!-- Footer with details \n		<ion-row>\n			<ion-col>\n				<button ion-button color="secondary" icon-left clear small tappable (click)="UpdateLikes(afID)">\n					<ion-icon name="thumbs-up"></ion-icon>\n					<div>{{ActivityFeedLikesCounter}} Likes</div>\n				</button>\n			</ion-col>\n			<ion-col>\n				<button ion-button color="secondary" icon-left clear small>\n					<ion-icon name="text"></ion-icon>\n					<div>{{ActivityFeedCommentsCounter}} Comments</div>\n				</button>\n			</ion-col>\n			<ion-col center text-center>\n				<ion-note>\n					{{ActivityFeedCommentPostedDuration}}\n				</ion-note>\n			</ion-col>\n		</ion-row>\n\n		<ion-row>\n			<ion-col col-12 no-border style="margin:0" [style.height]="showEmojiPicker ? \'255px\' : \'55px\'">\n				<div style="background:#fff; color:#444; margin:0" class="input-wrap">\n					<ion-textarea style="background:#fff;color:#444" #chat_input\n						placeholder="Enter a comment..."\n						[(ngModel)]="CommentEntry"\n						(keyup.enter)="SaveComment()"\n						(focusin)="onFocus()">\n					</ion-textarea>\n					<button ion-button clear icon-only item-right (tap)="SaveComment()">\n						<ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n					</button>\n				</div>\n			</ion-col>\n			</ion-row>\n\n\n\n	</ion-card>\n\n-->\n\n	\n	<!-- Comments to posting by other attendees -->\n    <ion-scroll scrollY="true" style="width: 100%; height: 100%;">\n	\n		<ion-card *ngFor="let comment of afComments">\n\n			<!-- Attendee avatar and name -->\n			<ion-item>\n				<ion-avatar item-start (click)="AttendeeDetails(comment.ActivityFeedCommentByID)">\n					<img src="{{comment.ActivityFeedCommentAvatar}}" onerror="this.src=\'assets/img/personIcon.png\'">\n				</ion-avatar>\n				<h2>{{comment.ActivityFeedCommentBy}}</h2>\n				<p>{{comment.ActivityFeedCommentPosted}}</p>\n			</ion-item>\n			<ion-card-content>\n				<p>{{comment.ActivityFeedComment}}</p>\n\n		\n			</ion-card-content>\n\n		</ion-card>\n\n	</ion-scroll>\n\n\n	\n\n	<!-- Floating button menu for adding new comment -->\n	<!-- Disabled 2018-11-01 JOhn Black\n	     Moving to different process for adding comments to activity feed -->\n	<!--\n    <ion-fab bottom right #fab>\n		<button ion-fab color="danger" ion-fab>\n			<ion-icon name="add"></ion-icon>\n		</button>\n		<ion-fab-list side="top">\n			<button ion-fab (click)="AddComment(fab)">\n				<ion-icon name="chatbubbles"></ion-icon>\n				<div class="fabdivbutton">Add a Comment</div>\n			</button>\n		</ion-fab-list>\n    </ion-fab>\n	-->\n\n\n\n<!--footer placement with input-->\n\n\n\n\n\n</ion-content>\n\n<ion-footer>\n<ion-toolbar>\n\n\n\n	<ion-row>\n		<ion-col col-12 no-border style="margin:0" [style.height]="showEmojiPicker ? \'255px\' : \'55px\'">\n			<div style="background:#fff; color:#444; margin:0" class="input-wrap">\n				<ion-textarea autocomplete="true" autocorrect="on" style="background:#fff;color:#444" #chat_input\n					placeholder="Enter a comment..."\n					[(ngModel)]="CommentEntry"\n					(keyup.enter)="SaveComment()"\n					(focusin)="onFocus()">\n				</ion-textarea>\n				<button ion-button clear icon-only item-right (tap)="SaveComment()">\n					<ion-icon name="ios-send" ios="ios-send" md="md-send"></ion-icon>\n				</button>\n			</div>\n		</ion-col>\n		</ion-row>\n	\n	\n		<ion-row>\n				<ion-col>\n					<button ion-button color="secondary" icon-left clear small tappable (click)="UpdateLikes(afID)">\n						<ion-icon name="thumbs-up"></ion-icon>\n						<div>{{ActivityFeedLikesCounter}} Likes</div>\n					</button>\n				</ion-col>\n				<ion-col>\n					<button ion-button color="secondary" icon-left clear small>\n						<ion-icon name="text"></ion-icon>\n						<div>{{ActivityFeedCommentsCounter}} Comments</div>\n					</button>\n				</ion-col>\n\n				<ion-col center text-center>\n						<button ion-button color="secondary" icon-left clear small>\n						<ion-icon name=""></ion-icon>\n					<div>\n						{{ActivityFeedCommentPostedDuration}}\n					</div>\n				</button>\n				</ion-col>\n			</ion-row>\n\n	</ion-toolbar>\n</ion-footer>\n\n\n\n\n\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/activityfeeddetails/activityfeeddetails.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
-        __WEBPACK_IMPORTED_MODULE_5__providers_database_database__["a" /* Database */],
+        __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["A" /* ViewController */],
-        __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__["a" /* Camera */],
-        __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser__["c" /* DomSanitizer */],
-        __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__["a" /* Localstorage */]])
-], ActivityFeedPostingPage);
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ModalController"],
+        __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
+], ActivityFeedDetailsPage);
 
-//# sourceMappingURL=activityfeedposting.js.map
+//# sourceMappingURL=activityfeeddetails.js.map
 
 /***/ })
 

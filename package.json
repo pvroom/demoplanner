@@ -9,7 +9,7 @@
     "@angular/animations": "^5.2.9",
     "@angular/common": "^5.2.11",
     "@angular/compiler": "^5.2.11",
-    "@angular/compiler-cli": "^8.0.0",
+    "@angular/compiler-cli": "^5.2.11",
     "@angular/core": "^5.2.11",
     "@angular/forms": "^5.2.11",
     "@angular/http": "^5.2.11",
@@ -33,12 +33,11 @@
     "@types/leaflet.markercluster": "^1.0.3",
     "chart.js": "^2.7.3",
     "cordova-android": "7.1.4",
-    "cordova-ios": "^5.0.1",
+    "cordova-ios": "5.0.1",
     "cordova-plugin-advanced-http": "^2.0.4",
-    "cordova-plugin-app-event": "^1.2.1",
     "cordova-plugin-calendar": "^5.1.4",
     "cordova-plugin-camera": "^4.0.3",
-    "cordova-plugin-cocoapod-support": "^1.6.0",
+    "cordova-plugin-cocoapod-support": "^1.6.2",
     "cordova-plugin-compat": "^1.2.0",
     "cordova-plugin-dbcopy": "^2.1.0",
     "cordova-plugin-device": "2.0.1",
@@ -67,13 +66,16 @@
     "ionic-image-loader": "^5.1.1",
     "ionic-img-viewer": "^2.9.0",
     "ionic-text-avatar": "^1.1.0",
+    "ionic2-alpha-scroll": "^2.0.1",
     "ionicons": "3.0.0",
     "ios": "0.0.1",
     "leaflet": "^1.3.4",
+    "native-run": "^0.2.5",
     "ng2-charts": "^1.6.0",
     "ng2-file-upload": "^1.3.0",
     "node-sass": "^4.12.0",
-    "onesignal-cordova-plugin": "^2.4.6",
+    "onesignal": "0.1.2",
+    "onesignal-cordova-plugin": "^2.4.7",
     "plugin": "^0.3.3",
     "promise-polyfill": "7.1.1",
     "rxjs": "^5.5.12",
@@ -81,12 +83,13 @@
     "sw-toolbox": "3.6.0",
     "tsickle": "^0.28.0",
     "tslint": "^5.11.0",
-    "zone.js": "^0.8.29"
+    "zone.js": "^0.8.29",
+    "cordova-plugin-keyboard": "~1.2.0"
   },
   "devDependencies": {
     "@ionic/app-scripts": "^3.2.4",
     "cordova-plugin-keyboard": "1.2.0",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   },
   "scripts": {
     "build": "ionic-app-scripts build",
@@ -125,8 +128,10 @@
       "cordova-sqlite-ext": {},
       "cordova-plugin-camera": {},
       "cordova-plugin-compat": {},
-      "cordova-plugin-app-event": {},
-      "cordova-plugin-calendar": {},
+      "cordova-plugin-calendar": {
+        "CALENDAR_USAGE_DESCRIPTION": " ",
+        "CONTACTS_USAGE_DESCRIPTION": " "
+      },
       "cordova-plugin-file-opener2": {},
       "cordova-plugin-statusbar": {},
       "cordova-plugin-ionic-webview": {
@@ -138,7 +143,8 @@
       "cordova-plugin-keyboard": {}
     },
     "platforms": [
-      "android"
+      "android",
+      "ios"
     ]
   }
 }

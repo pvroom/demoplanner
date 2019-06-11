@@ -1,6 +1,6 @@
 webpackJsonp([13],{
 
-/***/ 893:
+/***/ 900:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,8 +8,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ConversationsPageModule", function() { return ConversationsPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__conversations__ = __webpack_require__(916);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_image_loader__ = __webpack_require__(55);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__conversations__ = __webpack_require__(922);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_image_loader__ = __webpack_require__(56);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30,7 +30,7 @@ ConversationsPageModule = __decorate([
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_3_ionic_image_loader__["b" /* IonicImageLoader */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__conversations__["a" /* ConversationsPage */]),
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_2__conversations__["a" /* ConversationsPage */]),
         ],
     })
 ], ConversationsPageModule);
@@ -39,7 +39,7 @@ ConversationsPageModule = __decorate([
 
 /***/ }),
 
-/***/ 916:
+/***/ 922:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47,13 +47,13 @@ ConversationsPageModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__conversation_conversation__ = __webpack_require__(524);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__attendees_attendees__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__conversation_conversation__ = __webpack_require__(525);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__attendees_attendees__ = __webpack_require__(184);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -158,7 +158,9 @@ let ConversationsPage = class ConversationsPage {
             console.log("Promise Rejected");
         });
         // Update LastSync date for next run
-        var ThisDirectChatCheck = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        //var ThisDirectChatCheck = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        var ThisDirectChatCheck2 = new Date().toUTCString();
+        var ThisDirectChatCheck = dateFormat(ThisDirectChatCheck2, "UTC:yyyy-mm-dd'T'HH:MM:ss'Z'");
         this.localstorage.setLocalValue('LastDirectChatCheck', ThisDirectChatCheck);
     }
     ContinueConversation(ConversationAttendeeName, ConversationAttendeeID) {
@@ -188,14 +190,14 @@ ConversationsPage = __decorate([
         selector: 'page-conversations',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/conversations/conversations.html"*/'<ion-header>\n    <ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Attendee Conversations</ion-title>\n    </ion-navbar>\n  </ion-header>\n\n\n<ion-content>\n\n<!--\n	\n	<ion-item text-wrap>\n		<h2>Below are your current conversations with attendees at the \n		conference.&nbsp; Tap on one to continue chatting.&nbsp; Your \n		most recent message is at the top.</h2>\n	</ion-item>\n-->\n\n\n\n<ion-grid>\n	<ion-row>\n		<ion-col>\n\n				<button ion-button block color="secondary" style="margin-top:15px" (click)="NavToPage(\'AttendeesPage\')">Start a Conversation!</button>\n\n		</ion-col>\n	</ion-row>\n</ion-grid>\n\n\n\n\n	<ion-list style="margin-top:-10; margin-bottom:-10" *ngFor="let conversation of Conversations" >\n\n		<ion-item no-lines style="margin-top:-10; margin-bottom:-10" (tap)="ContinueConversation(conversation.AttendeeName, conversation.ConversationAttendeeID)">\n			<ion-avatar item-start>\n				<img  [src]="conversation.AttendeeAvatar" src="assets/img/personIcon.png" style="margin-top:0; margin-bottom:0" onerror="this.src=\'assets/img/personIcon.png\'">\n				<!--<img-loader [src]="conversation.AttendeeAvatar" style="margin-top:0; margin-bottom:0" useImg [spinner]=false></img-loader>-->\n			</ion-avatar>\n			<h2>{{conversation.AttendeeName}}</h2>\n			<h3>{{conversation.AttendeeOrganization}}</h3>\n		</ion-item>\n\n	</ion-list>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/conversations/conversations.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_6_ionic_image_loader__["a" /* ImageLoaderConfig */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], ConversationsPage);
 

@@ -1,6 +1,6 @@
 webpackJsonp([9],{
 
-/***/ 910:
+/***/ 917:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__listinglevel1__ = __webpack_require__(930);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__listinglevel1__ = __webpack_require__(936);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,7 +29,7 @@ ListingLevel1Module = __decorate([
         declarations: [__WEBPACK_IMPORTED_MODULE_3__listinglevel1__["a" /* ListingLevel1 */]],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__listinglevel1__["a" /* ListingLevel1 */])
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_3__listinglevel1__["a" /* ListingLevel1 */])
         ],
         exports: [__WEBPACK_IMPORTED_MODULE_3__listinglevel1__["a" /* ListingLevel1 */]]
     })
@@ -39,7 +39,7 @@ ListingLevel1Module = __decorate([
 
 /***/ }),
 
-/***/ 930:
+/***/ 936:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47,12 +47,12 @@ ListingLevel1Module = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(49);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__educationdetails_educationdetails__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__login_login__ = __webpack_require__(50);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__educationdetails_educationdetails__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -125,8 +125,7 @@ let ListingLevel1 = class ListingLevel1 {
         this.cd.markForCheck();
         var flags;
         var NotesButtonStatus = true;
-        // Disabled per LIsa Bollenbach 2018-04-19
-        var AgendaButtonStatus = false;
+        var AgendaButtonStatus = true;
         var dayID;
         var AgendaQueryDate = "";
         var AttendeeID = this.localstorage.getLocalValue('AttendeeID');
@@ -590,17 +589,17 @@ let ListingLevel1 = class ListingLevel1 {
 };
 ListingLevel1 = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-listinglevel1',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/listinglevel1/listinglevel1.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>{{ProgramTitle}}</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<ion-grid style="padding:0; margin:0">\n		<ion-row>\n			<ion-col col-9>	\n				<ion-item class="item-input">\n					<ion-icon color="secondary" name="search" item-left></ion-icon>\n					<ion-input name="srchBarEntry" id="srchBarEntry" \n					type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n				</ion-item>\n			</ion-col>\n			<ion-col col-3>\n				<button ion-button full style="padding:0; margin:0; background:#2196f3" (tap)="GetSearchResults()">Submit</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n\n\n	<ion-grid style="padding:0; margin-bottom:5px">\n		<ion-row>\n\n			<ion-col style="padding:0" *ngIf=DayButton1Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton1" (click)="DayUpdate(\'1\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton1Label}}</label>\n				</button>\n			</ion-col>\n			<ion-col style="padding:0" *ngIf=DayButton2Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton2" (click)="DayUpdate(\'2\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton2Label}}</label>\n				</button>\n			</ion-col>\n			\n			<ion-col style="padding:0" *ngIf=DayButton3Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton3" style="padding:0; margin:0" (click)="DayUpdate(\'3\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton3Label}}</label>\n				</button>\n			</ion-col>\n\n			<ion-col style="padding:0" *ngIf=DayButton4Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton4" style="padding:0; margin:0" (click)="DayUpdate(\'4\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton4Label}}</label>\n				</button>\n			</ion-col>\n			<ion-col style="padding:0" *ngIf=DayButton5Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton5" style="padding:0; margin:0" (click)="DayUpdate(\'5\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton5Label}}</label>\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	\n	<ion-list style="margin-top:0">\n		<ion-item  text-wrap *ngFor="let session of ProgramListing" (tap)="EventDetails(session.EventID)" id="course-list-item19">\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>{{session.DisplayEventName}}</h2>\n			<h3>{{session.DisplayEventTimeDateLocation}}</h3>\n			<p>{{session.SpeakerDisplayName}}</p>\n			<p>{{session.DisplaySubjectCodeCECredits}}</p>\n			<p [ngClass]="session.SessionStatusStyle">{{session.SessionStatus}}</p>\n\n			<div class="button-bar">\n\n				<!-- Disabled per LIsa Bollenbach 2018-04-19 -->\n				<button color="secondary" #sessionCard *ngIf=session.btnAgendaShow ion-button outline (tap)="AgendaUpdate(session, session.EventID, sessionCard)" [disabled]=true>\n					<div>\n						<ion-icon color="secondary" name="calendar"></ion-icon>\n						<label>{{session.visAgendaAddRemoveButton}}</label>\n					</div>\n				</button>\n\n				<!--\n					<ion-col col-0>\n						<button *ngIf=session.btnEvalShow ion-button outline (tap)="navToSurvey(session.EventID)">\n							<div>\n								<ion-icon name="checkbox"></ion-icon>\n								<label>Eval</label>\n							</div>\n						</button>\n					</ion-col>\n				-->\n\n				<button ion-button *ngIf=session.btnEmailShow outline (tap)="eMailCourse(session.DisplayEventName)">\n					<div>\n						<ion-icon color="secondary" name="mail"></ion-icon>\n						<label>Email</label>\n					</div>\n				</button>\n\n				<button *ngIf=session.btnNotesShow ion-button outline (tap)="navToNotes(session.EventID)">\n					<div>\n						<ion-icon color="secondary" name="create"></ion-icon>\n						<label>Note</label>\n					</div>\n				</button>\n<!--				\n			</div>\n			\n		</ion-item>\n	<ion-list>\n</ion-content>\n-->'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/listinglevel1/listinglevel1.html"*/,
+        selector: 'page-listinglevel1',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/listinglevel1/listinglevel1.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>{{ProgramTitle}}</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<ion-grid style="padding:0; margin:0">\n		<ion-row>\n			<ion-col col-9>	\n				<ion-item class="item-input">\n					<ion-icon color="secondary" name="search" item-left></ion-icon>\n					<ion-input name="srchBarEntry" id="srchBarEntry" \n					type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>\n				</ion-item>\n			</ion-col>\n			<ion-col col-3>\n				<button ion-button full style="padding:0; margin:0; background:#cc5d1d" (tap)="GetSearchResults()">Submit</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n\n\n	<ion-grid style="padding:0; margin-bottom:5px">\n		<ion-row>\n\n			<ion-col style="padding:0" *ngIf=DayButton1Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton1" (click)="DayUpdate(\'1\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton1Label}}</label>\n				</button>\n			</ion-col>\n			<ion-col style="padding:0" *ngIf=DayButton2Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton2" (click)="DayUpdate(\'2\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton2Label}}</label>\n				</button>\n			</ion-col>\n			\n			<ion-col style="padding:0" *ngIf=DayButton3Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton3" style="padding:0; margin:0" (click)="DayUpdate(\'3\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton3Label}}</label>\n				</button>\n			</ion-col>\n\n			<ion-col style="padding:0" *ngIf=DayButton4Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton4" style="padding:0; margin:0" (click)="DayUpdate(\'4\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton4Label}}</label>\n				</button>\n			</ion-col>\n			<ion-col style="padding:0" *ngIf=DayButton5Show>\n				<button ion-button full style="margin:0"[ngClass]="dayButton5" style="padding:0; margin:0" (click)="DayUpdate(\'5\')">\n						<ion-icon name="calendar"></ion-icon>\n						<label style="padding-left:3px">{{DayButton5Label}}</label>\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	\n	<ion-list style="margin-top:0">\n		<ion-item  text-wrap *ngFor="let session of ProgramListing" (tap)="EventDetails(session.EventID)" id="course-list-item19">\n			<ion-icon color="secondary" item-right name="arrow-dropright"></ion-icon>\n			<h2>{{session.DisplayEventName}}</h2>\n			<h3>{{session.DisplayEventTimeDateLocation}}</h3>\n			<p>{{session.SpeakerDisplayName}}</p>\n			<p>{{session.DisplaySubjectCodeCECredits}}</p>\n			<p [ngClass]="session.SessionStatusStyle">{{session.SessionStatus}}</p>\n\n			<div class="button-bar">\n\n				<button color="secondary" #sessionCard *ngIf=session.btnAgendaShow ion-button outline (tap)="AgendaUpdate(session, session.EventID, sessionCard)">\n					<div>\n						<ion-icon color="secondary" name="calendar"></ion-icon>\n						<label>{{session.visAgendaAddRemoveButton}}</label>\n					</div>\n				</button>\n\n				<!--\n					<ion-col col-0>\n						<button *ngIf=session.btnEvalShow ion-button outline (tap)="navToSurvey(session.EventID)">\n							<div>\n								<ion-icon name="checkbox"></ion-icon>\n								<label>Eval</label>\n							</div>\n						</button>\n					</ion-col>\n				-->\n\n				<button ion-button *ngIf=session.btnEmailShow outline (tap)="eMailCourse(session.DisplayEventName)">\n					<div>\n						<ion-icon color="secondary" name="mail"></ion-icon>\n						<label>Email</label>\n					</div>\n				</button>\n\n				<button *ngIf=session.btnNotesShow ion-button outline (tap)="navToNotes(session.EventID)">\n					<div>\n						<ion-icon color="secondary" name="create"></ion-icon>\n						<label>Note</label>\n					</div>\n				</button>\n<!--				\n			</div>\n			\n		</ion-item>\n	<ion-list>\n</ion-content>\n-->'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/listinglevel1/listinglevel1.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], ListingLevel1);
 

@@ -1,6 +1,6 @@
 webpackJsonp([7],{
 
-/***/ 895:
+/***/ 902:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__notesdetails__ = __webpack_require__(918);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__notesdetails__ = __webpack_require__(924);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,7 +29,7 @@ NotesDetailsPageModule = __decorate([
         declarations: [__WEBPACK_IMPORTED_MODULE_3__notesdetails__["a" /* NotesDetailsPage */]],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__notesdetails__["a" /* NotesDetailsPage */])
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_3__notesdetails__["a" /* NotesDetailsPage */])
         ],
         exports: [__WEBPACK_IMPORTED_MODULE_3__notesdetails__["a" /* NotesDetailsPage */]]
     })
@@ -39,17 +39,17 @@ NotesDetailsPageModule = __decorate([
 
 /***/ }),
 
-/***/ 918:
+/***/ 924:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return NotesDetailsPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -226,12 +226,12 @@ NotesDetailsPage = __decorate([
         selector: 'page-notesdetails',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/notesdetails/notesdetails.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Notes</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content>\n\n	<ion-card>\n\n		<ion-card-header style="background:#2c3e50; color:#fff">\n			{{DisplayEventName}}\n			{{SpeakerDisplayName}}\n		</ion-card-header>\n\n		<ion-card-content>\n			<ion-textarea autocomplete="true" autocorrect="on" (input)=\'NoteDetails = $event.target.value\' name="NoteDetails" [value]="NoteDetails" placeholder="Enter notes..."></ion-textarea>\n		</ion-card-content>\n\n	</ion-card>\n\n	<ion-grid>\n		<ion-row>\n			<ion-col col-3 >\n				<button ion-button full color=secondary (click)="SaveNote()">\n					Save\n				</button>\n			</ion-col>\n			<ion-col col-3 >\n				<button ion-button full color=secondary (click)="CancelNote()">\n					Cancel\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n\n	<div style=\'display:none\'>\n		{{AttendeeID}}\n		{{EventID}}\n		{{NoteID}}\n		{{NoteStatus}}\n	</div>\n	\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/notesdetails/notesdetails.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_3__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_4__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], NotesDetailsPage);
 

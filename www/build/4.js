@@ -1,6 +1,6 @@
 webpackJsonp([4],{
 
-/***/ 899:
+/***/ 906:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfileSocialMediaEntryPageModule", function() { return ProfileSocialMediaEntryPageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profilesocialmediaentry__ = __webpack_require__(921);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profilesocialmediaentry__ = __webpack_require__(927);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -26,7 +26,7 @@ ProfileSocialMediaEntryPageModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__profilesocialmediaentry__["a" /* ProfileSocialMediaEntryPage */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__profilesocialmediaentry__["a" /* ProfileSocialMediaEntryPage */]),
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_2__profilesocialmediaentry__["a" /* ProfileSocialMediaEntryPage */]),
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_2__profilesocialmediaentry__["a" /* ProfileSocialMediaEntryPage */]
@@ -38,7 +38,7 @@ ProfileSocialMediaEntryPageModule = __decorate([
 
 /***/ }),
 
-/***/ 921:
+/***/ 927:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46,10 +46,10 @@ ProfileSocialMediaEntryPageModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -154,11 +154,11 @@ ProfileSocialMediaEntryPage = __decorate([
         selector: 'page-profilesocialmediaentry',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/profilesocialmediaentry/profilesocialmediaentry.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<ion-title>Social Media Link Entry</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n\n		<ion-label text-wrap>Enter or update the link to your {{typeOfSocialMedia}} social media profile.  To erase the link, choose Clear then Save:</ion-label>\n		<!--<ion-textarea (input)=\'SocialMediaURLEntry = $event.target.value\' name="SocialMediaURLEntry" [value]="SocialMediaURLEntry" placeholder="i.e. {{typeOfSampleSocialMedia}}"></ion-textarea>-->\n		<ion-item>\n			<ion-input type="text" placeholder="i.e. {{typeOfSampleSocialMedia}}" (input)=\'SocialMediaURLEntry = $event.target.value\' name="SocialMediaURLEntry" [value]="SocialMediaURLEntry" id="SocialMediaURLEntry"></ion-input>\n		</ion-item>\n		\n		<ion-grid>\n			<ion-row>\n				<ion-col col-4 >\n					<button ion-button block color="secondary" (click)="closeModal(\'Save\')">\n						Save\n					</button>\n				</ion-col>\n				<ion-col col-4 >\n					<button ion-button block color="secondary" (click)="clearInput()">\n						Clear\n					</button>\n				</ion-col>\n				<ion-col col-4 >\n					<button ion-button block color="secondary" (click)="closeModal(\'Cancel\')">\n						Cancel\n					</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/profilesocialmediaentry/profilesocialmediaentry.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["A" /* ViewController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ViewController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], ProfileSocialMediaEntryPage);
 

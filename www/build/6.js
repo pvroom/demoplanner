@@ -1,6 +1,6 @@
 webpackJsonp([6],{
 
-/***/ 897:
+/***/ 903:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfileImagePageModule", function() { return ProfileImagePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profileimage__ = __webpack_require__(919);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profileimage__ = __webpack_require__(925);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -26,7 +26,7 @@ ProfileImagePageModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__profileimage__["a" /* ProfileImagePage */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__profileimage__["a" /* ProfileImagePage */]),
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_2__profileimage__["a" /* ProfileImagePage */]),
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_2__profileimage__["a" /* ProfileImagePage */]
@@ -38,7 +38,7 @@ ProfileImagePageModule = __decorate([
 
 /***/ }),
 
-/***/ 919:
+/***/ 925:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47,11 +47,11 @@ ProfileImagePageModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_common_http__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(525);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__ = __webpack_require__(526);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser__ = __webpack_require__(35);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -235,14 +235,14 @@ ProfileImagePage = __decorate([
         selector: 'page-profileimage',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/profileimage/profileimage.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<ion-title>Add a Profile Image</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n<!-- Posting picture attachment -->\n<img class="center" [src]="_DomSanitizer.bypassSecurityTrustUrl(ProfileImageAttachment)" onerror="this.src=\'assets/img/missing-image.png\'">\n\n<!-- Button controls -->\n<ion-grid *ngIf=deviceButtons>\n	<ion-row>\n		<ion-col col-3 >\n			<button ion-button color="secondary" (click)="closePage(\'Cancel\')">\n				Cancel\n			</button>\n		</ion-col>\n		<ion-col col-3 >\n			<button color="secondary" ion-button  (click)="addGalleryImage()">\n				Gallery\n			</button>\n		</ion-col>\n		<ion-col col-3 >\n			<button color="secondary" ion-button  (click)="addCameraImage()">\n				Camera\n			</button>\n		</ion-col>\n		<ion-col col-3 >\n			<button color="secondary" ion-button  (click)="closePage(\'Save\')">\n				Save\n			</button>\n		</ion-col>\n	</ion-row>\n</ion-grid>\n\n		<ion-grid *ngIf=browserButtons>\n			<ion-row>\n				<ion-col col-3 >\n					<button ion-button color="secondary" (click)="closePage(\'Cancel\')">\n						Cancel\n					</button>\n				</ion-col>\n				<ion-col col-6 >\n					<p style="text-align:center;">Please use the mobile app to upload an image</p>\n				</ion-col>\n				<ion-col col-3 >\n					<button ion-button color="secondary" (click)="closePage(\'Save\')">\n						Save\n					</button>\n				</ion-col>\n			</ion-row>\n		</ion-grid>\n		\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/profileimage/profileimage.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_5__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["A" /* ViewController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ViewController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */],
         __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera__["a" /* Camera */],
         __WEBPACK_IMPORTED_MODULE_8__angular_platform_browser__["c" /* DomSanitizer */],

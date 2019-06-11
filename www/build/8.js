@@ -1,6 +1,6 @@
 webpackJsonp([8],{
 
-/***/ 908:
+/***/ 912:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__myagendapersonal__ = __webpack_require__(929);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__myagendapersonal__ = __webpack_require__(932);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,7 +29,7 @@ MyAgendaPersonalModule = __decorate([
         declarations: [__WEBPACK_IMPORTED_MODULE_3__myagendapersonal__["a" /* MyAgendaPersonal */]],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__myagendapersonal__["a" /* MyAgendaPersonal */])
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_3__myagendapersonal__["a" /* MyAgendaPersonal */])
         ],
         exports: [__WEBPACK_IMPORTED_MODULE_3__myagendapersonal__["a" /* MyAgendaPersonal */]]
     })
@@ -39,7 +39,7 @@ MyAgendaPersonalModule = __decorate([
 
 /***/ }),
 
-/***/ 929:
+/***/ 932:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -47,10 +47,10 @@ MyAgendaPersonalModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -316,16 +316,16 @@ let MyAgendaPersonal = class MyAgendaPersonal {
 };
 MyAgendaPersonal = __decorate([
     Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
-        selector: 'page-myagendapersonal',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/myagendapersonal/myagendapersonal.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Personal Agenda Item</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n\n<ion-card>\n		<ion-card-content>\n\n	<ion-list>\n			<ion-card-header style="background:#283593;color:#fff; height:40px; padding-top:7px">\n					Event Title\n				</ion-card-header>\n\n		<ion-item>\n			<ion-input type="text" placeholder="Enter personal event title" style="height:40px" (input)=\'agendaItempersonalEventName = $event.target.value\' name="agendaItempersonalEventName" [value]="agendaItempersonalEventName" id="agendaItempersonalEventName"></ion-input>\n		</ion-item>\n\n		<ion-card-header style="background:#283593;color:#fff;height:40px; padding-top:7px">\n				Location\n			</ion-card-header>\n            \n		<ion-item>\n			<ion-input type="text" placeholder="Enter a location" style="height:40px" (input)=\'agendaItempersonalEventLocation = $event.target.value\' name="agendaItempersonalEventLocation" [value]="agendaItempersonalEventLocation" id="agendaItempersonalEventLocation"></ion-input>\n		</ion-item>\n\n		<ion-card-header style="background:#283593;color:#fff; height:40px; padding-top:7px">\n				Date and Time of the Event\n			</ion-card-header>\n\n\n			<ion-grid>\n				<ion-row>\n					<ion-col>     \n							<p style="text-align:center">Date</p>\n\n							<ion-datetime style="text-align:center"\n							displayFormat="MM/DD/YYYY"\n							min="{{agendaItempersonalStartDate}}" \n							max="{{agendaItempersonalEndDate}}" \n							name="agendaItempersonalDate" \n							[(ngModel)]="agendaItempersonalDate" \n							id="agendaItempersonalDate"></ion-datetime>\n\n\n					</ion-col>\n\n					<ion-col>                 \n							<p style="text-align:center">Start Time</p>\n\n							<ion-datetime style="text-align:center"\n							displayFormat="HH:mm"\n							min="07:00" \n							max="23:30" \n							name="agendaItempersonalStartTime" \n							[(ngModel)]="agendaItempersonalStartTime" \n							id="agendaItempersonalStartTime"></ion-datetime>\n					</ion-col>\n\n					<ion-col>\n							<p style="text-align:center">End Time</p>\n							<ion-datetime style="text-align:center"\n							displayFormat="hh:mm" \n							min="07:00" \n							max="23:30" \n							name="agendaItempersonalEndTime" \n							[(ngModel)]="agendaItempersonalEndTime" \n							id="agendaItempersonalEndTime"></ion-datetime>\n					</ion-col>\n				</ion-row>\n			</ion-grid>\n\n			<ion-card-header style="background:#283593;color:#fff; height:40px; padding-top:7px">\n				Description\n			</ion-card-header>\n\n			<ion-grid>\n				<ion-row>\n					<ion-col col-12>\n						<ion-textarea autocomplete="true" autocorrect="on" placeholder="Enter description or notes about this personal event" \n						(input)=\'agendaItempersonalEventDescription = $event.target.value\' \n							name="agendaItempersonalEventDescription" \n							[value]="agendaItempersonalEventDescription" \n							id="agendaItempersonalEventDescription"></ion-textarea>\n					</ion-col>\n				</ion-row>\n			</ion-grid>\n\n			<ion-grid>\n				<ion-row>\n					<ion-col>\n						<button ion-button block style="background:#2196f3; color:#fff" (click)="SaveAgendaItem()">\n							Save\n						</button>\n					</ion-col>\n				</ion-row>\n\n				<ion-row>\n					<ion-col>\n						<button ion-button block style="background:#2196f3; color:#fff" *ngIf="btnDelete" (click)="DeleteAgendaItem(agendaItemid)">\n							Delete\n						</button>\n					</ion-col>\n				</ion-row>\n			</ion-grid>\n		\n	</ion-list>\n</ion-card-content>\n</ion-card>\n\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/myagendapersonal/myagendapersonal.html"*/,
+        selector: 'page-myagendapersonal',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/myagendapersonal/myagendapersonal.html"*/'<ion-header>\n  <ion-navbar color="primary">\n    <button ion-button menuToggle>\n      <ion-icon name="menu"></ion-icon>\n    </button>\n    <ion-title>Personal Agenda Item</ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n\n\n<ion-card>\n		<ion-card-content>\n\n	<ion-list>\n			<ion-card-header style="background:#283747;color:#fff; height:40px; padding-top:7px">\n					Event Title\n				</ion-card-header>\n\n		<ion-item>\n			<ion-input type="text" placeholder="Enter personal event title" style="height:40px" (input)=\'agendaItempersonalEventName = $event.target.value\' name="agendaItempersonalEventName" [value]="agendaItempersonalEventName" id="agendaItempersonalEventName"></ion-input>\n		</ion-item>\n\n		<ion-card-header style="background:#283747;color:#fff;height:40px; padding-top:7px">\n				Location\n			</ion-card-header>\n            \n		<ion-item>\n			<ion-input type="text" placeholder="Enter a location" style="height:40px" (input)=\'agendaItempersonalEventLocation = $event.target.value\' name="agendaItempersonalEventLocation" [value]="agendaItempersonalEventLocation" id="agendaItempersonalEventLocation"></ion-input>\n		</ion-item>\n\n		<ion-card-header style="background:#283747;color:#fff; height:40px; padding-top:7px">\n				Date and Time of the Event\n			</ion-card-header>\n\n\n			<ion-grid>\n				<ion-row>\n					<ion-col>     \n							<p style="text-align:center">Date</p>\n\n							<ion-datetime style="text-align:center"\n							displayFormat="MM/DD/YYYY"\n							min="{{agendaItempersonalStartDate}}" \n							max="{{agendaItempersonalEndDate}}" \n							name="agendaItempersonalDate" \n							[(ngModel)]="agendaItempersonalDate" \n							id="agendaItempersonalDate"></ion-datetime>\n\n\n					</ion-col>\n\n					<ion-col>                 \n							<p style="text-align:center">Start Time</p>\n\n							<ion-datetime style="text-align:center"\n							displayFormat="HH:mm"\n							min="07:00" \n							max="23:30" \n							name="agendaItempersonalStartTime" \n							[(ngModel)]="agendaItempersonalStartTime" \n							id="agendaItempersonalStartTime"></ion-datetime>\n					</ion-col>\n\n					<ion-col>\n							<p style="text-align:center">End Time</p>\n							<ion-datetime style="text-align:center"\n							displayFormat="hh:mm" \n							min="07:00" \n							max="23:30" \n							name="agendaItempersonalEndTime" \n							[(ngModel)]="agendaItempersonalEndTime" \n							id="agendaItempersonalEndTime"></ion-datetime>\n					</ion-col>\n				</ion-row>\n			</ion-grid>\n\n			<ion-card-header style="background:#283747;color:#fff; height:40px; padding-top:7px">\n				Description\n			</ion-card-header>\n\n			<ion-grid>\n				<ion-row>\n					<ion-col col-12>\n						<ion-textarea autocomplete="true" autocorrect="on" placeholder="Enter description or notes about this personal event" \n						(input)=\'agendaItempersonalEventDescription = $event.target.value\' \n							name="agendaItempersonalEventDescription" \n							[value]="agendaItempersonalEventDescription" \n							id="agendaItempersonalEventDescription"></ion-textarea>\n					</ion-col>\n				</ion-row>\n			</ion-grid>\n\n			<ion-grid>\n				<ion-row>\n					<ion-col>\n						<button ion-button block style="background:#cc5d1d; color:#fff" (click)="SaveAgendaItem()">\n							Save\n						</button>\n					</ion-col>\n				</ion-row>\n\n				<ion-row>\n					<ion-col>\n						<button ion-button block style="background:#cc5d1d; color:#fff" *ngIf="btnDelete" (click)="DeleteAgendaItem(agendaItemid)">\n							Delete\n						</button>\n					</ion-col>\n				</ion-row>\n			</ion-grid>\n		\n	</ion-list>\n</ion-card-content>\n</ion-card>\n\n</ion-content>\n\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/myagendapersonal/myagendapersonal.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* Events */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["Events"],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], MyAgendaPersonal);

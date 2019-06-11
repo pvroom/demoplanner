@@ -35,9 +35,9 @@
   "cordova-plugin-file": {
     "source": {
       "type": "registry",
-      "id": "cordova-plugin-file@^6.0.1"
+      "id": "cordova-plugin-file@6.0.1"
     },
-    "is_top_level": false,
+    "is_top_level": true,
     "variables": {}
   },
   "cordova-plugin-email": {
@@ -109,7 +109,7 @@
   "onesignal-cordova-plugin": {
     "source": {
       "type": "registry",
-      "id": "onesignal-cordova-plugin@^2.4.6"
+      "id": "onesignal-cordova-plugin@^2.4.7"
     },
     "is_top_level": true,
     "variables": {}
@@ -150,14 +150,6 @@
     "source": {
       "type": "registry",
       "id": "cordova-plugin-compat@^1.2.0"
-    },
-    "is_top_level": true,
-    "variables": {}
-  },
-  "cordova-plugin-app-event": {
-    "source": {
-      "type": "registry",
-      "id": "cordova-plugin-app-event@^1.2.1"
     },
     "is_top_level": true,
     "variables": {}

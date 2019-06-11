@@ -1,6 +1,6 @@
 webpackJsonp([5],{
 
-/***/ 898:
+/***/ 905:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8,7 +8,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ProfilePasswordChangePageModule", function() { return ProfilePasswordChangePageModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profilepasswordchange__ = __webpack_require__(920);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__profilepasswordchange__ = __webpack_require__(926);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -26,7 +26,7 @@ ProfilePasswordChangePageModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_2__profilepasswordchange__["a" /* ProfilePasswordChangePage */],
         ],
         imports: [
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_2__profilepasswordchange__["a" /* ProfilePasswordChangePage */]),
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_2__profilepasswordchange__["a" /* ProfilePasswordChangePage */]),
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_2__profilepasswordchange__["a" /* ProfilePasswordChangePage */]
@@ -38,7 +38,7 @@ ProfilePasswordChangePageModule = __decorate([
 
 /***/ }),
 
-/***/ 920:
+/***/ 926:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46,10 +46,10 @@ ProfilePasswordChangePageModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -173,12 +173,12 @@ ProfilePasswordChangePage = __decorate([
         selector: 'page-profilepasswordchange',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/profilepasswordchange/profilepasswordchange.html"*/'<ion-header>\n\n	<ion-navbar color="primary">\n		<ion-title>Password Change</ion-title>\n	</ion-navbar>\n\n</ion-header>\n\n<ion-content padding>\n\n	<ion-item>\n		<ion-label floating>Old Password</ion-label>\n		<ion-input class="InputBoxW" [type]="passwordType" placeholder="" (input)=\'passwordOld = $event.target.value\' name="passwordOld" [value]="passwordOld" id="passwordOld"></ion-input>\n		<ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)=\'hideShowPassword()\'></ion-icon>\n	</ion-item>\n\n	<ion-item>\n		<ion-label floating>New Password</ion-label>\n		<ion-input class="InputBoxW" [type]="passwordType" placeholder="" (input)=\'passwordNew1 = $event.target.value\' name="passwordNew1" [value]="passwordNew1" id="passwordNew1"></ion-input>\n		<ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)=\'hideShowPassword()\'></ion-icon>\n	</ion-item>\n\n	<ion-item>\n		<ion-label floating>Re-type New Password</ion-label>\n		<ion-input class="InputBoxW" [type]="passwordType" placeholder="" (input)=\'passwordNew2 = $event.target.value\' name="passwordNew2" [value]="passwordNew2" id="passwordNew2"></ion-input>\n		<ion-icon item-end [name]="passwordIcon" class="passwordIcon" (click)=\'hideShowPassword()\'></ion-icon>\n	</ion-item>\n\n	<ion-grid>\n\n		<ion-row>\n			<ion-col col-6 >\n				<button ion-button block color="danger" (click)="closeModal(\'Save\')">\n					Save\n				</button>\n			</ion-col>\n			<ion-col col-6 >\n				<button ion-button block color="danger" (click)="closeModal(\'Cancel\')">\n					Cancel\n				</button>\n			</ion-col>\n		</ion-row>\n	</ion-grid>\n	\n</ion-content>\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/profilepasswordchange/profilepasswordchange.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* AlertController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["A" /* ViewController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["AlertController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["ViewController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], ProfilePasswordChangePage);
 

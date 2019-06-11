@@ -1,6 +1,6 @@
 webpackJsonp([2],{
 
-/***/ 911:
+/***/ 918:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9,7 +9,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_forms__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__searchresults__ = __webpack_require__(931);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__searchresults__ = __webpack_require__(937);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,7 +29,7 @@ SearchResultsPageModule = __decorate([
         declarations: [__WEBPACK_IMPORTED_MODULE_3__searchresults__["a" /* SearchResultsPage */]],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["p" /* IonicPageModule */].forChild(__WEBPACK_IMPORTED_MODULE_3__searchresults__["a" /* SearchResultsPage */])
+            __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["IonicPageModule"].forChild(__WEBPACK_IMPORTED_MODULE_3__searchresults__["a" /* SearchResultsPage */])
         ],
         exports: [
             __WEBPACK_IMPORTED_MODULE_3__searchresults__["a" /* SearchResultsPage */]
@@ -41,7 +41,7 @@ SearchResultsPageModule = __decorate([
 
 /***/ }),
 
-/***/ 931:
+/***/ 937:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49,11 +49,11 @@ SearchResultsPageModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_storage__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(23);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(19);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__educationdetails_educationdetails__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_database_database__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__educationdetails_educationdetails__ = __webpack_require__(57);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -544,12 +544,12 @@ SearchResultsPage = __decorate([
         selector: 'page-searchresults',template:/*ion-inline-start:"/Users/petervroom/demoplanner/src/pages/searchresults/searchresults.html"*/'<ion-header>\n	<ion-navbar color="primary">\n		<button ion-button menuToggle>\n			<ion-icon name="menu"></ion-icon>\n		</button>\n		<ion-title>Search Results</ion-title>\n	</ion-navbar>\n</ion-header>\n\n<ion-content padding>\n\n		<p class="myLabelPadding">\n			Search results are grouped below with number of results in each header.  Expand a group to see details.\n		</p>\n\n\n		<div class="card">\n			<div class="rowSearch item-divider item LegendHeader myMarginZero2" (click)="ShowHideResults(\'Lectures\')">\n				{{visHeaderLW}}\n			</div>\n			<div *ngIf="LWShow">\n				<ion-item (click)="EventDetails(sessionLW.EventID)" *ngFor="let sessionLW of sessionLW" id="lecture-list-item19">\n					<ion-icon item-right name="arrow-dropright"></ion-icon>\n					<h2>{{sessionLW.DisplayEventName}}</h2>\n					<p>{{sessionLW.DisplayEventTimeDateLocation}}</p>\n					<p>{{sessionLW.SpeakerDisplayName}}</p>\n				</ion-item>\n			</div>\n		</div>\n\n		<div class="card">\n			<div class="rowSearch item-divider item LegendHeader myMarginZero2" (click)="ShowHideResults(\'Participation\')">\n				{{visHeaderPart}}\n			</div>\n			<div *ngIf="PartShow">\n				<ion-item (click)="EventDetails(sessionPart.EventID)" *ngFor="let sessionPart of sessionPart" id="participation-list-item19">\n					<ion-icon item-right name="arrow-dropright"></ion-icon>\n					<h2>{{sessionPart.DisplayEventName}}</h2>\n					<p>{{sessionPart.DisplayEventTimeDateLocation}}</p>\n					<p>{{sessionPart.SpeakerDisplayName}}</p>\n				</ion-item>\n			</div>\n		</div>\n\n		<div class="card">\n			<div class="rowSearch item-divider item LegendHeader myMarginZero2" (click)="ShowHideResults(\'OtherEvents\')">\n				{{visHeaderOE}}\n			</div>\n			<div *ngIf="OtherShow">\n				<ion-item (click)="EventDetails(sessionOE.EventID)" *ngFor="let sessionOE of sessionOE" id="other-list-item19">\n					<ion-icon item-right name="arrow-dropright"></ion-icon>\n					<h2>{{sessionOE.DisplayEventName}}</h2>\n					<p>{{sessionOE.DisplayEventTimeDateLocation}}</p>\n					<p>{{sessionOE.SpeakerDisplayName}}</p>\n				</ion-item>\n			</div>\n		</div>\n\n		<div class="card">\n			<div class="rowSearch item-divider item LegendHeader myMarginZero2" (click)="ShowHideResults(\'Speakers\')">\n				{{visHeaderSpkr}}\n			</div>\n			<div *ngIf="SpeakerShow">\n				<ion-item (click)="SpeakerDetails(Speaker.SpeakerID)" *ngFor="let Speaker of Speakers" id="speaker-list-item19">\n					<ion-icon item-right name="arrow-dropright"></ion-icon>\n					<h2>{{Speaker.DisplayNameLastFirst}}</h2>\n					<p>{{Speaker.Affiliation}}</p>\n				</ion-item>\n			</div>\n		</div>\n\n		<div class="card">\n			<div class="rowSearch item-divider item LegendHeader myMarginZero2" (click)="ShowHideResults(\'Exhibitors\')">\n				{{visHeaderExh}}\n			</div>\n			<div *ngIf="ExhibitorShow">\n				<ion-item (click)="ExhibitorDetails(Exhibitor.ExhibitorID)" *ngFor="let Exhibitor of Exhibitors" id="Exhibitor-list-item19">\n					<ion-icon item-right name="arrow-dropright"></ion-icon>\n					<h2>{{Exhibitor.DisplayCompanyName}}</h2>\n					<p>{{Exhibitor.BoothNumber}}</p>\n				</ion-item>\n			</div>\n		</div>\n		\n		<div class="card">\n			<div class="rowSearch item-divider item LegendHeader myMarginZero2" (click)="ShowHideResults(\'Attendees\')">\n				{{visHeaderAtt}}\n			</div>\n			<div *ngIf="AttendeeShow">\n				<ion-item (click)="AttendeeDetails(Attendee.AttendeeID)" *ngFor="let Attendee of Attendees" id="Attendee-list-item19">\n					<ion-icon item-right name="arrow-dropright"></ion-icon>\n					<h2>{{Attendee.DisplayAttendeeName}}</h2>\n					<p>{{Attendee.DisplayAttendeeCompany}}</p>\n				</ion-item>\n			</div>\n		</div>\n\n'/*ion-inline-end:"/Users/petervroom/demoplanner/src/pages/searchresults/searchresults.html"*/,
         changeDetection: __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectionStrategy"].OnPush
     }),
-    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["u" /* NavController */],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["v" /* NavParams */],
+    __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavController"],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["NavParams"],
         __WEBPACK_IMPORTED_MODULE_2__ionic_storage__["b" /* Storage */],
         __WEBPACK_IMPORTED_MODULE_4__providers_database_database__["a" /* Database */],
         __WEBPACK_IMPORTED_MODULE_0__angular_core__["ChangeDetectorRef"],
-        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["q" /* LoadingController */],
+        __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["LoadingController"],
         __WEBPACK_IMPORTED_MODULE_5__providers_localstorage_localstorage__["a" /* Localstorage */]])
 ], SearchResultsPage);
 
