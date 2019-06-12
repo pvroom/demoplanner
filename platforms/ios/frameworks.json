@@ -1,0 +1,12 @@
+{
+    "Security.framework": 1,
+    "SystemConfiguration.framework": 1,
+    "ImageIO.framework": 1,
+    "CoreLocation.framework": 2,
+    "AVFoundation.framework": 1,
+    "libz.tbd": 1,
+    "MessageUI.framework": 1,
+    "WebKit.framework": 1,
+    "SafariServices.framework": 1,
+    "QuartzCore.framework": 1
+}

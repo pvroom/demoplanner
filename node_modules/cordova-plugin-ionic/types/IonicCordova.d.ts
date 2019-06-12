@@ -8,102 +8,9 @@ interface Window {
 interface IDeployPluginAPI {
 
   /**
-   * @deprecated in v5.0.0 use [configure](#configure) in favor of this function.
-   *
    * @description Update the default configuration for the plugin on the current device. The new configuration will be persisted across app close and binary updates.
    *
-   * @param config The new configuration for the plugin on this device.
-   *
-   * @param success The callback that handles a successful configuration. On success this function will be called with no arguments.
-   *
-   * @param failure The callback that handles a failed configuration. On failure this function will be called with a string description of the failure.
-   */
-  init(config: IDeployConfig, success: CallbackFunction<void>, failure: CallbackFunction<string>): void;
-
-  /**
-   * @deprecated in v5.0.0 use [checkForUpdate](#checkforupdate) in favor of this function.
-   *
-   * @description Check for available updates for the currently configured app id and channel.
-   *
-   * @param success The callback that handles a successful check. On success this function will be called with the string 'true' or 'false' depending on whether a new update is available.
-   *
-   * @param failure The callback that handles a failed check. On failure this function will be called with a string description of the failure.
-   */
-  check(success: CallbackFunction<string>, failure: CallbackFunction<string>): void;
-
-  /**
-   * @deprecated in v5.0.0 use [downloadUpdate](#downloadupdate) in favor of this function.
-   *
-   * @description Download the new files from an available update found by the check method.
-   *
-   * @param success The callback that handles a successful download. This function will be called during download with a string representing the percentage of download completion e.g. '1', '20', etc. and the string 'done' upon successful completion.
-   *
-   * @param failure The callback that handles a failed download. On failure this function will be called with a string description of the failure.
-   */
-  download(success: CallbackFunction<string>, failure: CallbackFunction<string>): void;
-
-  /**
-   * @deprecated in v5.0.0 use [downloadUpdate](#downloadupdate) instead which downloads and prepares the update.
-   *
-   * @description Extract the new files from a downloaded update so it is ready to load.
-   *
-   * @param success The callback that handles a successful extract. This function will be called multiple times during extract with a string representing the percentage complete e.g. '1', '20', etc. and the string 'done' upon successful completion.
-   *
-   * @param failure The callback that handles a failed extract. On failure this function will be called with a string description of the failure.
-   */
-  extract(success: CallbackFunction<string>, failure: CallbackFunction<string>): void;
-
-  /**
-   * @deprecated in v5.0.0 use [reloadApp](#reloadapp) in favor of this function.
-   *
-   * @description Redirect to the most recent available update stored on the device for the current app id and channel.
-   *
-   * @param success The callback that handles a successful redirect.
-   *
-   * @param failure The callback that handles a failed redirect. On failure this function will be called with a string description of the failure.
-   */
-  redirect(success: CallbackFunction<string>, failure: CallbackFunction<string>): void;
-
-
-  /**
-   * @deprecated in v5.0.0 use [getCurrentVersion](#getcurrentversion) in favor of this function.
-   *
-   * @description Fetch current information about the currently applied snapshot on this device.
-   *
-   * @param success A callback function which will receive the object describing the currently deployed snapshot.
-   *
-   * @param failure On failure to fetch snapshot info this function will be called with a string description of the failure.
-   */
-  info(success: CallbackFunction<ISnapshotInfo>, failure: CallbackFunction<string>): void;
-
-  /**
-   * @deprecated in v5.0.0 use [getAvailableVersions](#getavailableversions) in favor of this function.
-   *
-   * @description Fetch the current version ids for snapshots stored locally on the device.
-   *
-   * @param success A callback function which will receive a list of string version ids for snapshots that are currently stored on the device.
-   *
-   * @param failure On failure to fetch snapshot info this function will be called with a string description of the failure.
-   */
-  getVersions(success: CallbackFunction<string[]>, failure: CallbackFunction<string>): void;
-
-  /**
-   * @deprecated in v5.0.0 use [deleteVersionById](#deleteversionbyid) in favor of this function.
-   *
-   * @description Remove the files specific to a snapshot from the device.
-   *
-   * @param version The version id of the snapshot to delete.
-   *
-   * @param success A callback function which will receive a string 'true' upon successful deletion.
-   *
-   * @param failure On failure to delete a snapshot this function will be called with a string description of the failure.
-   */
-  deleteVersion(version: string, success: CallbackFunction<string>, failure: CallbackFunction<string>): void;
-
-  /* v5 API */
-
-  /**
-   * @description Update the default configuration for the plugin on the current device. The new configuration will be persisted across app close and binary updates.
+   * @since v5.0.0
    *
    * @param config The new configuration for the plugin on this device.
    */
@@ -125,25 +32,29 @@ interface IDeployPluginAPI {
    *
    * @return  A response describing an update if one is available.
    */
-  checkForUpdate(): Promise<CheckDeviceResponse>;
+  checkForUpdate(): Promise<CheckForUpdateResponse>;
 
   /**
    * @description Download the new files from an available update found by the checkForUpdate method and prepare the update.
+   *
+   * @since v5.0.0
    *
    * @param progress A progress callback function which will be called with a number representing the percent of completion of the download and prepare.
    *
    * @return  true if the download succeeded
    */
-  downloadUpdate(progress?: CallbackFunction<string>): Promise<boolean>;
+  downloadUpdate(progress?: CallbackFunction<number>): Promise<boolean>;
 
   /**
-   * @description Extract the new files from a downloaded update.
+   * @description Extract a downloaded bundle of updated files.
+   *
+   * @since v5.0.0
    *
    * @param progress A progress callback function which will be called with a number representing the percent of completion of the extract.
    *
    * @return  true if the extract succeeded
    */
-  extractUpdate(progress?: CallbackFunction<string>): Promise<boolean>;
+  extractUpdate(progress?: CallbackFunction<number>): Promise<boolean>;
 
   /**
    * @description Reload the app if a more recent version of the app is available.
@@ -241,6 +152,22 @@ interface IDeployConfig {
    * The [channel](https://ionicframework.com/docs/pro/deploy/channels) that the plugin should listen for updates on.
    */
   channel?: string;
+
+  /**
+   * The number of previous updates to be cached on the device
+   */
+  maxVersions?: number;
+
+  /**
+   * The number of seconds the app should be in the background for before the plugin considers it closed
+   * and checks for an updated on resume of the app.
+   */
+  minBackgroundDuration?: number;
+
+  /**
+   * The update method the app should use when checking for available updates
+   */
+  updateMethod?: 'none' | 'auto' | 'background';
 }
 
 /**
@@ -258,14 +185,26 @@ interface ICurrentConfig {
   channel: string;
 
   /**
-   * The binary version of the native bundle
+   * @deprecated
+   * The binary version of the native bundle versionName on Android or CFBundleShortVersionString on iOS
+   * deprecated in favor of versionName
    */
   binaryVersion: string;
 
   /**
-   * Whether the plugin is in debug mode or not.
+   * The binary version of the native bundle versionName on Android or CFBundleShortVersionString on iOS
    */
-  debug: string;
+  binaryVersionName: string;
+
+  /**
+   * The build version code of the native bundle versionCode on Android or CFBundleVersion on iOS
+   */
+  binaryVersionCode: string;
+
+  /**
+   * Whether the user disabled deploy updates or not.
+   */
+  disabled: boolean;
 
   /**
    * The host API the plugin is configured to check for updates from.
@@ -292,6 +231,11 @@ interface ICurrentConfig {
    * The id of the currently applied updated or undefined if none is applied.
    */
   currentVersionId?: string;
+
+  /**
+   * The id of the currently applied build or undefined if none is applied.
+   */
+  currentBuildId?: string;
 }
 
 /**
@@ -312,6 +256,11 @@ interface ISnapshotInfo {
   versionId: string;
 
   /**
+   * The id for the snapshot.
+   */
+  buildId: string;
+
+  /**
    * The channel that the snapshot was downloaded for..
    */
   channel: string;
@@ -324,9 +273,23 @@ interface ISnapshotInfo {
   binary_version: string;
 
   /**
+   * @deprecated
    * The binary version the snapshot was downloaded for.
+   * The versionName on Android or CFBundleShortVersionString on iOS this is the end user readable version listed on the stores.
    */
   binaryVersion: string;
+
+  /**
+   * The binary version name the snapshot was downloaded for.
+   * The versionName on Android or CFBundleShortVersionString on iOS this is the end user readable version listed on the stores.
+   */
+  binaryVersionName: string;
+
+  /**
+   * The binary version build code the snapshot was downloaded for.
+   * The versionCode on Android or CFBundleVersion on iOS this should be changed every time you do a new build debug or otherwise.
+   */
+  binaryVersionCode: string;
 }
 
 /**
@@ -342,11 +305,23 @@ interface ISyncOptions {
 /**
  * The response object describing if an update is available.
  */
-interface CheckDeviceResponse {
+interface CheckForUpdateResponse {
   /**
    * Whether or not an update is available.
    */
   available: boolean;
+
+  /**
+   * Equivalent to available since v5 this can be ignored in favor of available
+   * @deprecated
+   */
+  compatible: boolean;
+
+  /**
+   * Legacy indicator of whether the update is a partial one. This will always be false and can be ignored
+   * @deprecated
+   */
+  partial: false;
 
   /**
    * The id of the snapshot if available.
@@ -354,14 +329,19 @@ interface CheckDeviceResponse {
   snapshot?: string;
 
   /**
+   * The id of the build if available.
+   */
+  build?: string;
+
+  /**
    * The url to fetch the manifest of files in the update.
    */
   url?: string;
 
   /**
-   * The checksum of the manifest file.
+   * Whether or not there is an update available that is not compatible with this device.
    */
-  integrity?: string;
+  incompatibleUpdateAvailable?: boolean;
 }
 
 /**
@@ -380,9 +360,15 @@ interface IAppInfo {
   platformVersion: string;
 
   /**
-   * The version name.
+   * @deprecated
+   * The versionCode on Android or CFBundleVersion on iOS this should be changed every time you do a new build debug or otherwise.
    */
   version: string;
+
+  /**
+   * The versionCode on Android or CFBundleVersion on iOS this should be changed every time you do a new build debug or otherwise.
+   */
+  binaryVersionCode: string | number;
 
   /**
    * The bundle name.
@@ -390,14 +376,25 @@ interface IAppInfo {
   bundleName: string;
 
   /**
-   * The bundle version.
+   * @deprecated
+   * The versionName on Android or CFBundleShortVersionString on iOS this is the end user readable version listed on the stores.
    */
   bundleVersion: string;
+
+  /**
+   * The versionName on Android or CFBundleShortVersionString on iOS this is the end user readable version listed on the stores.
+   */
+  binaryVersionName: string;
 
   /**
    * A generated device ID (NOT a native device ID)
    */
   device: string;
+
+  /**
+   * Directory where the snapshots are stored
+   */
+  dataDirectory: string;
 }
 
 /**
