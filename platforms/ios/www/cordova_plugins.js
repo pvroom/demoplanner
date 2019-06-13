@@ -447,6 +447,22 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
         "plugin.printer",
         "cordova.plugins.printer"
       ]
+    },
+    {
+      "id": "onesignal-cordova-plugin.OneSignal",
+      "file": "plugins/onesignal-cordova-plugin/www/OneSignal.js",
+      "pluginId": "onesignal-cordova-plugin",
+      "clobbers": [
+        "OneSignal"
+      ]
+    },
+    {
+      "id": "cordova-sqlite-ext.SQLitePlugin",
+      "file": "plugins/cordova-sqlite-ext/www/SQLitePlugin.js",
+      "pluginId": "cordova-sqlite-ext",
+      "clobbers": [
+        "SQLitePlugin"
+      ]
     }
   ];
   module.exports.metadata = {
@@ -471,6 +487,8 @@ cordova.define('cordova/plugin_list', function(require, exports, module) {
     "cordova-plugin-statusbar": "2.4.2",
     "cordova-plugin-whitelist": "1.3.3",
     "cordova-plugin-x-toast": "2.7.2",
-    "de.appplant.cordova.plugin.printer": "0.7.1"
+    "de.appplant.cordova.plugin.printer": "0.7.1",
+    "onesignal-cordova-plugin": "2.4.6",
+    "cordova-sqlite-ext": "3.0.0"
   };
 });

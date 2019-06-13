@@ -133,5 +133,8 @@
     <plugin name="cordova-plugin-dbcopy" spec="^2.1.0" />
     <plugin name="cordova-plugin-keyboard" spec="~1.2.0" />
     <plugin name="cordova-plugin-file" spec="6.0.1" />
+    <plugin name="onesignal-cordova-plugin" spec="2.4.6" />
+    <plugin name="cordova-sqlite-ext" spec="^3.0.0" />
     <engine name="android" spec="7.1.4" />
+    <engine name="ios" spec="5.0.1" />
 </widget>
