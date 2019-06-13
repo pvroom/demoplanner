@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="com.convergenceus.planner.demo" version="5.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>CONVERGENCE</name>
+    <name>Convergence</name>
     <description>A conference program guide and agenda app for attendees</description>
     <author email="pvroom@convergence-us.com" href="http://www.convergence-us.com/">Convergence</author>
     <content src="index.html" />
@@ -38,7 +38,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="2000" />
     <preference name="loadUrlTimeoutValue" value="60000" />
-    <preference name="DisableDeploy" value="true" />
+    <preference name="DisableDeploy" value="false" />
     <platform name="android">
         <allow-intent href="market:*" />
         <icon density="ldpi" src="resources/android/icon/drawable-ldpi-icon.png" />
@@ -112,6 +112,7 @@
         <variable name="MIN_BACKGROUND_DURATION" value="30" />
         <variable name="ROLLBACK_TIMEOUT" value="10" />
     </plugin>
+    <plugin name="cordova-plugin-file" spec="~6.0.1" />
     <plugin name="cordova-plugin-email" spec="^1.2.7" />
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To map user's position on conference floor plan" />
@@ -132,9 +133,8 @@
     <plugin name="cordova-plugin-advanced-http" spec="^2.0.4" />
     <plugin name="cordova-plugin-dbcopy" spec="^2.1.0" />
     <plugin name="cordova-plugin-keyboard" spec="~1.2.0" />
-    <plugin name="cordova-plugin-file" spec="6.0.1" />
-    <plugin name="onesignal-cordova-plugin" spec="2.4.6" />
-    <plugin name="cordova-sqlite-ext" spec="^3.0.0" />
+    <plugin name="onesignal-cordova-plugin" spec="~2.4.6" />
+    <plugin name="cordova-sqlite-ext" spec="~3.0.0" />
     <engine name="android" spec="7.1.4" />
-    <engine name="ios" spec="5.0.1" />
+    <engine name="ios" spec="^5.0.1" />
 </widget>

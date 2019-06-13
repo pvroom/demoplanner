@@ -47,6 +47,34 @@
  //  }
 
 
+
+ ion-alert {
+    &.alert-warning {
+      .alert-head {
+        background: map-get($colors, primary);
+        color: #fff;
+        margin-bottom: 10px;
+      }
+    }
+    &.alert-danger {
+      .alert-head {
+        background: map-get($colors, primary);
+        color: #fff;
+        margin-bottom: 10px;
+      }
+    }
+    &.alert-success {
+      .alert-head {
+        background: map-get($colors, primary);
+        color: #fff;
+        margin-bottom: 10px;
+      }
+    }
+  
+  }
+
+
+
  .ion-card-header  {
      background:#5f5c58;
  }
