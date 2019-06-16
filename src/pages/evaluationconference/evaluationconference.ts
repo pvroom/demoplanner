@@ -1,3 +1,4 @@
+
 // Components, functions, plugins
 import { Component, ChangeDetectionStrategy, ChangeDetectorRef, NgModule } from '@angular/core';
 import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
@@ -396,3 +397,4 @@ export class EvaluationConference {
 	}
 
 }
+

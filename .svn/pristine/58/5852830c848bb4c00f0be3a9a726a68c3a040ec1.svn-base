@@ -1,0 +1,22 @@
+page-evaluationconference {
+
+label.item.item-radio.ng-valid {
+    border-radius: 400px;
+    margin: 5px 50px 5px 10px;
+
+}
+
+.myWhite {
+    color:#fff;
+}
+
+
+.active, .btn:hover {
+    background-color: #666;
+    color: white;
+  }
+
+.lmargin10  {
+    margin-left:-10px;
+}
+}

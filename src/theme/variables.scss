@@ -24,12 +24,13 @@ $font-path: "../assets/fonts";
 // The "primary" color is the only required color in the map. #263238
 
 $colors: (
-  //primary:    #488aff, #764880, #7B1FA2, #7CCD7C, #295F4E
+  //primary:    #488aff, #764880, #7B1FA2, #7CCD7C, #295F4E, #e74c3c, #cc5d1d
   primary:    #283747,
   secondary:  #cc5d1d,
   danger:     #C51162,
   light:      #f4f4f4,
-  dark:       transparent
+  dark:       transparent,
+  opacity:    #8000008f,
 );
 
 
@@ -105,3 +106,9 @@ $card-md-title-text-color:#fff;
 
 //$list-ios-header-background-color:#5f5c58!important;
 //$list-md-header-background-color:#5f5c58!important;
+
+
+
+
+$alert-md-background-color: #283747;
+$alert-md-button-text-color: #fff;

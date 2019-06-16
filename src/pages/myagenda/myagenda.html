@@ -7,8 +7,8 @@
 	</ion-navbar>
 
 	<!-- Buttons in flexbox grid for date selection-->
-	<ion-grid style="padding:0; margin:0; position: fixed">
-			<ion-row style="padding:0; margin:0">
+	<ion-grid style="padding:0; position: fixed">
+			<ion-row style="padding:0">
 	
 				<ion-col style="padding:0" *ngIf=DayButton1Show>
 					<button ion-button full style="margin:0"[ngClass]="dayButton1" (click)="DayUpdate('1')">
@@ -78,7 +78,7 @@
 
 	<!-- Announcement space at top of grid-->
 
-	<ion-grid style="padding:0; margin:0">
+	<ion-grid style="padding:0; margin-top:45px">
 
 		<ion-row class="MyGridCellMargin" style="margin:0; padding:0">
 			<ion-col col-2>

@@ -58,7 +58,7 @@
     }
     &.alert-danger {
       .alert-head {
-        background: map-get($colors, primary);
+        background: map-get($colors, dark);
         color: #fff;
         margin-bottom: 10px;
       }
@@ -831,16 +831,6 @@ and for active state:
 
 /* FOOTERS */
 
-.myBotBar   {
-    background-color:#8d265a !important;
-    color:#ffffff !important;
-}
-
-.myFooterButton  {
-    background-color:#8d265a !important;
-    color:#ffffff!important;
-    border-color:#ffffff !important;
-}
 
 
 

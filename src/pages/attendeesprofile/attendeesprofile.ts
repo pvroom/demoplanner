@@ -261,6 +261,7 @@ export class AttendeesProfilePage {
 						let alert = this.alertCtrl.create({
 							title: 'Bookmarks',
 							subTitle: 'Unable to add the item to your bookmark list at this time. Please try again shortly.',
+							cssClass: 'alert-danger',
 							buttons: ['OK']
 						});
 						
@@ -302,6 +303,7 @@ export class AttendeesProfilePage {
 						let alert = this.alertCtrl.create({
 							title: 'Bookmarks',
 							subTitle: 'Unable to remove the item from your bookmark list at this time. Please try again shortly.',
+							cssClass: 'alert-danger',
 							buttons: ['OK']
 						});
 						

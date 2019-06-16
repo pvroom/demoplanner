@@ -215,6 +215,7 @@ export class ActivityFeedPostingPage {
 				let alert = this.alertCtrl.create({
 					title: 'Posting Error',
 					subTitle: 'You cannot submit a posting with a blank comment.',
+					cssClass: 'alert-danger',
 					buttons: ['OK']
 				});
 				alert.present();
@@ -305,6 +306,7 @@ export class ActivityFeedPostingPage {
 				let alert = this.alertCtrl.create({
 					title: 'Image Upload Error',
 					subTitle: 'Problem receiving feedback from server - check log.',
+					cssClass: 'alert-danger',
 					buttons: ['OK']
 				});
 				alert.present();

@@ -1,0 +1,273 @@
+<ion-header>
+	<ion-navbar color="primary">
+		<button ion-button menuToggle>
+			<ion-icon name="menu"></ion-icon>
+		</button>
+		<ion-title>Event Survey</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+
+
+<ion-card>
+		<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ1" name="Qu1">
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">1. I am a:</h2></ion-item>
+
+		<ion-item>
+			<ion-label>Dentist</ion-label>
+			<ion-radio value="Dentist"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Laboratory Technician</ion-label>
+			<ion-radio value="Laboratory Technician"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Hygienist</ion-label>
+			<ion-radio value="Hygienist"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Dental Assistant</ion-label>
+			<ion-radio value="Dental Assistant"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Patient Coordinator</ion-label>
+			<ion-radio value="Patient Coordinator"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Office Personnel</ion-label>
+			<ion-radio value="Office Personnel"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Student</ion-label>
+			<ion-radio value="Student"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Other</ion-label>
+			<ion-radio value="Other"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please specify"[(ngModel)]="eventSurveyQ1C" rows="3" name="Q1C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+
+<ion-card>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ2" name="Qu2">
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">2. I am a:</h2></ion-item>
+
+	<ion-item>
+			<ion-label>Accredited Fellow Member</ion-label>
+			<ion-radio value="Accredited Fellow Member"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Accredited Member</ion-label>
+			<ion-radio value="Accredited Member"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>MIP (Member in the Accreditation Process)</ion-label>
+			<ion-radio value="MIP (Member in the Accreditation Process)"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>General Member</ion-label>
+			<ion-radio value="General Member"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Other</ion-label>
+			<ion-radio value="Other"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please specify"[(ngModel)]="eventSurveyQ2C" rows="3" name="Qu2C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+
+<ion-card>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ3" name="Qu3">
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">3. Would you recommend this conference to your peers to attend next year?</h2></ion-item>
+		<ion-item>
+			<ion-label>Yes</ion-label>
+			<ion-radio value="Yes"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>No</ion-label>
+			<ion-radio value="No"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ3C" rows="3" name="Qu3C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+	
+<ion-card>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ4" name="Qu4">
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">4. How did you hear about the Annual APS Conference?</h2></ion-item>
+		<ion-item>
+			<ion-label>Email from the APS</ion-label>
+			<ion-radio value="Email from the AACD"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Recommendations from a colleague</ion-label>
+			<ion-radio value="Recommendations from a colleague"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Website search </ion-label>
+			<ion-radio value="Website search "></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>Other</ion-label>
+			<ion-radio value="Other"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please specify"[(ngModel)]="eventSurveyQ4C" rows="3" name="Qu4C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+	
+<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2 style="color:#fff">5. How would you improve the registration process:</h2></ion-item>
+	<label class="item item-input " id="survey-textarea2"></label>
+	<ion-item class="lmargin10" id="survey-textarea2">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ5" rows="3" name="Qu5"></ion-textarea>
+	</ion-item>
+</ion-card>
+
+	<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">6. The educational program provided a diverse-selection of courses and topics from which to choose.</h2></ion-item>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ6" name="Qu6">
+		<ion-item>
+			<ion-label>1 - Strongly Disagree</ion-label>
+			<ion-radio value="1"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>2</ion-label>
+			<ion-radio value="2"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>3</ion-label>
+			<ion-radio value="3"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>4</ion-label>
+			<ion-radio value="4"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>5 - Strongly Agree</ion-label>
+			<ion-radio value="5"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ6C" rows="3" name="Qu6C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+
+<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">7. The educational courses I attended will contribute to my professional and/or personal objectives.</h2></ion-item>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ7" name="Qu7">
+		<ion-item>
+			<ion-label>1 - Strongly Disagree</ion-label>
+			<ion-radio value="1"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>2</ion-label>
+			<ion-radio value="2"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>3</ion-label>
+			<ion-radio value="3"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>4</ion-label>
+			<ion-radio value="4"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>5 - Strongly Agree</ion-label>
+			<ion-radio value="5"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ7C" rows="3" name="Qu7C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+
+<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">8. Did you attend the General Sessions?</h2></ion-item>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ8" name="Qu8">
+		<ion-item>
+			<ion-label>Yes</ion-label>
+			<ion-radio value="Yes"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>No</ion-label>
+			<ion-radio value="No"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Please explain"[(ngModel)]="eventSurveyQ8C" rows="3" name="Qu8C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+	
+	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2 style="color:#fff">9. What did you enjoy most in the exhibit hall?</h2></ion-item>
+	<label class="item item-input " id="survey-textarea2"></label>
+	<ion-item class="lmargin10" id="survey-textarea2">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ9" rows="3" name="Qu9"></ion-textarea>
+	</ion-item>
+
+	<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">10. If you attended the Mind Healing presentations, did they meet your learning objectives?</h2></ion-item>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ10" name="Qu10">
+		<ion-item>
+			<ion-label>Yes</ion-label>
+			<ion-radio value="Yes"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>No</ion-label>
+			<ion-radio value="No"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="If no, why not?"[(ngModel)]="eventSurveyQ10C" rows="3" name="Qu10C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+	
+<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider item-text-wrap" id="survey-list-item-divider12"><h2 style="color:#fff">11. Do you plan to attend the conference next year?</h2></ion-item>
+	<ion-list style="margin:0" radio-group [(ngModel)]="eventSurveyQ11" name="Qu11">
+		<ion-item>
+			<ion-label>Yes</ion-label>
+			<ion-radio value="Yes"></ion-radio>
+		</ion-item>
+		<ion-item>
+			<ion-label>No</ion-label>
+			<ion-radio value="No"></ion-radio>
+		</ion-item>
+		<ion-item class="lmargin10" id="survey-textarea12C">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="If no, why not?"[(ngModel)]="eventSurveyQ11C" rows="3" name="Qu11C"></ion-textarea>
+		</ion-item>
+	</ion-list>
+</ion-card>
+	
+<ion-card>
+	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2 style="color:#fff">12. What could we have done to make your conference experience better?</h2></ion-item>
+	<label class="item item-input " id="survey-textarea2"></label>
+	<ion-item class="lmargin10" id="survey-textarea2">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ12" rows="3" name="Qu12"></ion-textarea>
+	</ion-item>
+
+	<ion-item text-wrap color="primary" class="item-divider" id="survey-list-item-divider2"><h2 style="color:#fff">13. What topics would be of interest to you for next year?</h2></ion-item>
+	<label class="item item-input " id="survey-textarea2"></label>
+	<ion-item class="lmargin10" id="survey-textarea2">
+			<ion-textarea autocomplete="true" autocorrect="on" type="text" placeholder="Comments" [(ngModel)]="eventSurveyQ13" rows="3" name="Qu13"></ion-textarea>
+	</ion-item>
+</ion-card>
+
+	<div text-center>
+		<button ion-button style="background:#cc5d1d" (click)="SubmitEvaluation()">
+			SUBMIT
+		</button>
+	</div>
+
+	<div class="spacer" style="width:320px; height: 16px;"></div>
+
+
+</ion-content>

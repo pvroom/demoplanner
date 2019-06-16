@@ -6,29 +6,29 @@
 		</button>
 		<ion-title>Exhibitors</ion-title>
 	</ion-navbar>
-
+		<!-- Search input -->
+		<ion-grid>
+				<ion-row>
+					<ion-col col-9>	
+	
+						<ion-item>
+							<ion-icon name="search" item-left></ion-icon>
+							<ion-input name="srchBarEntry" id="srchBarEntry" 
+							type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>
+						</ion-item>
+					</ion-col>
+					<ion-col col-3>
+						<button ion-button full style="background:#cc5d1d; margin:0" (tap)="GetSearchResults()">Submit</button>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
 </ion-header>
 
 <ion-content>
 
 	<ion-list id="Exhibitors-list3">
 
-		<!-- Search input -->
-		<ion-grid>
-			<ion-row>
-				<ion-col col-9>	
 
-					<ion-item>
-						<ion-icon name="search" item-left></ion-icon>
-						<ion-input name="srchBarEntry" id="srchBarEntry" 
-						type="text" placeholder="Search" [(ngModel)]="EntryTerms"></ion-input>
-					</ion-item>
-				</ion-col>
-				<ion-col col-3>
-					<button ion-button full style="background:#cc5d1d; margin:0" (tap)="GetSearchResults()">Submit</button>
-				</ion-col>
-			</ion-row>
-		</ion-grid>
 
 		<!-- Exhibitor listing -->
 		<ion-list>

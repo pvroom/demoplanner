@@ -1,0 +1,114 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+$font-path: "../assets/fonts";
+
+@import "ionic.globals";
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+
+
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map. #263238
+
+$colors: (
+  //primary:    #488aff, #764880, #7B1FA2, #7CCD7C, #295F4E, #e74c3c, #cc5d1d
+  primary:    #283747,
+  secondary:  #cc5d1d,
+  danger:     #C51162,
+  light:      #f4f4f4,
+  dark:       transparent,
+  opacity:    #8000008f,
+);
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+
+
+
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "roboto";
+@import "noto-sans";
+
+
+//Make status bar text white
+$toolbar-md-title-text-color: white;
+$toolbar-ios-title-text-color: white;
+
+
+//Select Dropdown Component
+
+$select-ios-icon-color: #fff!important;
+$select-md-icon-color: #fff!important;
+
+
+
+//$background-color: transparent;
+
+
+//$card-md-background-color:#5f5c58!important;
+
+//$card-ios-header-background-color:#5f5c58!important;
+//$card-md-header-background-color:#5f5c58!important;
+
+
+$card-ios-title-text-color:#fff;
+$card-md-title-text-color:#fff;
+
+//$list-ios-header-background-color:#5f5c58!important;
+//$list-md-header-background-color:#5f5c58!important;
+
+
+
+
+$alert-md-background-color: #283747;
+$alert-md-button-text-color: #fff;

@@ -15,6 +15,15 @@ var AttendeeListing = 'Offline';
 
 @Injectable()
 export class Database {
+	sendevaluationconferenceData(flags: any, AttendeeID: string) {
+		throw new Error("Method not implemented.");
+	}
+	sendData(flags: any, AttendeeID: string) {
+		throw new Error("Method not implemented.");
+	}
+	sendevaluationData(flags: any, AttendeeID: string) {
+		throw new Error("Method not implemented.");
+	}
 
 	/* Setup page variables */
 	public DevicePlatform: string;

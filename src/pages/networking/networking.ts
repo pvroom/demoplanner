@@ -94,6 +94,7 @@ export class NetworkingPage {
 					let alert = this.alertCtrl.create({
 						title: 'Internet Error',
 						subTitle: 'You need to have Internet access in order to use that feature.',
+						cssClass: 'alert-danger',
 						buttons: ['OK']
 					});
 					
