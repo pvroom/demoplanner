@@ -65,7 +65,7 @@
     "de.appplant.cordova.plugin.printer": "^0.7.3",
     "dummy": "^0.1.5",
     "fs-extra": "^8.0.1",
-    "i": "^0.3.6",
+    "i": "^0.3.7",
     "ionic-angular": "^3.9.4",
     "ionic-image-loader": "^6.3.2",
     "ionic-img-viewer": "^2.9.0",
