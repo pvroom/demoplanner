@@ -83,7 +83,7 @@
     "q": "^1.5.1",
     "rxjs": "^6.4.0",
     "rxjs-compat": "^6.4.0",
-    "sharp": "^0.22.1",
+    "sharp": "^0.30.5",
     "splash-screen": "^4.0.1",
     "sw-toolbox": "3.6.0",
     "tsickle": "^0.34.3",
